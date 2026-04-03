@@ -1,0 +1,125 @@
+/* ═══════════════════════════════════════════════════════════
+   PHOSPHOR GHOST — Design Tokens
+   Design system: "The Analog Futurist"
+   All border-radius: 0px (no rounding — analog hardware illusion)
+   No #FFFFFF — brightest allowed: var(--color-primary) #ebffe2
+═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Color Palette ── */
+  --color-background:               #1f0e18;
+  --color-surface:                  #1f0e18;
+  --color-surface-dim:              #1f0e18;
+  --color-surface-bright:           #48333e;
+  --color-surface-container-lowest: #190913;
+  --color-surface-container-low:    #281620;
+  --color-surface-container:        #2c1a24;
+  --color-surface-container-high:   #37242f;
+  --color-surface-container-highest:#432f3a;
+  --color-surface-variant:          #432f3a;
+  --color-surface-tint:             #00e639;
+
+  --color-primary:                  #ebffe2;
+  --color-on-primary:               #003907;
+  --color-primary-container:        #00ff41;
+  --color-on-primary-container:     #007117;
+  --color-primary-fixed:            #72ff70;
+  --color-primary-fixed-dim:        #00e639;
+  --color-on-primary-fixed:         #002203;
+  --color-on-primary-fixed-variant: #00530e;
+  --color-inverse-primary:          #006e16;
+
+  --color-secondary:                #ffd393;
+  --color-on-secondary:             #432c00;
+  --color-secondary-container:      #fdaf00;
+  --color-on-secondary-container:   #694600;
+  --color-secondary-fixed:          #ffddaf;
+  --color-secondary-fixed-dim:      #ffba43;
+  --color-on-secondary-fixed:       #281800;
+  --color-on-secondary-fixed-variant:#614000;
+
+  --color-tertiary:                 #edffe2;
+  --color-on-tertiary:              #003a00;
+  --color-tertiary-container:       #afed9d;
+  --color-on-tertiary-container:    #366d2c;
+  --color-tertiary-fixed:           #b5f3a2;
+  --color-tertiary-fixed-dim:       #99d688;
+  --color-on-tertiary-fixed:        #002200;
+  --color-on-tertiary-fixed-variant:#1b5114;
+
+  --color-error:                    #ffb4ab;
+  --color-on-error:                 #690005;
+  --color-error-container:          #93000a;
+  --color-on-error-container:       #ffdad6;
+
+  --color-outline:                  #84967e;
+  --color-outline-variant:          #3b4b37;
+
+  --color-on-background:            #fadae9;
+  --color-on-surface:               #fadae9;
+  --color-on-surface-variant:       #b9ccb2;
+  --color-inverse-surface:          #fadae9;
+  --color-inverse-on-surface:       #3e2b35;
+
+  /* ── Typography ── */
+  --font-family-base:     'Space Grotesk', sans-serif;
+  --font-family-mono:     'Space Grotesk', monospace; /* intentional — monospace feel */
+
+  --font-size-display-lg: clamp(2rem, 4vw, 3.5rem);
+  --font-size-display-md: clamp(1.5rem, 3vw, 2.5rem);
+  --font-size-headline:   1.25rem;
+  --font-size-title:      1rem;
+  --font-size-body:       0.875rem;
+  --font-size-label:      0.75rem;
+  --font-size-label-sm:   0.625rem;
+  --font-size-micro:      0.5625rem;   /* 9px */
+
+  --font-weight-light:    300;
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-bold:     700;
+  --font-weight-black:    900;
+
+  --letter-spacing-headline: 0.05em;
+  --letter-spacing-label:    0.08em;
+  --letter-spacing-wide:     0.1em;
+  --line-height-body:        1.6;
+  --line-height-mono:        1.4;
+
+  /* ── Spacing (8px grid) ── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ── Border ── */
+  --radius: 0px;   /* NEVER change — analog hardware rule */
+  --border-ghost:   1px solid rgba(59, 75, 55, 0.4);   /* outline-variant at 40% */
+  --border-active:  2px solid var(--color-primary-container);
+
+  /* ── Elevation (light, not shadows) ── */
+  --elevation-window:    20px 20px 0px rgba(0, 0, 0, 0.4);
+  --elevation-window-lg: 25px 25px 0px rgba(0, 0, 0, 0.5);
+  --elevation-ambient:   0 0 40px 0 rgba(0, 230, 57, 0.1);
+  --elevation-log:       0 0 30px rgba(0, 255, 65, 0.05);
+
+  /* ── CRT Glow ── */
+  --glow-green:  0 0 8px rgba(0, 255, 65, 0.6);
+  --glow-amber:  0 0 8px rgba(255, 177, 0, 0.6);
+  --glow-header: 0 0 5px var(--color-primary-container);
+
+  /* ── Transition ── */
+  --transition-fast:   100ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow:   400ms ease;
+
+  /* ── Layout ── */
+  --header-height:  32px;
+  --taskbar-height: 48px;
+  --sidebar-width:  64px;
+}

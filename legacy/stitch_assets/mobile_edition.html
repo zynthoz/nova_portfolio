@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PHOSPHOR_OS_V.1.0.4 - Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#432f3a",
+                    "inverse-surface": "#fadae9",
+                    "on-primary": "#003907",
+                    "primary-fixed": "#72ff70",
+                    "error": "#ffb4ab",
+                    "secondary-fixed-dim": "#ffba43",
+                    "inverse-primary": "#006e16",
+                    "primary-container": "#00ff41",
+                    "error-container": "#93000a",
+                    "on-background": "#fadae9",
+                    "tertiary-fixed-dim": "#99d688",
+                    "on-tertiary-container": "#366d2c",
+                    "surface-container-high": "#37242f",
+                    "tertiary": "#edffe2",
+                    "surface-tint": "#00e639",
+                    "inverse-on-surface": "#3e2b35",
+                    "surface-container": "#2c1a24",
+                    "surface-bright": "#48333e",
+                    "on-primary-container": "#007117",
+                    "on-secondary-fixed": "#281800",
+                    "on-primary-fixed": "#002203",
+                    "tertiary-container": "#afed9d",
+                    "outline": "#84967e",
+                    "surface-container-lowest": "#190913",
+                    "primary": "#ebffe2",
+                    "secondary": "#ffd393",
+                    "on-error": "#690005",
+                    "secondary-fixed": "#ffddaf",
+                    "secondary-container": "#fdaf00",
+                    "outline-variant": "#3b4b37",
+                    "background": "#1f0e18",
+                    "surface-variant": "#432f3a",
+                    "on-secondary": "#432c00",
+                    "surface": "#1f0e18",
+                    "on-secondary-fixed-variant": "#614000",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary": "#003a00",
+                    "surface-dim": "#1f0e18",
+                    "on-primary-fixed-variant": "#00530e",
+                    "primary-fixed-dim": "#00e639",
+                    "surface-container-low": "#281620",
+                    "tertiary-fixed": "#b5f3a2",
+                    "on-secondary-container": "#694600",
+                    "on-surface": "#fadae9",
+                    "on-tertiary-fixed-variant": "#1b5114",
+                    "on-surface-variant": "#b9ccb2",
+                    "on-tertiary-fixed": "#002200"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Space Grotesk"],
+                    "label": ["Space Grotesk"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #1f0e18;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        /* Scanline Overlay */
+        .scanlines::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 100;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* CRT Vignette */
+        .bg-vignette {
+            background: radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.6) 100%);
+            pointer-events: none;
+        }
+
+        /* Phosphor Bloom */
+        .glow-text {
+            text-shadow: 0 0 8px rgba(0, 255, 65, 0.6);
+        }
+
+        .glow-amber {
+            text-shadow: 0 0 8px rgba(255, 177, 0, 0.6);
+        }
+
+        /* CRT Curvature Simulation */
+        .crt-monitor {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+        }
+
+        .blink {
+            animation: blinker 1s step-end infinite;
+        }
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 640px) {
+            .scanlines::before {
+                background-size: 100% 2px, 2px 100%;
+            }
+        }
+    </style>
+</head>
+<body class="font-body text-primary crt-monitor scanlines">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center h-8 px-4 border-b border-[#3b4b37]/20 bg-[#2c1a24] font-headline font-bold text-[10px] tracking-widest uppercase">
+<div class="flex items-center gap-2 text-[#00ff41] drop-shadow-[0_0_5px_#00ff41]">
+<span class="material-symbols-outlined text-xs">monitor_heart</span>
+<span class="truncate">PHOSPHOR_OS_V.1.0.4</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[#ebffe2] brightness-150 hidden sm:inline">OP_01</span>
+<div class="flex items-center gap-1">
+<div class="w-6 h-6 flex items-center justify-center hover:bg-[#48333e] cursor-pointer">
+<span class="material-symbols-outlined text-xs">close</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Desktop Canvas -->
+<main class="fixed inset-0 pt-8 pb-12 overflow-hidden bg-vignette flex flex-col items-center justify-start p-4">
+<!-- Desktop Icons (Horizontal Layout for Mobile) -->
+<div class="w-full flex justify-around items-start py-6 z-10">
+<div class="group flex flex-col items-center gap-1 cursor-pointer">
+<div class="w-10 h-10 bg-surface-container border border-outline/20 flex items-center justify-center text-secondary group-hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-2xl">work</span>
+</div>
+<span class="text-[8px] tracking-tighter glow-text bg-surface-container-lowest px-1">PROJECTS</span>
+</div>
+<div class="group flex flex-col items-center gap-1 cursor-pointer">
+<div class="w-10 h-10 bg-surface-container border border-outline/20 flex items-center justify-center text-secondary group-hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-2xl">history_edu</span>
+</div>
+<span class="text-[8px] tracking-tighter glow-text bg-surface-container-lowest px-1">EXP</span>
+</div>
+<div class="group flex flex-col items-center gap-1 cursor-pointer">
+<div class="w-10 h-10 bg-surface-container border border-outline/20 flex items-center justify-center text-secondary group-hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-2xl">psychology</span>
+</div>
+<span class="text-[8px] tracking-tighter glow-text bg-surface-container-lowest px-1">SKILLS</span>
+</div>
+<div class="group flex flex-col items-center gap-1 cursor-pointer">
+<div class="w-10 h-10 bg-surface-container border border-outline/20 flex items-center justify-center text-secondary group-hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-2xl">terminal</span>
+</div>
+<span class="text-[8px] tracking-tighter glow-text bg-surface-container-lowest px-1">MAIL</span>
+</div>
+</div>
+<!-- Open Window: File Explorer (Responsive sizing) -->
+<div class="w-full max-w-[450px] flex-1 min-h-0 bg-surface-container border-2 border-surface-variant flex flex-col relative shadow-[10px_10px_0px_rgba(0,0,0,0.4)] z-20 mb-4">
+<!-- Window Title Bar -->
+<div class="bg-surface-variant h-8 px-3 flex items-center justify-between text-[10px] font-bold tracking-widest text-primary-container">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-sm">folder_open</span>
+<span class="truncate">/USERS/OP/DOCS</span>
+</div>
+<div class="flex gap-2">
+<button class="w-5 h-5 bg-surface-container-highest flex items-center justify-center hover:brightness-125">
+<span class="material-symbols-outlined text-[10px]">close</span>
+</button>
+</div>
+</div>
+<!-- Window Content (Bento Style Folder) -->
+<div class="flex-1 p-4 grid grid-cols-2 gap-4 bg-[#1f0e18] overflow-y-auto">
+<div class="group flex flex-col items-center gap-2 p-2 hover:bg-surface-container cursor-pointer transition-colors border border-transparent hover:border-outline/20">
+<span class="material-symbols-outlined text-4xl text-secondary">picture_as_pdf</span>
+<span class="text-[9px] text-center uppercase tracking-widest leading-tight">CV.pdf<br/><span class="text-[7px] opacity-40">245 KB</span></span>
+</div>
+<div class="group flex flex-col items-center gap-2 p-2 hover:bg-surface-container cursor-pointer transition-colors border border-transparent hover:border-outline/20">
+<span class="material-symbols-outlined text-4xl text-primary-fixed-dim">link</span>
+<span class="text-[9px] text-center uppercase tracking-widest leading-tight">GITHUB.url<br/><span class="text-[7px] opacity-40">WEB</span></span>
+</div>
+<div class="group flex flex-col items-center gap-2 p-2 hover:bg-surface-container cursor-pointer transition-colors border border-transparent hover:border-outline/20">
+<span class="material-symbols-outlined text-4xl text-secondary">folder</span>
+<span class="text-[9px] text-center uppercase tracking-widest leading-tight">WORKS<br/><span class="text-[7px] opacity-40">DIR [4]</span></span>
+</div>
+<div class="group flex flex-col items-center gap-2 p-2 hover:bg-surface-container cursor-pointer transition-colors border border-transparent hover:border-outline/20">
+<span class="material-symbols-outlined text-4xl text-primary-fixed-dim">mail</span>
+<span class="text-[9px] text-center uppercase tracking-widest leading-tight">CONTACT.txt<br/><span class="text-[7px] opacity-40">DOC</span></span>
+</div>
+<div class="col-span-2 mt-2 border-t border-outline/10 pt-4 flex flex-col gap-3">
+<div class="flex items-center justify-between text-[8px] opacity-60">
+<span>4 OBJECT(S)</span>
+<span>FREE: 890GB</span>
+</div>
+<button class="bg-primary-container text-on-primary text-[10px] font-black w-full py-2 flex items-center justify-center gap-2 hover:brightness-90 active:scale-95 transition-all">
+                        UPLOAD_DATA
+                        <span class="material-symbols-outlined text-xs">upload</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Terminal Window (Minimized/Compact for Mobile) -->
+<div class="w-full max-w-[450px] h-28 bg-[#0a0508]/90 backdrop-blur-md border border-primary-container/20 p-2 font-mono text-[9px] flex flex-col shadow-[0_0_20px_rgba(0,255,65,0.05)] z-30 shrink-0">
+<div class="flex items-center justify-between mb-1 border-b border-primary-container/10 pb-0.5">
+<span class="text-primary-container brightness-110 flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]">terminal</span> SYS_LOG
+                </span>
+<span class="text-primary-container/40">TTY1</span>
+</div>
+<div class="flex-1 overflow-hidden space-y-0.5 opacity-80">
+<p class="glow-text text-primary-container">Initializing neural link...</p>
+<p class="text-primary-container/60">&gt; Mounting /dev/sda1... [OK]</p>
+<p class="glow-text text-primary-container">System ready. Input<span class="blink">_</span></p>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex justify-start items-stretch h-12 bg-[#1f0e18] border-t-4 border-[#2c1a24] shadow-[0_-4px_20px_rgba(0,255,65,0.1)]">
+<div class="flex items-stretch flex-1 overflow-x-auto no-scrollbar">
+<div class="flex items-center px-4 bg-primary-container text-on-primary mr-1 hover:brightness-125 cursor-pointer shrink-0">
+<span class="material-symbols-outlined mr-2">grid_view</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-[0.05em] text-[10px] font-black">START</span>
+</div>
+<div class="flex items-center px-4 text-[#00ff41]/60 hover:text-[#00ff41] hover:bg-[#2c1a24] cursor-pointer transition-all shrink-0">
+<span class="material-symbols-outlined mr-2">terminal</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-[0.05em] text-[10px]">TERM</span>
+</div>
+<div class="flex items-center px-4 bg-[#00ff41] text-[#003907] brightness-125 transition-all duration-75 shrink-0">
+<span class="material-symbols-outlined mr-2">folder</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-[0.05em] text-[10px] font-black">FILES</span>
+</div>
+</div>
+<div class="flex items-center px-4 text-[#00ff41] font-bold text-[10px] font-mono shrink-0">
+<span>22:45</span>
+</div>
+</footer>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

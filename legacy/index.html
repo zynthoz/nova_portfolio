@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Senior Systems Architect &amp; Creative Technologist — CRT Hacker Portfolio"/>
+  <meta property="og:title" content="PHOSPHOR_OS_V.1.0.4 — Portfolio"/>
+  <meta property="og:description" content="Senior Systems Architect &amp; Creative Technologist"/>
+  <title>PHOSPHOR_OS_V.1.0.4 — Portfolio</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <!-- Tailwind (CDN) — config loaded before it via inline script -->
+  <script src="js/tailwind-config.js"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <!-- Design System -->
+  <link rel="stylesheet" href="css/tokens.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+</head>
+
+<body class="font-body text-primary crt-monitor scanlines crt-boot">
+
+<!-- ═══════════════════════════════ TOP BAR ═══════════════════════════════ -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <span class="material-symbols-outlined">monitor_heart</span>
+    <span class="truncate">PHOSPHOR_OS_V.1.0.4</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-session hidden sm:inline">SESSION_ACTIVE: OPERATOR_01</span>
+    <span class="topbar-session sm:hidden">OP_01</span>
+    <!-- Desktop OS controls (aesthetic) -->
+    <div class="topbar-controls hidden sm:flex">
+      <button class="topbar-btn" aria-label="Minimize">
+        <span class="material-symbols-outlined">minimize</span>
+      </button>
+      <button class="topbar-btn" aria-label="Maximize">
+        <span class="material-symbols-outlined">maximize</span>
+      </button>
+      <button class="topbar-btn" aria-label="Close">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <!-- Mobile OS controls (aesthetic) -->
+    <button class="topbar-btn sm:hidden" aria-label="Close">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════ MAIN CANVAS ════════════════════════════ -->
+<main class="fixed inset-0 pt-8 pb-12 overflow-hidden bg-vignette" id="main-canvas">
+
+  <!-- ───────── DESKTOP LAYOUT (≥640px) ───────── -->
+  <div class="hidden sm:flex h-full items-center justify-center p-8 relative">
+
+    <!-- Desktop icon column -->
+    <nav class="absolute left-8 top-8 flex flex-col gap-8 z-10" aria-label="Desktop shortcuts">
+      <div class="desk-icon" role="button" tabindex="0" aria-label="Projects" data-opens="window-projects">
+        <div class="desk-icon-box desk-icon-box--lg">
+          <span class="material-symbols-outlined">work</span>
+        </div>
+        <span class="desk-icon-label">PROJECTS</span>
+      </div>
+      <div class="desk-icon" role="button" tabindex="0" aria-label="Experience" data-opens="window-experience">
+        <div class="desk-icon-box desk-icon-box--lg">
+          <span class="material-symbols-outlined">history_edu</span>
+        </div>
+        <span class="desk-icon-label">EXPERIENCE</span>
+      </div>
+      <div class="desk-icon" role="button" tabindex="0" aria-label="Skills" data-opens="window-skills">
+        <div class="desk-icon-box desk-icon-box--lg">
+          <span class="material-symbols-outlined">psychology</span>
+        </div>
+        <span class="desk-icon-label">SKILLS</span>
+      </div>
+      <div class="desk-icon" role="button" tabindex="0" aria-label="Contact" data-opens="window-contact">
+        <div class="desk-icon-box desk-icon-box--lg">
+          <span class="material-symbols-outlined">terminal</span>
+        </div>
+        <span class="desk-icon-label">CONTACT</span>
+      </div>
+    </nav>
+
+    <!-- Floating windows -->
+    <div class="flex gap-8 items-start relative z-20">
+
+      <!-- About Me: VIM-style editor -->
+      <section class="window-frame vim-window w-[450px] h-[500px]" id="window-about" data-window-id="window-about" aria-label="About Me">
+        <div class="window-titlebar vim-titlebar">
+          <div class="title-left">
+            <span class="material-symbols-outlined" style="font-size:14px">edit_note</span>
+            <span>VIM_LITE: /HOME/OPERATOR/ABOUT_ME.MD</span>
+          </div>
+          <div class="title-controls">
+            <!-- VIM style minimize/close dummy buttons -->
+            <button class="w-4 h-4" style="background:rgba(132,150,126,0.2);border:1px solid rgba(132,150,126,0.3)" data-action="minimize"></button>
+            <button class="w-4 h-4 text-[10px] text-surface flex items-center justify-center font-bold" style="background:rgba(132,150,126,0.4)" data-action="close">X</button>
+          </div>
+        </div>
+        <div class="vim-content flex-1">
+          <div class="vim-line-numbers" aria-hidden="true">
+            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+            <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+            <span>11</span><span>12</span><span>13</span><span>14</span><span>15</span>
+          </div>
+          <div class="vim-body">
+            <p class="mb-4 vim-comment"># PROFILE_OVERVIEW</p>
+            <p class="mb-6">
+              <span class="vim-text">I am a </span>
+              <span class="vim-link">Senior Systems Architect &amp; Creative Technologist</span>
+              <span class="vim-text"> with a passion for building secure, high-performance digital experiences.</span>
+            </p>
+            <p class="mb-4 vim-comment">## CORE_STRENGTHS</p>
+            <ul class="space-y-1 mb-6 vim-muted">
+              <li>- Low-latency System Design</li>
+              <li>- Cyber-Security Integration</li>
+              <li>- Experimental UI/UX Prototyping</li>
+              <li>- Distributed Infrastructure</li>
+            </ul>
+            <p style="color:var(--color-primary-container);filter:brightness(1.25)">-- INSERT -- <span class="cursor-block"></span></p>
+          </div>
+        </div>
+        <div class="window-statusbar vim-statusbar">
+          <div class="status-group">
+            <span>[NORMAL]</span>
+            <span>ABOUT_ME.MD</span>
+          </div>
+          <div class="status-group">
+            <span>UTF-8</span>
+            <span>LN 8, COL 12</span>
+            <span>100%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- File Explorer -->
+      <section class="window-frame w-[500px] h-[350px] mt-12" id="window-files" data-window-id="window-files" aria-label="File Explorer">
+        <div class="window-titlebar">
+          <div class="title-left">
+            <span class="material-symbols-outlined" style="font-size:14px">folder_open</span>
+            <span>DIRECTORY: /USERS/OPERATOR/DOCUMENTS</span>
+          </div>
+          <div class="title-controls">
+            <button class="window-btn" data-action="minimize" aria-label="Minimize window">
+              <span class="material-symbols-outlined">remove</span>
+            </button>
+            <button class="window-btn" data-action="close" aria-label="Close window">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+        </div>
+        <div class="window-content" style="padding:24px">
+          <div class="grid grid-cols-3 gap-6 h-full">
+            <div class="file-item" role="button" tabindex="0" aria-label="CV PDF">
+              <span class="material-symbols-outlined file-icon-pdf" style="font-size:48px">picture_as_pdf</span>
+              <span class="file-item-name">CV.pdf<br/><span class="file-item-meta">245 KB</span></span>
+            </div>
+            <div class="file-item" role="button" tabindex="0" aria-label="GitHub link">
+              <span class="material-symbols-outlined file-icon-url" style="font-size:48px">link</span>
+              <span class="file-item-name">GITHUB_LINK.url<br/><span class="file-item-meta">WEB_ADDRESS</span></span>
+            </div>
+            <div class="file-item" role="button" tabindex="0" aria-label="Portfolio docs folder">
+              <span class="material-symbols-outlined file-icon-dir" style="font-size:48px">folder</span>
+              <span class="file-item-name">PORTFOLIO_DOCS<br/><span class="file-item-meta">DIR [4 ITEMS]</span></span>
+            </div>
+            <div class="col-span-3 mt-4 flex items-center justify-between" style="border-top:1px solid rgba(59,75,55,0.2);padding-top:16px">
+              <div class="explorer-status-text">
+                <span>3 OBJECT(S)</span>
+                <span>DISK_FREE: 890GB</span>
+              </div>
+              <button class="btn-primary">
+                UPLOAD_DATA
+                <span class="material-symbols-outlined" style="font-size:12px">upload</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- System Log (desktop, bottom-right) -->
+    <aside class="sys-log window-frame fixed bottom-16 right-4 w-96 h-48 z-30" id="window-terminal" data-window-id="window-terminal" aria-label="System Log">
+      <div class="window-titlebar">
+        <div class="title-left text-primary-container">
+          <span class="material-symbols-outlined" style="font-size:14px">terminal</span>
+          <span>TTY1 : SYSTEM_LOG</span>
+        </div>
+        <div class="title-controls">
+            <button class="window-btn" data-action="minimize"><span class="material-symbols-outlined">remove</span></button>
+            <button class="window-btn" data-action="close"><span class="material-symbols-outlined">close</span></button>
+        </div>
+      </div>
+      <div class="sys-log-body" id="log-desktop" aria-live="polite">
+        <!-- Populated by main.js boot sequence -->
+      </div>
+    </aside>
+  </div>
+
+  <!-- ───────── MOBILE LAYOUT (<640px) ───────── -->
+  <div class="flex sm:hidden h-full flex-col items-center justify-start p-4 overflow-hidden gap-3">
+
+    <!-- Icon row -->
+    <nav class="w-full flex justify-around items-start py-4 z-10 overflow-x-auto no-scrollbar shrink-0" aria-label="Desktop shortcuts">
+      <div class="desk-icon shrink-0" role="button" tabindex="0" aria-label="About" data-mobile-toggle="window-about-mobile">
+        <div class="desk-icon-box desk-icon-box--sm"><span class="material-symbols-outlined">account_circle</span></div>
+        <span class="desk-icon-label" style="font-size:8px">ABOUT</span>
+      </div>
+      <div class="desk-icon shrink-0" role="button" tabindex="0" aria-label="Projects" data-mobile-toggle="window-projects-mobile">
+        <div class="desk-icon-box desk-icon-box--sm"><span class="material-symbols-outlined">work</span></div>
+        <span class="desk-icon-label" style="font-size:8px">PROJECTS</span>
+      </div>
+      <div class="desk-icon shrink-0" role="button" tabindex="0" aria-label="Experience" data-mobile-toggle="window-experience-mobile">
+        <div class="desk-icon-box desk-icon-box--sm"><span class="material-symbols-outlined">history_edu</span></div>
+        <span class="desk-icon-label" style="font-size:8px">EXP</span>
+      </div>
+      <div class="desk-icon shrink-0" role="button" tabindex="0" aria-label="Skills" data-mobile-toggle="window-skills-mobile">
+        <div class="desk-icon-box desk-icon-box--sm"><span class="material-symbols-outlined">psychology</span></div>
+        <span class="desk-icon-label" style="font-size:8px">SKILLS</span>
+      </div>
+      <div class="desk-icon shrink-0" role="button" tabindex="0" aria-label="Mail" data-mobile-toggle="window-contact-mobile">
+        <div class="desk-icon-box desk-icon-box--sm"><span class="material-symbols-outlined">terminal</span></div>
+        <span class="desk-icon-label" style="font-size:8px">MAIL</span>
+      </div>
+    </nav>
+
+    <!-- About Me card (mobile) -->
+    <section class="about-card w-full max-w-[450px] shrink-0 transition-all duration-300 transform origin-top" id="window-about-mobile" aria-label="About Me">
+      <div class="about-card-header">
+        <div class="flex items-center gap-2 truncate">
+          <span class="material-symbols-outlined" style="font-size:16px">person</span>
+          <span class="truncate">ABOUT_ME.sys</span>
+        </div>
+        <button class="window-btn" aria-label="Close" data-mobile-toggle="window-about-mobile">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="about-card-body">
+        <div class="flex gap-4 items-start">
+          <div class="about-avatar">
+            <span class="material-symbols-outlined">face</span>
+          </div>
+          <div class="flex flex-col gap-1">
+            <h1 class="text-label" style="color:var(--color-primary-container)">Senior Systems Architect</h1>
+            <h2 class="text-micro" style="color:var(--color-primary-fixed-dim)">&amp; Creative Technologist</h2>
+            <div class="flex gap-1 mt-1">
+              <span class="about-tag">LOCKED</span>
+              <span class="about-tag">ADMIN</span>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid rgba(0,255,65,0.2);padding-top:12px">
+          <p class="text-micro" style="line-height:1.6;opacity:0.9;color:var(--color-primary);letter-spacing:0.06em">
+            Specializing in high-performance digital architectures and human-machine interface design.
+            Bridging the gap between legacy reliability and experimental aesthetics.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- File Explorer (mobile) -->
+    <section class="window-frame w-full max-w-[450px] flex-1 min-h-0" id="window-files-mobile" aria-label="File Explorer">
+      <div class="window-titlebar">
+        <div class="title-left">
+          <span class="material-symbols-outlined" style="font-size:14px">folder_open</span>
+          <span class="truncate">/USERS/OP/DOCS</span>
+        </div>
+        <div class="title-controls">
+          <button class="window-btn" data-mobile-toggle="window-files-mobile" aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+        </div>
+      </div>
+      <div class="window-content scrollable" style="padding:16px">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="file-item" role="button" tabindex="0">
+            <span class="material-symbols-outlined file-icon-pdf" style="font-size:40px">picture_as_pdf</span>
+            <span class="file-item-name" style="font-size:9px">CV.pdf<br/><span class="file-item-meta">245 KB</span></span>
+          </div>
+          <div class="file-item" role="button" tabindex="0">
+            <span class="material-symbols-outlined file-icon-url" style="font-size:40px">link</span>
+            <span class="file-item-name" style="font-size:9px">GITHUB.url<br/><span class="file-item-meta">WEB</span></span>
+          </div>
+          <div class="file-item" role="button" tabindex="0">
+            <span class="material-symbols-outlined file-icon-dir" style="font-size:40px">folder</span>
+            <span class="file-item-name" style="font-size:9px">WORKS<br/><span class="file-item-meta">DIR [4]</span></span>
+          </div>
+          <div class="file-item" role="button" tabindex="0">
+            <span class="material-symbols-outlined file-icon-mail" style="font-size:40px">mail</span>
+            <span class="file-item-name" style="font-size:9px">CONTACT.txt<br/><span class="file-item-meta">DOC</span></span>
+          </div>
+          <div class="col-span-2" style="border-top:1px solid rgba(59,75,55,0.2);padding-top:12px;margin-top:4px;display:flex;flex-direction:column;gap:10px">
+            <div class="explorer-status-text">
+              <span>4 OBJECT(S)</span>
+              <span>FREE: 890GB</span>
+            </div>
+            <button class="btn-primary w-full justify-center">
+              UPLOAD_DATA
+              <span class="material-symbols-outlined" style="font-size:12px">upload</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- System Log (mobile, compact) -->
+    <aside class="sys-log w-full max-w-[450px] h-24 shrink-0 transition-opacity" id="window-terminal-mobile" aria-label="System Log">
+      <div class="sys-log-header">
+        <div class="sys-log-title">
+          <span class="material-symbols-outlined" style="font-size:10px">terminal</span>
+          SYS_LOG
+        </div>
+        <div class="flex gap-2">
+           <span class="sys-log-id">TTY1</span>
+           <button class="window-btn h-auto py-0" data-mobile-toggle="window-terminal-mobile"><span class="material-symbols-outlined">close</span></button>
+        </div>
+      </div>
+      <div class="sys-log-body" id="log-mobile" aria-live="polite">
+        <!-- Populated by main.js boot sequence -->
+      </div>
+    </aside>
+  </div>
+
+</main>
+
+<!-- ═══════════════════════════════ TASKBAR ════════════════════════════════ -->
+<nav class="taskbar" aria-label="Taskbar">
+  <div class="taskbar-left">
+    <!-- START -->
+    <button class="taskbar-btn active" id="btn-start" aria-label="Start menu">
+      <span class="material-symbols-outlined">grid_view</span>
+      <span>START</span>
+    </button>
+    <!-- ABOUT (VIM) -->
+    <button class="taskbar-btn" id="btn-about" data-taskbar-for="window-about" aria-label="About Me">
+      <span class="material-symbols-outlined">person</span>
+      <span class="hidden xs:inline sm:inline">ABOUT</span>
+    </button>
+    <!-- TERMINAL -->
+    <button class="taskbar-btn" id="btn-terminal" data-taskbar-for="window-terminal" aria-label="Terminal">
+      <span class="material-symbols-outlined">terminal</span>
+      <span class="hidden xs:inline sm:inline">TERM<span class="hidden sm:inline">INAL</span></span>
+    </button>
+    <!-- FILES (active) -->
+    <button class="taskbar-btn active" id="btn-files" data-taskbar-for="window-files" aria-label="File manager">
+      <span class="material-symbols-outlined">folder</span>
+      <span>FILES</span>
+    </button>
+    <!-- NETWORK (desktop only) -->
+    <button class="taskbar-btn hidden sm:flex" id="btn-network" data-taskbar-for="window-network" aria-label="Network monitor">
+      <span class="material-symbols-outlined">lan</span>
+      <span>NETWORK</span>
+    </button>
+    <!-- SYSTEM (desktop only) -->
+    <button class="taskbar-btn hidden sm:flex" id="btn-system" data-taskbar-for="window-system" aria-label="System settings">
+      <span class="material-symbols-outlined">settings</span>
+      <span>SYSTEM</span>
+    </button>
+  </div>
+  <div class="taskbar-clock">
+    <time id="clock" aria-label="Current time">--:--:--</time>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ SCRIPTS ════════════════════════════════ -->
+<script src="js/main.js"></script>
+<script src="js/window-manager.js"></script>
+</body>
+</html>
