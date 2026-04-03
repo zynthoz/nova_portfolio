@@ -50,17 +50,17 @@ body {
       rgba(0, 255, 0, 0.005),
       rgba(0, 0, 255, 0.015)
     );
-  z-index: 200;
+  z-index: 10;
   background-size: 100% 6px, 4px 100%;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.25;
   animation: scanline-drift 60s linear infinite;
 }
 
 @media (max-width: 640px) {
   .scanlines::before {
     background-size: 100% 4px, 3px 100%;
-    opacity: 0.5;
+    opacity: 0.15;
   }
 }
 
@@ -74,7 +74,7 @@ body {
     rgba(0, 0, 0, 0.45) 100%
   );
   pointer-events: none;
-  z-index: 150;
+  z-index: 10;
 }
 
 /* ──────────────────────────────────────────
@@ -258,16 +258,16 @@ body {
    VIM-style Editor Window (About Me)
 ────────────────────────────────────────── */
 .vim-window {
-  background-color: #0a0508;
-  border-color: rgba(132, 150, 126, 0.4);
+  background-color: #121212;
+  border-color: #27272a;
   box-shadow: var(--elevation-window-lg);
 }
 .vim-titlebar {
-  background-color: var(--color-outline-variant);
-  color: var(--color-on-surface);
+  background-color: #18181b;
+  color: #a1a1aa;
 }
 .vim-content {
-  background-color: #0a0508;
+  background-color: #121212;
   position: relative;
   padding: var(--space-6);
   font-family: var(--font-family-mono);
@@ -279,28 +279,29 @@ body {
   position: absolute;
   top: 0; left: 0; bottom: 0;
   width: 40px;
-  background-color: var(--color-surface);
-  border-right: 1px solid rgba(59, 75, 55, 0.3);
+  background-color: #121212;
+  border-right: 1px solid #27272a;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: var(--space-6);
   font-size: 10px;
-  color: rgba(132, 150, 126, 0.4);
+  color: #52525b;
   user-select: none;
   gap: 2px;
 }
 .vim-body {
   padding-left: var(--space-10);
-  color: rgba(0, 255, 65, 0.9);
+  color: #e4e4e7;
 }
-.vim-comment  { color: var(--color-secondary); font-weight: var(--font-weight-bold); }
-.vim-text     { color: var(--color-on-surface); }
-.vim-link     { color: var(--color-primary-fixed); text-decoration: underline; }
-.vim-muted    { color: var(--color-outline); }
+.vim-comment  { color: #6ee7b7; font-weight: normal; }
+.vim-text     { color: #e4e4e7; }
+.vim-link     { color: #38bdf8; text-decoration: underline; }
+.vim-muted    { color: #a1a1aa; }
 .vim-statusbar {
-  background-color: var(--color-surface-container);
-  border-color: rgba(59, 75, 55, 0.3);
+  background-color: #18181b;
+  border-color: #27272a;
+  color: #71717a;
 }
 
 /* ──────────────────────────────────────────
@@ -365,9 +366,9 @@ body {
    System Log / Terminal Panel
 ────────────────────────────────────────── */
 .sys-log {
-  background-color: rgba(10, 5, 8, 0.92);
+  background-color: rgba(24, 24, 27, 0.95);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 255, 65, 0.2);
+  border: 1px solid #27272a;
   display: flex;
   flex-direction: column;
   box-shadow: var(--elevation-log);
@@ -378,20 +379,20 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: var(--space-2) var(--space-3);
-  border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+  border-bottom: 1px solid #27272a;
   flex-shrink: 0;
 }
 .sys-log-title {
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  color: var(--color-primary-container);
+  color: #71717a;
   font-size: 10px;
   font-weight: var(--font-weight-bold);
-  text-shadow: var(--glow-green);
+  text-shadow: none;
 }
 .sys-log-id {
-  color: rgba(0, 255, 65, 0.4);
+  color: #52525b;
   font-size: 10px;
 }
 .sys-log-body {
@@ -401,10 +402,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  opacity: 0.85;
 }
-.log-line        { font-size: 10px; color: rgba(0, 255, 65, 0.6); }
-.log-line--focus { font-size: 10px; color: var(--color-primary-container); text-shadow: var(--glow-green); }
+.log-line        { font-size: 10px; color: #a1a1aa; }
+.log-line--focus { font-size: 10px; color: #4ade80; text-shadow: none; }
 
 /* ──────────────────────────────────────────
    Taskbar (Bottom Nav)
