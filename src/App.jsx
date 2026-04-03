@@ -234,6 +234,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
         <AnimatePresence>
           {windows['window-about']?.state === 'open' && (
             <WindowFrame 
+              key="window-about"
               id="window-about"
               className="vim-window w-[600px] h-[650px] pointer-events-auto"
               initLeft="200px" initTop="80px"
@@ -275,6 +276,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
 
           {windows['window-files']?.state === 'open' && (
             <WindowFrame 
+              key="window-files"
               id="window-files"
               className="w-[500px] h-[350px] pointer-events-auto"
               initLeft="680px" initTop="200px"
@@ -320,6 +322,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
 
           {windows['window-terminal']?.state === 'open' && (
             <WindowFrame 
+               key="window-terminal"
                id="window-terminal"
                className="sys-log w-96 h-48 pointer-events-auto"
                initLeft="calc(100vw - 420px)" initTop="calc(100vh - 300px)"
@@ -412,6 +415,7 @@ function MobileLayout({ windows, openWindow, closeWindow }) {
       <AnimatePresence>
         {windows['window-about']?.state === 'open' && (
           <motion.section 
+            key="mobile-about"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -452,6 +456,7 @@ function MobileLayout({ windows, openWindow, closeWindow }) {
 
         {windows['window-files']?.state === 'open' && (
           <motion.section 
+            key="mobile-files"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
@@ -477,6 +482,7 @@ function MobileLayout({ windows, openWindow, closeWindow }) {
 
         {windows['window-terminal']?.state === 'open' && (
           <motion.aside 
+            key="mobile-terminal"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
