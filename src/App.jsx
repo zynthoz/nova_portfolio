@@ -1,6 +1,45 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './index.css'; // if any
+import avatarImage from './assets/avatar.png';
+
+// LaundryLink Images
+import imgLaundry1 from './assets/LAUNDRYLINK/1.jpg';
+import imgLaundry2 from './assets/LAUNDRYLINK/2.jpg';
+import imgLaundry3 from './assets/LAUNDRYLINK/3.jpg';
+import imgLaundry4 from './assets/LAUNDRYLINK/4.png';
+import imgLaundry5 from './assets/LAUNDRYLINK/5.png';
+import imgLaundryPreview from './assets/LAUNDRYLINK/preview.jpg';
+
+// Tool.AI Images
+import imgToolAI1 from './assets/TOOLAI/1.png';
+import imgToolAI2 from './assets/TOOLAI/2.png';
+import imgToolAI3 from './assets/TOOLAI/3.png';
+import imgToolAI4 from './assets/TOOLAI/4.png';
+import imgToolAIPreview from './assets/TOOLAI/preview.png';
+
+// QForm Images
+import imgQForm1 from './assets/QFORM/1.png';
+import imgQForm2 from './assets/QFORM/2.png';
+import imgQForm3 from './assets/QFORM/3.png';
+import imgQForm4 from './assets/QFORM/4.png';
+import imgQForm5 from './assets/QFORM/5.png';
+import imgQForm6 from './assets/QFORM/6.png';
+import imgQFormPreview from './assets/QFORM/preview.png';
+
+// Royale Tracker Images
+import imgRoyaleTracker1 from './assets/ROYALE-TRACKER/1.png';
+import imgRoyaleTracker2 from './assets/ROYALE-TRACKER/2.png';
+import imgRoyaleTracker3 from './assets/ROYALE-TRACKER/3.png';
+import imgRoyaleTrackerPreview from './assets/ROYALE-TRACKER/preview.png';
+
+// Impeto Images
+import imgImpeto1 from './assets/IMPETO/1.png';
+import imgImpeto2 from './assets/IMPETO/2.png';
+import imgImpeto3 from './assets/IMPETO/3.png';
+import imgImpeto4 from './assets/IMPETO/4.png';
+import imgImpeto5 from './assets/IMPETO/5.png';
+import imgImpetoPreview from './assets/IMPETO/preview.png';
 
 const TERMINAL_ASCII = [
   '                                      __         ',
@@ -39,40 +78,59 @@ const VIM_LINES = [
 
 const PROJECTS = {
   'window-project-1': {
-    headline: 'NEURAL LINK PROXY',
+    headline: 'LAUNDRYLINK',
     status: 'OPERATIONAL',
-    desc1: 'A high-performance cryptographic relay system designed for decentralized neural architectures. This project implements a multi-layered obfuscation protocol to secure bi-directional data flow between synthetic cortexes and global mesh networks.',
-    desc2: 'Engineered with hardware-level security constraints, bypassing standard TCP/IP overhead to achieve sub-millisecond latency in high-density interference zones.',
-    imgText: 'ENCRYPTION_MATRIX_ACTIVE',
-    tags: ['PYTHON_CORE', 'RUST_RUNTIME', 'SOLIDITY_MESH', 'GRPC_TRANSPORT'],
+    desc1: "A three-tier IoT laundromat management system built with an ESP32 controller, a Raspberry Pi local manager, and a Supabase cloud backend — deployed across 3 clients and 36 machines with multi-tenant Role-Based Access Control (RBAC).",
+    desc2: 'Architected the full IoT stack with offline-first sync, cut deployment setup time by ~70% via SPIFFS-based firmware config, and achieved 100% transaction logging accuracy with full remote machine management.',
+    imgText: 'LAUNDRYLINK_ACTIVE',
+    previewImg: imgLaundryPreview,
+    images: [imgLaundry1, imgLaundry2, imgLaundry3, imgLaundry4, imgLaundry5],
+    tags: ['ESP32', 'C++', 'Python', 'Flask', 'Supabase', 'React'],
     lastPush: '2024.11.08',
   },
   'window-project-2': {
-    headline: 'QUANTUM DATA VAULT',
+    headline: 'TOOL.AI',
     status: 'ARCHIVED',
-    desc1: 'Distributed hyper-ledger storage optimized for zero-knowledge proofs. Utilizes experimental shard-packing to reduce quantum decryption vectors.',
-    desc2: 'Built for enterprise resilience with self-healing data nodes.',
-    imgText: 'QUANTUM_VAULT_ACTIVE',
-    tags: ['GO_LANG', 'POSTGRES_X', 'REDIS_CACHE'],
+    desc1: 'An AI-powered upskilling platform built with Next.js that generates personalized learning plans through OpenAI integration — winner of the PhilTech Innovathon 2026 Special Award.',
+    desc2: 'Developed the full-stack platform using Next.js with OpenAI integration to deliver dynamic, personalized learning experiences tailored to each users goals and skill gaps.',
+    imgText: 'TOOL.AI_ACTIVE',
+    previewImg: imgToolAIPreview,
+    images: [imgToolAI1, imgToolAI2, imgToolAI3, imgToolAI4],
+    tags: ['OPEN AI', 'NEXT.JS', 'REACT'],
     lastPush: '2023.09.12',
   },
   'window-project-3': {
-    headline: 'SYNTHETIC CORTEX AI',
-    status: 'IN DEVELOPMENT',
-    desc1: 'A generative adversarial network structured to emulate basic emotional responses in automated support channels.',
-    desc2: 'Testing reveals a 40% increase in human-perceived empathy during interactions.',
-    imgText: 'NEURAL_NET_TRAINING',
-    tags: ['PYTORCH', 'TENSORFLOW', 'CUDA'],
+    headline: 'QFORM',
+    status: 'ARCHIVED',
+    desc1: 'Built in 2022, a full-stack facility management platform with secure authentication and approval workflows — built as an SHS capstone project before AI-assisted development was a thing.',
+    desc2: 'Engineered end-to-end from scratch with secure auth and structured approval workflows, cutting scheduling conflicts by ~90%.',
+    imgText: 'QFORM_ACTIVE',
+    previewImg: imgQFormPreview,
+    images: [imgQForm1, imgQForm2, imgQForm3, imgQForm4, imgQForm5, imgQForm6],
+    tags: ['PHP', 'SQL', 'QRPH', 'HTML/CSS', 'JavaScript'],
     lastPush: '2024.01.20',
   },
   'window-project-4': {
-    headline: 'GHOST SHELL KERNEL',
+    headline: 'ROYALE TRACKER',
     status: 'OPERATIONAL',
-    desc1: 'A minimal operating system shell running in WebAssembly, providing an immersive CRT aesthetic and sandboxed terminal environments.',
-    desc2: 'Features hardware-accelerated transitions, custom drag constraints, and a complete virtual filesystem layer.',
-    imgText: 'WASM_KERN_INIT',
-    tags: ['REACT_19', 'VITE', 'FRAMER_MOTION', 'TAILWIND_CSS'],
+    desc1: 'A responsive web app that visualizes real-time player statistics through third-party REST API integration and asynchronous data handling.',
+    desc2: 'Built the full frontend with responsive design, integrated a third-party REST API, and implemented async data handling for seamless real-time stat updates.',
+    imgText: 'ROYALE_TRACKER_ACTIVE',
+    previewImg: imgRoyaleTrackerPreview,
+    images: [imgRoyaleTracker1, imgRoyaleTracker2, imgRoyaleTracker3],
+    tags: ['REACT', 'REST_API', 'TAILWIND_CSS'],
     lastPush: '2024.04.03',
+  },
+  'window-project-5': {
+    headline: 'IMPETO',
+    status: 'OPERATIONAL',
+    desc1: 'A gamified task management web app built with Next.js, TypeScript, and Supabase — transforms to-do lists into an RPG adventure with quests, XP leveling, gold rewards, streaks, and leaderboards.',
+    desc2: 'Built the full-stack app using Next.js App Router, Supabase Auth and PostgreSQL, with a custom gamification engine covering XP/leveling, a daily shop, inventory system, achievement badges, and long-term goal tracking with milestone checkpoints.',
+    imgText: 'IMPETO_ACTIVE',
+    previewImg: imgImpetoPreview,
+    images: [imgImpeto1, imgImpeto2, imgImpeto3, imgImpeto4, imgImpeto5],
+    tags: ['Next.js', 'TypeScript', 'Supabase', 'React', 'OAuth', 'PostgreSQL'],
+    lastPush: '2024.05.01',
   }
 };
 
@@ -109,6 +167,7 @@ export default function App() {
     'window-project-2': { id: 'window-project-2', state: 'closed', zIndex: 20, bootNonce: 0 },
     'window-project-3': { id: 'window-project-3', state: 'closed', zIndex: 20, bootNonce: 0 },
     'window-project-4': { id: 'window-project-4', state: 'closed', zIndex: 20, bootNonce: 0 },
+    'window-project-5': { id: 'window-project-5', state: 'closed', zIndex: 20, bootNonce: 0 },
   });
 
   const [focusedId, setFocusedId] = useState(null);
@@ -269,10 +328,11 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
         
         {/* Column 1: Projects Group */}
         <div className="flex flex-col gap-6">
-          <DesktopIcon icon="code" label="PROJECT 1" onClick={() => openWindow('window-project-1')} />
-          <DesktopIcon icon="code" label="PROJECT 2" onClick={() => openWindow('window-project-2')} />
-          <DesktopIcon icon="code" label="PROJECT 3" onClick={() => openWindow('window-project-3')} />
-          <DesktopIcon icon="code" label="PROJECT 4" onClick={() => openWindow('window-project-4')} />
+          <DesktopIcon icon="code" label="LAUNDRYLINK" onClick={() => openWindow('window-project-1')} />
+          <DesktopIcon icon="code" label="TOOL.AI" onClick={() => openWindow('window-project-2')} />
+          <DesktopIcon icon="code" label="QFORM" onClick={() => openWindow('window-project-3')} />
+          <DesktopIcon icon="code" label="ROYALE TRACKER" onClick={() => openWindow('window-project-4')} />
+          <DesktopIcon icon="code" label="IMPETO" onClick={() => openWindow('window-project-5')} />
         </div>
 
         {/* Column 2: Apps Group */}
@@ -287,7 +347,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
       <div className="w-full h-full relative z-20 pointer-events-none">
 
         <AnimatePresence>
-          {[1, 2, 3, 4].map(num => {
+          {[1, 2, 3, 4, 5].map(num => {
             const pid = `window-project-${num}`;
             const pdata = PROJECTS[pid];
             return windows[pid]?.state === 'open' ? (
@@ -310,8 +370,8 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
             <WindowFrame
               key={`window-about-${windows['window-about'].bootNonce || 0}`}
               id="window-about"
-              className="w-[700px] h-auto max-h-[85vh] border border-slate-300 pointer-events-auto shadow-[0_20px_50px_rgba(0,0,0,0.5)] font-sans bg-white flex flex-col"
-              initLeft="calc(50% - 350px)" initTop="calc(50% - max-h-[85vh])"
+              className="w-[750px] h-auto max-h-[85vh] border border-slate-700 pointer-events-auto shadow-[0_20px_50px_rgba(0,0,0,0.7)] font-sans bg-slate-900 flex flex-col"
+              initLeft="calc(50% - 375px)" initTop="calc(50% - max-h-[85vh])"
               zIndex={windows['window-about'].zIndex}
               isFocused={focusedId === 'window-about'}
               onFocus={() => focusWindow('window-about')}
@@ -320,32 +380,36 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               constraintsRef={constraintsRef}
             >
               {/* Clean Title Bar */}
-              <div className="flex justify-between items-center px-4 py-2 bg-slate-100 border-b border-slate-300 cursor-grab active:cursor-grabbing w-full shrink-0">
-                <div className="flex items-center gap-2 text-slate-500">
+              <div className="flex justify-between items-center px-4 py-2 bg-slate-800/80 border-b border-slate-700 cursor-grab active:cursor-grabbing w-full shrink-0">
+                <div className="flex items-center gap-2 text-slate-400">
                   <span className="material-symbols-outlined text-[16px]">account_circle</span>
                   <span className="text-xs font-bold tracking-wider uppercase">Profile_Overview</span>
                 </div>
                 <div className="flex gap-2.5">
-                  <button className="w-[20px] h-[20px] bg-[#28c840] hover:bg-[#21ad37] transition-colors" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); minimizeWindow('window-about'); }}></button>
-                  <button className="w-[20px] h-[20px] bg-[#ff5f57] hover:bg-[#e14842] transition-colors" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); closeWindow('window-about'); }}></button>
+                  <button className="flex items-center justify-center w-[20px] h-[20px] bg-[#28c840] hover:bg-[#21ad37] transition-colors group" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); minimizeWindow('window-about'); }}>
+                    <span className="material-symbols-outlined text-[14px] text-black/60 opacity-0 group-hover:opacity-100 transition-opacity">remove</span>
+                  </button>
+                  <button className="flex items-center justify-center w-[20px] h-[20px] bg-[#ff5f57] hover:bg-[#e14842] transition-colors group" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); closeWindow('window-about'); }}>
+                    <span className="material-symbols-outlined text-[14px] text-black/60 opacity-0 group-hover:opacity-100 transition-opacity">close</span>
+                  </button>
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto overflow-x-hidden p-8 sm:p-10 text-slate-700 bg-white">
+              <div className="flex-1 overflow-y-auto overflow-x-hidden p-8 sm:p-10 text-slate-300 bg-slate-900">
 
                 {/* Header Section */}
-                <div className="flex items-center gap-6 mb-8 pb-8 border-b border-slate-100">
-                  <div className="w-24 h-24 bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100" style={{ borderRadius: '9999px', overflow: 'hidden' }}>
-                    <span className="material-symbols-outlined text-6xl opacity-80" style={{ marginTop: '10px' }}>face</span>
+                <div className="flex items-start gap-6 mb-8 pb-8 border-b border-slate-800">
+                  <div className="w-28 h-28 bg-emerald-900/30 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-800" style={{ borderRadius: '9999px', overflow: 'hidden' }}>
+                    <img src={avatarImage} alt="Avatar" className="w-full h-full object-cover" />
                   </div>
                   <div>
-                    <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight leading-none mb-2" style={{ textShadow: 'none' }}>Aaron Gabriel Lim</h1>
-                    <p className="text-base text-blue-600 font-bold mb-3 tracking-wide">BS Information Technology, 2nd Year @ UST</p>
+                    <h1 className="text-4xl font-extrabold text-slate-100 tracking-tight leading-none mb-2" style={{ textShadow: 'none' }}>Aaron Gabriel Lim</h1>
+                    <p className="text-base text-emerald-400 font-bold mb-3 tracking-wide">BS Information Technology, 2nd Year @ UST</p>
                     <div className="flex gap-3">
-                      <span className="inline-flex items-center gap-1 text-xs font-bold tracking-wide bg-slate-100 px-3 py-1.5 text-slate-600 uppercase">
+                      <span className="inline-flex items-center gap-1 text-xs font-bold tracking-wide bg-slate-800 px-3 py-1.5 text-slate-300 uppercase border border-slate-700 shadow-sm">
                         <span className="material-symbols-outlined text-[14px]">location_on</span> Metro Manila, PH
                       </span>
-                      <span className="inline-flex items-center gap-1 text-xs font-bold tracking-wide bg-emerald-50 text-emerald-700 px-3 py-1.5 border border-emerald-100 uppercase shadow-sm">
+                      <span className="inline-flex items-center gap-1 text-xs font-bold tracking-wide bg-emerald-900/30 text-emerald-400 px-3 py-1.5 border border-emerald-800/50 uppercase shadow-sm">
                         Open to Opportunities
                       </span>
                     </div>
@@ -357,54 +421,54 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
 
                   {/* Intro */}
                   <section>
-                    <p className="text-[15px] leading-relaxed text-slate-600 font-medium" style={{ textShadow: 'none' }}>
-                      I have a genuine passion for writing code — not just as a skill, but as something I genuinely can't put down. I build, I break things, I learn, and I build again. That drive is what makes me the kind of developer who shows up not because they have to, but because they <strong className="text-blue-600 font-bold px-1 rounded bg-blue-50">want to</strong>.
+                    <p className="text-[15px] leading-relaxed text-slate-300 font-medium" style={{ textShadow: 'none' }}>
+                      I have a genuine passion for writing code — not just as a skill, but as something I genuinely can't put down. I <strong className="text-emerald-400 font-bold px-1 rounded bg-emerald-900/30">build, I break things, I learn, and I build again</strong>. That drive is what makes me the kind of developer who shows up not because they have to, but because they <em className="text-emerald-400/90">want to</em>.
                     </p>
                   </section>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* What I Bring */}
                     <section>
-                      <h2 className="text-xs font-bold text-slate-400 tracking-widest uppercase mb-4" style={{ textShadow: 'none' }}>What I Bring</h2>
+                      <h2 className="text-xs font-bold text-slate-500 tracking-widest uppercase mb-4" style={{ textShadow: 'none' }}>What I Bring</h2>
                       <ul className="space-y-4">
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-blue-500 shrink-0 mt-0.5">bolt</span>
-                          <span className="text-sm text-slate-600 leading-relaxed"><strong className="text-slate-800">Fast learner</strong> — actively follow tech trends and continuously upskill outside the classroom.</span>
+                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">bolt</span>
+                          <span className="text-sm text-slate-400 leading-relaxed"><strong className="text-slate-200">Fast learner</strong> — actively follow tech trends and continuously upskill outside the classroom.</span>
                         </li>
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-blue-500 shrink-0 mt-0.5">local_fire_department</span>
-                          <span className="text-sm text-slate-600 leading-relaxed"><strong className="text-slate-800">Self-motivated</strong> — coding isn't a chore for me; it's how I spend my free time.</span>
+                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">local_fire_department</span>
+                          <span className="text-sm text-slate-400 leading-relaxed"><strong className="text-slate-200">Self-motivated</strong> — coding isn't a chore for me; it's how I spend my free time.</span>
                         </li>
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-blue-500 shrink-0 mt-0.5">trending_up</span>
-                          <span className="text-sm text-slate-600 leading-relaxed"><strong className="text-slate-800">Growth mindset</strong> — early in my career, but investing heavily in getting better every day.</span>
+                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">trending_up</span>
+                          <span className="text-sm text-slate-400 leading-relaxed"><strong className="text-slate-200">Growth mindset</strong> — early in my career, but investing heavily in getting better every day.</span>
                         </li>
                       </ul>
                     </section>
 
                     {/* Current Focus */}
                     <section>
-                      <h2 className="text-xs font-bold text-slate-400 tracking-widest uppercase mb-4" style={{ textShadow: 'none' }}>Currently Focused On</h2>
+                      <h2 className="text-xs font-bold text-slate-500 tracking-widest uppercase mb-4" style={{ textShadow: 'none' }}>Currently Focused On</h2>
                       <ul className="space-y-4">
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-emerald-500 shrink-0 mt-0.5">code</span>
-                          <span className="text-sm text-slate-600 leading-relaxed">Deepening my knowledge in software development via rigorous practical application.</span>
+                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">code</span>
+                          <span className="text-sm text-slate-400 leading-relaxed">Deepening my knowledge in software development via rigorous practical application.</span>
                         </li>
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-emerald-500 shrink-0 mt-0.5">explore</span>
-                          <span className="text-sm text-slate-600 leading-relaxed">Keeping up with the latest in tech — frameworks, tools, and industry shifts.</span>
+                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">explore</span>
+                          <span className="text-sm text-slate-400 leading-relaxed">Keeping up with the latest in tech — frameworks, tools, and industry shifts.</span>
                         </li>
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-emerald-500 shrink-0 mt-0.5">work</span>
-                          <span className="text-sm text-slate-600 leading-relaxed">Actively looking for internships and entry-level collaborations in a real-world setting.</span>
+                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">work</span>
+                          <span className="text-sm text-slate-400 leading-relaxed">Actively looking for internships and entry-level collaborations in a real-world setting.</span>
                         </li>
                       </ul>
                     </section>
                   </div>
 
                   {/* Closing Banner */}
-                  <section className="bg-slate-50 border border-slate-200 p-6 text-center shadow-inner" style={{ borderRadius: '8px' }}>
-                    <p className="text-[15px] font-semibold text-slate-700 tracking-wide" style={{ textShadow: 'none' }}>
+                  <section className="bg-slate-800/40 border-2 border-slate-700 px-6 py-10 text-center shadow-sm" style={{ borderRadius: '8px' }}>
+                    <p className="text-[16px] font-bold text-slate-200 tracking-wide" style={{ textShadow: 'none' }}>
                       "I'm just getting started — and that's exactly what makes this exciting."
                     </p>
                   </section>
@@ -417,7 +481,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
             <WindowFrame
               key={`window-terminal-${windows['window-terminal'].bootNonce || 0}`}
               id="window-terminal"
-              className="sys-log w-[400px] h-[460px] pointer-events-auto"
+              className="w-[400px] h-[460px] pointer-events-auto bg-[var(--color-background)] border border-[var(--color-surface-container-highest)] shadow-[0_0_30px_rgba(0,0,0,0.5)] font-mono"
               initLeft="calc(100% - 400px)" initTop="0px"
               zIndex={windows['window-terminal'].zIndex}
               isFocused={focusedId === 'window-terminal'}
@@ -426,17 +490,23 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               onMinimize={() => minimizeWindow('window-terminal')}
               constraintsRef={constraintsRef}
             >
-              <div className="window-titlebar" style={{ cursor: 'grab' }}>
-                <div className="title-left text-primary-container">
-                  <span className="material-symbols-outlined" style={{ fontSize: 14 }}>terminal</span>
-                  <span>aaron@arch:~</span>
+              <div className="flex justify-between items-center px-4 py-2 bg-[var(--color-surface-container-low)] border-b border-[var(--color-surface-container-highest)] cursor-grab active:cursor-grabbing window-titlebar">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[12px] text-[var(--color-primary-container)]">terminal</span>
+                  <span className="text-[10px] font-mono font-bold text-[var(--color-primary-container)] tracking-widest uppercase">AARON@ARCH:~</span>
                 </div>
-                <div className="title-controls">
-                  <button className="window-btn window-btn--minimize" onPointerDown={e => { e.stopPropagation(); minimizeWindow('window-terminal'); }}><span className="material-symbols-outlined">remove</span></button>
-                  <button className="window-btn window-btn--close" onPointerDown={e => { e.stopPropagation(); closeWindow('window-terminal'); }}><span className="material-symbols-outlined">close</span></button>
+                <div className="flex gap-1.5">
+                  <button className="flex items-center justify-center w-7 h-6 bg-[#28c840] hover:bg-[#21ad37] border border-[#28c840] hover:shadow-[0_0_10px_rgba(40,200,64,0.6)] transition-all" onPointerDown={(e) => { e.stopPropagation(); minimizeWindow('window-terminal'); }}>
+                    <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">remove</span>
+                  </button>
+                  <button className="flex items-center justify-center w-7 h-6 bg-[#ff5f57] hover:bg-[#e14842] border border-[#ff5f57] hover:shadow-[0_0_10px_rgba(255,95,87,0.6)] transition-all" onPointerDown={(e) => { e.stopPropagation(); closeWindow('window-terminal'); }}>
+                    <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">close</span>
+                  </button>
                 </div>
               </div>
-              <LinuxTerminalPanel />
+              <div className="px-6 pb-2 pt-2 h-[calc(100%-40px)] overflow-hidden flex flex-col justify-start items-start">
+                <LinuxTerminalPanel />
+              </div>
             </WindowFrame>
           )}
 
@@ -444,7 +514,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
             <WindowFrame
               key={`window-github-${windows['window-github'].bootNonce || 0}`}
               id="window-github"
-              className="sys-log w-[400px] h-[235px] pointer-events-auto overflow-hidden bg-[var(--color-surface-dim)]"
+              className="w-[400px] h-[235px] pointer-events-auto overflow-hidden bg-[var(--color-background)] border border-[var(--color-surface-container-highest)] shadow-[0_0_30px_rgba(0,0,0,0.5)] font-mono"
               initLeft="calc(100% - 400px)" initTop="480px"
               zIndex={windows['window-github'].zIndex}
               isFocused={focusedId === 'window-github'}
@@ -453,17 +523,23 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               onMinimize={() => minimizeWindow('window-github')}
               constraintsRef={constraintsRef}
             >
-              <div className="window-titlebar" style={{ cursor: 'grab' }}>
-                <div className="title-left text-primary-container">
-                  <span className="material-symbols-outlined" style={{ fontSize: 14 }}>grid_on</span>
-                  <span>contributions.view</span>
+              <div className="flex justify-between items-center px-4 py-2 bg-[var(--color-surface-container-low)] border-b border-[var(--color-surface-container-highest)] cursor-grab active:cursor-grabbing window-titlebar">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[12px] text-[var(--color-primary-container)]">grid_on</span>
+                  <span className="text-[10px] font-mono font-bold text-[var(--color-primary-container)] tracking-widest uppercase">CONTRIBUTIONS.VIEW</span>
                 </div>
-                <div className="title-controls">
-                  <button className="window-btn window-btn--minimize" onPointerDown={e => { e.stopPropagation(); minimizeWindow('window-github'); }}><span className="material-symbols-outlined">remove</span></button>
-                  <button className="window-btn window-btn--close" onPointerDown={e => { e.stopPropagation(); closeWindow('window-github'); }}><span className="material-symbols-outlined">close</span></button>
+                <div className="flex gap-1.5">
+                  <button className="flex items-center justify-center w-7 h-6 bg-[#28c840] hover:bg-[#21ad37] border border-[#28c840] hover:shadow-[0_0_10px_rgba(40,200,64,0.6)] transition-all" onPointerDown={(e) => { e.stopPropagation(); minimizeWindow('window-github'); }}>
+                    <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">remove</span>
+                  </button>
+                  <button className="flex items-center justify-center w-7 h-6 bg-[#ff5f57] hover:bg-[#e14842] border border-[#ff5f57] hover:shadow-[0_0_10px_rgba(255,95,87,0.6)] transition-all" onPointerDown={(e) => { e.stopPropagation(); closeWindow('window-github'); }}>
+                    <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">close</span>
+                  </button>
                 </div>
               </div>
-              <GitHubPanel />
+              <div className="px-6 pb-6 pt-2 h-[calc(100%-40px)] overflow-hidden flex flex-col justify-start">
+                <GitHubPanel />
+              </div>
             </WindowFrame>
           )}
 
@@ -612,7 +688,7 @@ function ProjectWindow({ winId, data, winState, focusedId, focusWindow, closeWin
     <WindowFrame
       key={winId}
       id={winId}
-      className="w-[750px] h-[auto] border border-slate-300 pointer-events-auto shadow-[0_20px_50px_rgba(0,0,0,0.5)] font-sans"
+      className="w-[750px] h-[auto] border border-[#2b1822] pointer-events-auto shadow-[0_0_40px_rgba(0,0,0,0.8)] font-mono bg-[#110C11]"
       initLeft="calc(50% - 375px)" initTop="calc(50% - max-h-[85vh])"
       zIndex={winState.zIndex}
       isFocused={focusedId === winId}
@@ -621,79 +697,83 @@ function ProjectWindow({ winId, data, winState, focusedId, focusWindow, closeWin
       onMinimize={() => minimizeWindow(winId)}
       constraintsRef={constraintsRef}
     >
-      <div className="flex justify-between items-center px-4 py-2 bg-slate-100 border-b border-slate-300 cursor-grab active:cursor-grabbing window-titlebar">
-        <span className="text-xs font-bold text-slate-500 tracking-wider">PROJECT_VIEWER</span>
-        <div className="flex gap-2.5">
-          <button className="w-[20px] h-[20px] bg-[#28c840] hover:bg-[#21ad37] transition-colors" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); minimizeWindow(winId); }}></button>
-          <button className="w-[20px] h-[20px] bg-[#ff5f57] hover:bg-[#e14842] transition-colors" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); closeWindow(winId); }}></button>
+      <div className="flex justify-between items-center px-4 py-2 bg-[#1a1215] border-b border-[#2b1822] cursor-grab active:cursor-grabbing window-titlebar">
+        <span className="text-[10px] font-bold text-emerald-500 tracking-widest">VIEWER_NODE_PRIMARY</span>
+        <div className="flex gap-1.5">
+          {/* Hacker minimalist buttons */}
+          <button className="flex items-center justify-center w-7 h-6 bg-[#28c840] hover:bg-[#21ad37] border border-[#28c840] hover:shadow-[0_0_10px_rgba(40,200,64,0.6)] transition-all" onClick={(e) => { e.stopPropagation(); minimizeWindow(winId); }}>
+            <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">remove</span>
+          </button>
+          <button className="flex items-center justify-center w-7 h-6 bg-[#ff5f57] hover:bg-[#e14842] border border-[#ff5f57] hover:shadow-[0_0_10px_rgba(255,95,87,0.6)] transition-all" onClick={(e) => { e.stopPropagation(); closeWindow(winId); }}>
+            <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">close</span>
+          </button>
         </div>
       </div>
 
-      <div className="p-10 flex flex-col gap-8 bg-white">
+      <div className="p-10 flex flex-col gap-8 bg-[#110C11] text-slate-400">
 
         <div className="flex flex-col gap-4">
-          <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight leading-none" style={{ textShadow: 'none' }}>
+          <h1 className="text-5xl font-mono font-bold text-emerald-400 tracking-widest uppercase drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]">
             {data.headline}
           </h1>
           <div>
-            <span className="inline-block px-3 py-1.5 text-xs font-bold tracking-wide text-blue-700 bg-blue-50 border border-blue-200 shadow-sm" style={{ textShadow: 'none' }}>
+            <span className="inline-block px-3 py-1 text-[11px] font-mono font-bold tracking-widest text-orange-500 bg-orange-950/40 border border-orange-800/50 uppercase">
               STATUS: {data.status}
             </span>
           </div>
         </div>
 
         <div className="grid grid-cols-[1.1fr_1fr] gap-10">
-          <div className="flex flex-col gap-6 text-[15px] font-medium text-slate-600 leading-relaxed" style={{ textShadow: 'none' }}>
+          <div className="flex flex-col gap-6 text-[14px] font-mono text-slate-400 leading-relaxed">
             <p>{data.desc1}</p>
             <p>{data.desc2}</p>
           </div>
 
-          {/* Interactive Gallery Trigger Placeholder */}
+          {/* Interactive Gallery Trigger */}
           <div
             onClick={openGallery}
-            className="w-full group cursor-pointer flex items-center justify-center bg-slate-50 border border-slate-200 min-h-[220px] relative shadow-inner overflow-hidden"
+            className="w-full group cursor-pointer flex items-center justify-center bg-[#0a0608] border border-[#2b1822] min-h-[220px] relative shadow-inner overflow-hidden"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-slate-100 opacity-50 pointer-events-none group-hover:scale-105 transition-transform duration-500"></div>
+            {data.previewImg ? (
+              <img src={data.previewImg} alt="Project Preview" className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500 pointer-events-none mix-blend-luminosity" />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-[#1a1215] to-[#110C11] opacity-50 pointer-events-none group-hover:scale-105 transition-transform duration-500"></div>
+            )}
+            
+            {/* Hacker terminal green tint overlay */}
+            <div className="absolute inset-0 bg-emerald-900/20 mix-blend-color pointer-events-none"></div>
+            <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px] pointer-events-none transition-all group-hover:bg-transparent group-hover:backdrop-blur-0"></div>
 
-            <div className="relative z-10 flex flex-col items-center gap-3">
-              <span className="material-symbols-outlined text-[32px] text-slate-400 group-hover:text-blue-500 transition-colors">photo_library</span>
-              <span className="text-sm font-semibold tracking-widest text-slate-500 group-hover:text-blue-600 transition-colors px-4 text-center" style={{ textShadow: 'none' }}>
-                [ {data.imgText} Media ]
-              </span>
-            </div>
-
-            {/* Hover overlay hint */}
-            <div className="absolute inset-0 bg-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-            <div className="absolute bottom-4 right-4 bg-blue-600 text-white px-5 py-2 font-bold text-xs flex items-center gap-2 shadow-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all pointer-events-none">
+            <div className="absolute bottom-4 mx-auto bg-[#110c11]/90 text-emerald-400 border border-emerald-800/80 px-5 py-2 font-mono font-bold text-xs flex items-center gap-2 shadow-[0_0_10px_rgba(16,185,129,0.2)] group-hover:shadow-[0_0_15px_rgba(52,211,153,0.6)] group-hover:bg-emerald-950/80 transition-all pointer-events-none backdrop-blur-md">
               <span className="material-symbols-outlined text-[14px]">fullscreen</span>
-              VIEW GALLERY
+              VIEW_GALLERY
             </div>
           </div>
         </div>
 
         <div>
-          <h3 className="text-xs font-bold text-slate-400 tracking-widest mb-4 uppercase" style={{ textShadow: 'none' }}>Technologies Used</h3>
-          <div className="flex flex-wrap gap-2">
+          <h3 className="text-[11px] font-mono font-bold text-orange-500 tracking-widest mb-4 uppercase">TECHNOLOGIES_UTILIZED:</h3>
+          <div className="flex flex-wrap gap-3">
             {data.tags.map((tag, i) => (
-              <span key={i} className="px-3 py-1.5 text-xs font-bold tracking-wide text-slate-600 bg-slate-100 border border-slate-200 hover:bg-slate-200 transition-colors cursor-default shadow-sm" style={{ textShadow: 'none' }}>
+              <span key={i} className="px-3 py-1.5 text-[11px] font-mono font-bold tracking-widest text-emerald-500 bg-emerald-950/20 border border-emerald-900/50 uppercase">
                 {tag}
               </span>
             ))}
           </div>
         </div>
 
-        <div className="flex justify-between items-end mt-4 pt-8 border-t border-slate-100">
+        <div className="flex justify-between items-end mt-4 pt-8 border-t border-[#2b1822]">
           <div className="flex gap-4">
-            <button className="px-6 py-3 font-bold text-sm bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-md flex items-center gap-2">
-              VIEW SOURCE
+            <button className="px-6 py-3 font-mono font-bold text-xs bg-emerald-500 text-black hover:bg-emerald-400 hover:shadow-[0_0_15px_rgba(16,185,129,0.6)] transition-all flex items-center gap-2 uppercase tracking-wide">
+              <span className="tracking-tighter font-extrabold">&lt;&gt;</span> ACCESS_SOURCE_CODE
             </button>
-            <button className="px-6 py-3 font-bold text-sm bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 transition-colors shadow-sm flex items-center gap-2">
-              LIVE DEPLOYMENT
+            <button className="px-6 py-3 font-mono font-bold text-xs bg-transparent text-emerald-500 border border-[#331C24] hover:bg-[#1a1215] transition-colors flex items-center gap-2 uppercase tracking-wide">
+              <span className="material-symbols-outlined text-[16px]">public</span> VIEW_LIVE_DEPLOYMENT
             </button>
           </div>
-          <div className="flex flex-col items-end text-[10px] text-slate-400 font-medium tracking-wide">
-            <span className="uppercase">Last Update</span>
-            <span className="font-mono mt-0.5">{data.lastPush}</span>
+          <div className="flex flex-col items-end text-[10px] font-mono text-emerald-700/60 tracking-wider">
+            <span className="uppercase mb-1">LAST_PUSH:</span>
+            <span>{data.lastPush}</span>
           </div>
         </div>
 
@@ -705,7 +785,7 @@ function ProjectWindow({ winId, data, winState, focusedId, focusWindow, closeWin
 function GalleryLightbox({ pid, onClose }) {
   const data = PROJECTS[pid];
   const [idx, setIdx] = useState(0);
-  const max = 3;
+  const max = data.images ? data.images.length : 3;
 
   return (
     <motion.div
@@ -726,8 +806,12 @@ function GalleryLightbox({ pid, onClose }) {
           </button>
         </div>
 
-        <div className="flex-1 flex items-center justify-center relative p-8">
-          <button className="absolute left-4 sm:left-8 text-slate-500 hover:text-white transition-colors z-20" onClick={() => setIdx(i => Math.max(0, i - 1))}>
+        <div className="flex-1 flex items-center justify-center relative p-8 text-white">
+          <button 
+            className={`absolute left-4 sm:left-8 z-20 ${idx === 0 ? 'text-slate-700 cursor-not-allowed' : 'text-slate-500 hover:text-white transition-colors'}`} 
+            disabled={idx === 0}
+            onClick={() => setIdx(i => Math.max(0, i - 1))}
+          >
             <span className="material-symbols-outlined text-[48px]">chevron_left</span>
           </button>
 
@@ -735,15 +819,23 @@ function GalleryLightbox({ pid, onClose }) {
             key={`${pid}-${idx}`}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="w-full max-w-3xl aspect-[16/9] flex items-center justify-center bg-slate-800 border border-slate-700 shadow-lg relative rounded"
+            className="w-full max-w-4xl aspect-[16/9] flex items-center justify-center bg-slate-800 border border-slate-700 shadow-lg relative rounded overflow-hidden"
           >
-            <span className="material-symbols-outlined text-slate-600 text-[120px]">image</span>
-            <span className="absolute bottom-4 right-4 bg-slate-900/80 px-3 py-1.5 text-slate-400 text-xs font-mono font-bold rounded">
+            {data.images && data.images[idx] ? (
+              <img src={data.images[idx]} alt={`${data.headline} screenshot ${idx + 1}`} className="w-full h-full object-contain" />
+            ) : (
+              <span className="material-symbols-outlined text-slate-600 text-[120px]">image</span>
+            )}
+            <span className="absolute bottom-4 right-4 bg-slate-900/80 px-3 py-1.5 text-slate-400 text-xs font-mono font-bold rounded shadow-md border border-slate-700">
               {data.imgText}_FRAME_{idx + 1}
             </span>
           </motion.div>
 
-          <button className="absolute right-4 sm:right-8 text-slate-500 hover:text-white transition-colors z-20" onClick={() => setIdx(i => Math.min(max - 1, i + 1))}>
+          <button 
+            className={`absolute right-4 sm:right-8 z-20 ${idx === max - 1 ? 'text-slate-700 cursor-not-allowed' : 'text-slate-500 hover:text-white transition-colors'}`} 
+            disabled={idx === max - 1}
+            onClick={() => setIdx(i => Math.min(max - 1, i + 1))}
+          >
             <span className="material-symbols-outlined text-[48px]">chevron_right</span>
           </button>
         </div>
@@ -762,39 +854,37 @@ const SYSTEM_SKILLS = [
 
 function LinuxTerminalPanel({ compact = false }) {
   return (
-    <div className="window-content scrollable" style={{ padding: compact ? 12 : 16 }}>
-      <div className="font-mono text-[#8bff9f] leading-snug" style={{ fontSize: compact ? 11 : 13 }}>
-        <div className="flex items-center justify-between mb-3 uppercase tracking-wider text-[#6bdf7e]">
-          <span>profile-shell v4.2</span>
-          <span className="flex items-center gap-2"><span className="inline-block w-2 h-2 bg-[var(--color-primary-container)] animate-pulse"></span>online</span>
-        </div>
+    <div className="w-full font-mono text-emerald-500 leading-snug flex flex-col justify-start" style={{ fontSize: compact ? 10 : 11 }}>
+      <div className="flex items-center justify-between mb-3 uppercase tracking-widest text-[#37e865] font-bold">
+        <span>PROFILE-SHELL V4.2</span>
+        <span className="flex items-center gap-2"><span className="inline-block w-2 h-2 bg-[#37e865] animate-pulse"></span>ONLINE</span>
+      </div>
 
-        <pre className="whitespace-pre overflow-x-auto text-[#97ffaa] mb-3 pb-2 border-b border-[var(--color-primary-container)]/30 opacity-90" style={{ fontSize: compact ? 9 : 12, lineHeight: compact ? 1.1 : 1.15 }} aria-label="ASCII art logo">
+      <pre className="whitespace-pre overflow-hidden text-emerald-400 mb-4 pb-4 border-b border-emerald-900/50 opacity-90 tracking-tighter" style={{ fontSize: compact ? 8 : 9, lineHeight: compact ? 1.0 : 1.1 }} aria-label="ASCII art logo">
 {TERMINAL_ASCII}
-        </pre>
+      </pre>
 
-        <div className="mb-3 pb-3 border-b border-[var(--color-primary-container)]/30">
-          <div className="mb-2 text-[#6bdf7e]">$ skills --summary</div>
-          <div className="flex flex-col gap-2">
-            {SYSTEM_SKILLS.map((skill) => {
-              return (
-                <div key={skill.name} className="flex items-center gap-3">
-                  <span className="w-24 shrink-0">{skill.name}</span>
-                  <div className="flex-1 h-3 border border-[var(--color-primary-container)]/40 bg-[var(--color-primary-container)]/10 relative">
-                    <div className="absolute left-0 top-0 h-full bg-[#83ff8f]" style={{ width: `${skill.val}%` }}></div>
-                  </div>
-                  <span className="w-11 text-right">{skill.val}%</span>
+      <div className="mb-4 pb-4 border-b border-emerald-900/50 w-full">
+        <div className="mb-2.5 text-[#37e865] font-bold tracking-widest">$ SKILLS --SUMMARY</div>
+        <div className="flex flex-col gap-1.5 w-full pr-2">
+          {SYSTEM_SKILLS.map((skill) => {
+            return (
+              <div key={skill.name} className="flex items-center gap-4 text-emerald-50 font-medium">
+                <span className="w-24 shrink-0">{skill.name}</span>
+                <div className="flex-1 h-2.5 border border-emerald-900/50 bg-emerald-950/30 relative">
+                  <div className="absolute left-0 top-0 h-full bg-[#83ff8f]" style={{ width: `${skill.val}%` }}></div>
                 </div>
-              );
-            })}
-          </div>
+                <span className="w-10 text-right">{skill.val}%</span>
+              </div>
+            );
+          })}
         </div>
+      </div>
 
-        <div className="space-y-1 text-[#6bdf7e]">
-          <div>$ whoami</div>
-          <div className="text-[#96eca6]">Building polished interfaces, robust APIs, and practical AI features.</div>
-          <div>$ _</div>
-        </div>
+      <div className="space-y-1.5 text-emerald-100 font-medium">
+        <div className="text-[#37e865] font-bold tracking-widest">$ WHOAMI</div>
+        <div className="leading-relaxed">Building polished interfaces, robust APIs, and practical AI features.</div>
+        <div className="text-[#37e865]">$ <span className="animate-pulse">_</span></div>
       </div>
     </div>
   );
@@ -814,17 +904,16 @@ function GitHubPanel() {
   };
 
   const levelStyles = [
-    { backgroundColor: 'rgba(107, 223, 126, 0.05)', borderColor: 'rgba(107, 223, 126, 0.2)' },
-    { backgroundColor: 'rgba(107, 223, 126, 0.35)', borderColor: 'rgba(107, 223, 126, 0.35)' },
-    { backgroundColor: 'rgba(107, 223, 126, 0.65)', borderColor: 'rgba(107, 223, 126, 0.65)' },
-    { backgroundColor: '#6bdf7e', borderColor: '#6bdf7e' },
-    { backgroundColor: '#97ffaa', borderColor: '#97ffaa', boxShadow: '0 0 5px rgba(151,255,170,0.5)' },
+    { backgroundColor: 'rgba(16, 185, 129, 0.05)', borderColor: 'rgba(16, 185, 129, 0.2)' },
+    { backgroundColor: 'rgba(16, 185, 129, 0.35)', borderColor: 'rgba(16, 185, 129, 0.35)' },
+    { backgroundColor: 'rgba(16, 185, 129, 0.65)', borderColor: 'rgba(16, 185, 129, 0.65)' },
+    { backgroundColor: '#2dd4bf', borderColor: '#2dd4bf' },
+    { backgroundColor: '#6ee7b7', borderColor: '#6ee7b7', boxShadow: '0 0 5px rgba(110,231,183,0.5)' },
   ];
 
   useEffect(() => {
     const fetchContributions = async () => {
       try {
-        // You'll need to create a .env file with VITE_GITHUB_TOKEN=your_github_pat
         const token = import.meta.env.VITE_GITHUB_TOKEN;
         if (!token) {
           throw new Error('VITE_GITHUB_TOKEN is missing');
@@ -890,23 +979,23 @@ function GitHubPanel() {
   }, []);
 
   return (
-    <div className="window-content p-4 h-full font-mono text-[#8bff9f] leading-snug">
-      <div className="flex items-center justify-between mb-3 uppercase tracking-wider text-[#6bdf7e] text-[13px]">
-        <span>$ fetch github.com/{loading ? '...' : githubData.username}</span>
+    <div className="w-full font-mono text-emerald-500 leading-snug flex flex-col justify-start">
+      <div className="flex items-center justify-between mb-4 font-bold uppercase tracking-widest text-[#37e865] text-[10px]">
+        <span>$ FETCH GITHUB.COM/{loading ? '...' : githubData.username}</span>
         <span className="flex items-center gap-2">
-          <span className={`inline-block w-2 h-2 ${error ? 'bg-red-500' : 'bg-[var(--color-primary-container)] animate-pulse'}`}></span>
+          <span className={`inline-block w-2 h-2 ${error ? 'bg-red-500' : 'bg-[#37e865] animate-pulse'}`}></span>
           {error ? 'OFFLINE' : 'ONLINE'}
         </span>
       </div>
 
       {loading || error ? (
-        <div className="text-[var(--color-primary-container)] text-xs h-[140px] flex items-center justify-center w-full border border-[var(--color-primary-container)]/30 bg-[var(--color-primary-container)]/5 uppercase">
+        <div className="text-[#37e865] font-bold tracking-widest text-[9px] h-[140px] flex items-center justify-center w-full border border-emerald-900/50 bg-emerald-950/20 uppercase">
           {error ? 'ERR: NO_TOKEN_DETECTED' : 'ESTABLISHING_LINK...'}
         </div>
       ) : (
         <>
-          <div className="flex gap-[4px] border border-[var(--color-primary-container)]/30 p-[8px] w-full mb-3 bg-[var(--color-primary-container)]/5">
-            <div className="w-[18px] text-[8px] text-[#6bdf7e]/80 select-none shrink-0 flex flex-col justify-between items-end pr-[2px] uppercase">
+          <div className="flex gap-[4px] border border-emerald-900/50 p-[8px] w-full mb-3 bg-emerald-950/20">
+            <div className="w-[18px] text-[7px] font-bold tracking-widest text-emerald-700 select-none shrink-0 flex flex-col justify-between items-end pr-[2px] uppercase">
               <div className="h-[10px] leading-[10px]">Sun</div>
               <div className="h-[10px] leading-[10px]">Mon</div>
               <div className="h-[10px] leading-[10px]">Tue</div>
@@ -922,7 +1011,7 @@ function GitHubPanel() {
                   {week.map((level, dayIdx) => (
                     <div
                       key={`${weekIdx}-${dayIdx}`}
-                      className="w-[10px] h-[10px] border"
+                      className="w-[9px] h-[9px] border"
                       style={levelStyles[level]}
                     ></div>
                   ))}
@@ -931,13 +1020,13 @@ function GitHubPanel() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between mb-[1.875rem]">
-            <div className="flex items-center gap-[6px] text-[#6bdf7e] uppercase text-[9px] tracking-widest">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-[6px] text-emerald-700 font-bold uppercase text-[7px] tracking-widest">
               <span>Min</span>
               {levelStyles.map((style, idx) => (
                 <span
                   key={`legend-${idx}`}
-                  className="w-[10px] h-[10px] border"
+                  className="w-[9px] h-[9px] border"
                   style={style}
                 ></span>
               ))}
