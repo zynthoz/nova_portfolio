@@ -7,36 +7,39 @@
 
 :root {
   /* ── Color Palette ── */
-  --color-background:               #1f0e18;
-  --color-surface:                  #1f0e18;
-  --color-surface-dim:              #1f0e18;
-  --color-surface-bright:           #48333e;
-  --color-surface-container-lowest: #190913;
-  --color-surface-container-low:    #281620;
-  --color-surface-container:        #2c1a24;
-  --color-surface-container-high:   #37242f;
-  --color-surface-container-highest:#432f3a;
-  --color-surface-variant:          #432f3a;
-  --color-surface-tint:             #00e639;
+  /* Background lightened from #1f0e18 to #24141e to reduce contrast fatigue and halation */
+  --color-background:               #24141e;
+  --color-surface:                  #24141e;
+  --color-surface-dim:              #24141e;
+  --color-surface-bright:           #4c3743;
+  --color-surface-container-lowest: #1d0e17;
+  --color-surface-container-low:    #2d1b26;
+  --color-surface-container:        #321f2b;
+  --color-surface-container-high:   #3e2a36;
+  --color-surface-container-highest:#4b3542;
+  --color-surface-variant:          #4b3542;
+  --color-surface-tint:             #1ed449;
 
-  --color-primary:                  #ebffe2;
-  --color-on-primary:               #003907;
-  --color-primary-container:        #00ff41;
-  --color-on-primary-container:     #007117;
-  --color-primary-fixed:            #72ff70;
-  --color-primary-fixed-dim:        #00e639;
-  --color-on-primary-fixed:         #002203;
-  --color-on-primary-fixed-variant: #00530e;
-  --color-inverse-primary:          #006e16;
+  --color-primary:                  #e6ffde;
+  --color-on-primary:               #003810;
+  /* Neon green softened to #2fe05e to mitigate eye strain/halation */
+  --color-primary-container:        #2fe05e;
+  --color-on-primary-container:     #006b19;
+  --color-primary-fixed:            #83ff8f;
+  --color-primary-fixed-dim:        #37e865;
+  --color-on-primary-fixed:         #002003;
+  --color-on-primary-fixed-variant: #004d0c;
+  --color-inverse-primary:          #006a13;
 
-  --color-secondary:                #ffd393;
-  --color-on-secondary:             #432c00;
-  --color-secondary-container:      #fdaf00;
-  --color-on-secondary-container:   #694600;
-  --color-secondary-fixed:          #ffddaf;
-  --color-secondary-fixed-dim:      #ffba43;
-  --color-on-secondary-fixed:       #281800;
-  --color-on-secondary-fixed-variant:#614000;
+  /* Replaced low-contrast beige with bright, high-contrast colors matching the primary intent for active elements */
+  --color-secondary:                #83ff8f;
+  --color-on-secondary:             #00330d;
+  --color-secondary-container:      #37e865;
+  --color-on-secondary-container:   #002203;
+  --color-secondary-fixed:          #e6ffde;
+  --color-secondary-fixed-dim:      #83ff8f;
+  --color-on-secondary-fixed:       #001804;
+  --color-on-secondary-fixed-variant:#00400b;
 
   --color-tertiary:                 #edffe2;
   --color-on-tertiary:              #003a00;
@@ -119,7 +122,7 @@
   --transition-slow:   400ms ease;
 
   /* ── Layout ── */
-  --header-height:  32px;
+  --header-height:  40px;
   --taskbar-height: 48px;
   --sidebar-width:  64px;
 }

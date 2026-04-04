@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './index.css'; // if any
 
 const TERMINAL_ASCII = [
-  '                                     __         ',
-  '  ____ _____ __________  ____   ____/ /__ _   __',
-  ' / __ `/ __ `/ ___/ __ \\/ __ \\ / __  / _ \\ | / /',
-  '/ /_/ / /_/ / /  / /_/ / / / // /_/ /  __/ |/ / ',
-  '\\__,_/\\__,_/_/   \\____/_/ /_(_)__,_/\\___/|___/  ',
+  '                                      __         ',
+  '  ____ _____ __________  ____    ____/ /__ _   __',
+  ' / __ `/ __ `/ ___/ __ \\/ __ \\  / __  / _ \\ | / /',
+  '/ /_/ / /_/ / /  / /_/ / / / / / /_/ /  __/ |/ / ',
+  '\\__,_/\\__,_/_/   \\____/_/ /_/⬤\\__,_/\\___/|___/  ',
   '                                                '
 ].join('\n');
 
@@ -102,12 +102,13 @@ function Clock() {
 
 export default function App() {
   const [windows, setWindows] = useState({
-    'window-about': { id: 'window-about', state: 'open', zIndex: 20 },
-    'window-terminal': { id: 'window-terminal', state: 'open', zIndex: 20 },
-    'window-project-1': { id: 'window-project-1', state: 'closed', zIndex: 20 },
-    'window-project-2': { id: 'window-project-2', state: 'closed', zIndex: 20 },
-    'window-project-3': { id: 'window-project-3', state: 'closed', zIndex: 20 },
-    'window-project-4': { id: 'window-project-4', state: 'closed', zIndex: 20 },
+    'window-about': { id: 'window-about', state: 'open', zIndex: 20, bootNonce: 0 },
+    'window-terminal': { id: 'window-terminal', state: 'open', zIndex: 20, bootNonce: 0 },
+    'window-github': { id: 'window-github', state: 'open', zIndex: 20, bootNonce: 0 },
+    'window-project-1': { id: 'window-project-1', state: 'closed', zIndex: 20, bootNonce: 0 },
+    'window-project-2': { id: 'window-project-2', state: 'closed', zIndex: 20, bootNonce: 0 },
+    'window-project-3': { id: 'window-project-3', state: 'closed', zIndex: 20, bootNonce: 0 },
+    'window-project-4': { id: 'window-project-4', state: 'closed', zIndex: 20, bootNonce: 0 },
   });
 
   const [focusedId, setFocusedId] = useState(null);
@@ -115,11 +116,24 @@ export default function App() {
   const [activeGallery, setActiveGallery] = useState(null);
 
   const openWindow = (id) => {
-    setZTop(z => z + 1);
-    setWindows(prev => ({
-      ...prev,
-      [id]: { ...prev[id], state: 'open', zIndex: zTop + 1 }
-    }));
+    setZTop((currentZ) => {
+      const nextZ = currentZ + 1;
+      setWindows((prev) => {
+        const existing = prev[id] || { id, state: 'closed', zIndex: 20, bootNonce: 0 };
+        const reopenFromClosed = existing.state === 'closed';
+
+        return {
+          ...prev,
+          [id]: {
+            ...existing,
+            state: 'open',
+            zIndex: nextZ,
+            bootNonce: reopenFromClosed ? (existing.bootNonce || 0) + 1 : (existing.bootNonce || 0),
+          },
+        };
+      });
+      return nextZ;
+    });
     setFocusedId(id);
   };
 
@@ -171,20 +185,8 @@ export default function App() {
 
   return (
     <>
-      {/* TOP BAR */}
-      <header className="topbar">
-        <div className="topbar-brand">
-          <span className="material-symbols-outlined">monitor_heart</span>
-          <span className="truncate">PHOSPHOR_OS_V.1.0.4</span>
-        </div>
-        <div className="topbar-right">
-          <span className="topbar-session hidden sm:inline">SESSION_ACTIVE: OPERATOR_01</span>
-          <span className="topbar-session sm:hidden">OP_01</span>
-        </div>
-      </header>
-
       {/* MAIN CANVAS */}
-      <main className="fixed inset-0 pt-8 pb-12 overflow-hidden bg-vignette" id="main-canvas">
+      <main className="fixed inset-0 pb-12 overflow-hidden bg-vignette" id="main-canvas">
         <DesktopLayout
           windows={windows}
           focusedId={focusedId}
@@ -209,13 +211,26 @@ export default function App() {
 
       {/* TASKBAR */}
       <nav className="taskbar" aria-label="Taskbar">
-        <div className="taskbar-left">
+        <div className="taskbar-left gap-2 sm:gap-4 flex items-center">
           <button className="taskbar-btn active" id="btn-start" aria-label="Start menu">
             <span className="material-symbols-outlined">grid_view</span>
           </button>
 
           <TaskBarButton id="window-about" icon="person" label="ABOUT" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-about')} />
           <TaskBarButton id="window-terminal" icon="terminal" label="TERMINAL" mobileLabel="TERM" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-terminal')} />
+          <TaskBarButton id="window-github" icon="query_stats" label="STATS" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-github')} />
+
+          <div className="hidden sm:block w-px h-6 bg-[var(--color-surface-bright)] mx-1"></div>
+
+          <button className="taskbar-btn hidden sm:flex items-center gap-2 px-3 hover:bg-[var(--color-surface-bright)] transition-colors rounded-none outline-none" onClick={() => openExternalApp('/cv.pdf')}>
+            <span className="material-symbols-outlined text-[18px]">picture_as_pdf</span><span className="text-[14px] font-bold tracking-wide">CV</span>
+          </button>
+          <button className="taskbar-btn hidden sm:flex items-center gap-2 px-3 hover:bg-[var(--color-surface-bright)] transition-colors rounded-none outline-none" onClick={() => openExternalApp('https://github.com')}>
+            <span className="material-symbols-outlined text-[18px]">link</span><span className="text-[14px] font-bold tracking-wide">GITHUB</span>
+          </button>
+          <button className="taskbar-btn hidden sm:flex items-center gap-2 px-3 hover:bg-[var(--color-surface-bright)] transition-colors rounded-none outline-none" onClick={() => openExternalApp('https://www.linkedin.com')}>
+            <span className="material-symbols-outlined text-[18px]">work</span><span className="text-[14px] font-bold tracking-wide">LINKEDIN</span>
+          </button>
         </div>
         <div className="taskbar-clock">
           <Clock />
@@ -227,14 +242,17 @@ export default function App() {
 
 function TaskBarButton({ id, icon, label, mobileLabel, windows, focusedId, onClick }) {
   const win = windows[id] || { state: 'closed' };
+  const isRunning = win.state === 'open' || win.state === 'minimized';
+  const isFocused = win.state === 'open' && focusedId === id;
   let cls = 'taskbar-btn';
-  if (win.state === 'open' && focusedId === id) cls += ' active';
-  else if (win.state === 'minimized') cls += ' taskbar-minimized';
 
   return (
     <button className={cls} onClick={onClick} aria-label={label}>
-      <span className="material-symbols-outlined">{icon}</span>
-      <span className="hidden xs:inline sm:inline">
+      <span className="taskbar-icon-wrap">
+        <span className="material-symbols-outlined text-[18px] sm:text-[20px]">{icon}</span>
+        {isRunning && <span className={`taskbar-indicator ${isFocused ? 'taskbar-indicator-focused' : ''}`}></span>}
+      </span>
+      <span className="hidden xs:inline sm:inline text-[14px] font-bold tracking-wide">
         {mobileLabel ? <>{mobileLabel}<span className="hidden sm:inline">{label.replace(mobileLabel, '')}</span></> : label}
       </span>
     </button>
@@ -246,25 +264,23 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
 
   return (
     <div className="hidden sm:flex h-full p-8 relative" ref={constraintsRef}>
-      {/* Projects Row (Top) */}
-      <nav className="absolute left-8 top-8 flex flex-row flex-wrap gap-8 z-10" aria-label="Projects">
-        <DesktopIcon icon="code" label="PROJECT 1" onClick={() => openWindow('window-project-1')} />
-        <DesktopIcon icon="code" label="PROJECT 2" onClick={() => openWindow('window-project-2')} />
-        <DesktopIcon icon="code" label="PROJECT 3" onClick={() => openWindow('window-project-3')} />
-        <DesktopIcon icon="code" label="PROJECT 4" onClick={() => openWindow('window-project-4')} />
-      </nav>
+      {/* Desktop Main Icon Grid */}
+      <nav className="absolute left-8 top-8 bottom-24 flex gap-12 z-10 py-2" aria-label="Desktop icons">
+        
+        {/* Column 1: Projects Group */}
+        <div className="flex flex-col gap-6">
+          <DesktopIcon icon="code" label="PROJECT 1" onClick={() => openWindow('window-project-1')} />
+          <DesktopIcon icon="code" label="PROJECT 2" onClick={() => openWindow('window-project-2')} />
+          <DesktopIcon icon="code" label="PROJECT 3" onClick={() => openWindow('window-project-3')} />
+          <DesktopIcon icon="code" label="PROJECT 4" onClick={() => openWindow('window-project-4')} />
+        </div>
 
-      {/* Quick Apps Row (Below Projects) */}
-      <nav className="absolute left-8 top-44 flex flex-row flex-wrap gap-8 z-10" aria-label="Quick apps">
-        <DesktopIcon icon="picture_as_pdf" label="CV" onClick={() => openExternalApp('/cv.pdf')} />
-        <DesktopIcon icon="link" label="GITHUB" onClick={() => openExternalApp('https://github.com')} />
-        <DesktopIcon icon="work" label="LINKEDIN" onClick={() => openExternalApp('https://www.linkedin.com')} />
-      </nav>
+        {/* Column 2: Apps Group */}
+        <div className="flex flex-col gap-6">
+          <DesktopIcon icon="terminal" label="CONTACT" onClick={() => openWindow('window-contact')} />
+          <DesktopIcon icon="history_edu" label="EXPERIENCE" onClick={() => openWindow('window-experience')} />
+        </div>
 
-      {/* Info Row (Bottom) */}
-      <nav className="absolute left-8 bottom-24 flex flex-row flex-wrap gap-8 z-10" aria-label="About">
-        <DesktopIcon icon="history_edu" label="EXPERIENCE" onClick={() => openWindow('window-experience')} />
-        <DesktopIcon icon="terminal" label="CONTACT" onClick={() => openWindow('window-contact')} />
       </nav>
 
       {/* Floating windows */}
@@ -276,7 +292,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
             const pdata = PROJECTS[pid];
             return windows[pid]?.state === 'open' ? (
               <ProjectWindow
-                key={pid}
+                key={`${pid}-${windows[pid].bootNonce || 0}`}
                 winId={pid}
                 data={pdata}
                 winState={windows[pid]}
@@ -292,7 +308,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
 
           {windows['window-about']?.state === 'open' && (
             <WindowFrame
-              key="window-about"
+              key={`window-about-${windows['window-about'].bootNonce || 0}`}
               id="window-about"
               className="w-[700px] h-auto max-h-[85vh] border border-slate-300 pointer-events-auto shadow-[0_20px_50px_rgba(0,0,0,0.5)] font-sans bg-white flex flex-col"
               initLeft="calc(50% - 350px)" initTop="calc(50% - max-h-[85vh])"
@@ -309,10 +325,9 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
                   <span className="material-symbols-outlined text-[16px]">account_circle</span>
                   <span className="text-xs font-bold tracking-wider uppercase">Profile_Overview</span>
                 </div>
-                <div className="flex gap-2">
-                  <button className="w-3 h-3 bg-slate-300 hover:bg-slate-400 transition-colors" style={{ borderRadius: '9999px !important' }} onClick={(e) => { e.stopPropagation(); minimizeWindow('window-about'); }}></button>
-                  <button className="w-3 h-3 bg-slate-300 hover:bg-slate-400 transition-colors" style={{ borderRadius: '9999px !important' }}></button>
-                  <button className="w-3 h-3 bg-slate-300 hover:bg-red-500 transition-colors" style={{ borderRadius: '9999px !important' }} onClick={(e) => { e.stopPropagation(); closeWindow('window-about'); }}></button>
+                <div className="flex gap-2.5">
+                  <button className="w-[20px] h-[20px] bg-[#28c840] hover:bg-[#21ad37] transition-colors" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); minimizeWindow('window-about'); }}></button>
+                  <button className="w-[20px] h-[20px] bg-[#ff5f57] hover:bg-[#e14842] transition-colors" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); closeWindow('window-about'); }}></button>
                 </div>
               </div>
 
@@ -400,7 +415,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
 
           {windows['window-terminal']?.state === 'open' && (
             <WindowFrame
-              key="window-terminal"
+              key={`window-terminal-${windows['window-terminal'].bootNonce || 0}`}
               id="window-terminal"
               className="sys-log w-[400px] h-[460px] pointer-events-auto"
               initLeft="calc(100% - 400px)" initTop="0px"
@@ -417,11 +432,38 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
                   <span>aaron@arch:~</span>
                 </div>
                 <div className="title-controls">
-                  <button className="window-btn" onPointerDown={e => { e.stopPropagation(); minimizeWindow('window-terminal'); }}><span className="material-symbols-outlined">remove</span></button>
-                  <button className="window-btn" onPointerDown={e => { e.stopPropagation(); closeWindow('window-terminal'); }}><span className="material-symbols-outlined">close</span></button>
+                  <button className="window-btn window-btn--minimize" onPointerDown={e => { e.stopPropagation(); minimizeWindow('window-terminal'); }}><span className="material-symbols-outlined">remove</span></button>
+                  <button className="window-btn window-btn--close" onPointerDown={e => { e.stopPropagation(); closeWindow('window-terminal'); }}><span className="material-symbols-outlined">close</span></button>
                 </div>
               </div>
               <LinuxTerminalPanel />
+            </WindowFrame>
+          )}
+
+          {windows['window-github']?.state === 'open' && (
+            <WindowFrame
+              key={`window-github-${windows['window-github'].bootNonce || 0}`}
+              id="window-github"
+              className="sys-log w-[400px] h-[235px] pointer-events-auto overflow-hidden bg-[var(--color-surface-dim)]"
+              initLeft="calc(100% - 400px)" initTop="480px"
+              zIndex={windows['window-github'].zIndex}
+              isFocused={focusedId === 'window-github'}
+              onFocus={() => focusWindow('window-github')}
+              onClose={() => closeWindow('window-github')}
+              onMinimize={() => minimizeWindow('window-github')}
+              constraintsRef={constraintsRef}
+            >
+              <div className="window-titlebar" style={{ cursor: 'grab' }}>
+                <div className="title-left text-primary-container">
+                  <span className="material-symbols-outlined" style={{ fontSize: 14 }}>grid_on</span>
+                  <span>contributions.view</span>
+                </div>
+                <div className="title-controls">
+                  <button className="window-btn window-btn--minimize" onPointerDown={e => { e.stopPropagation(); minimizeWindow('window-github'); }}><span className="material-symbols-outlined">remove</span></button>
+                  <button className="window-btn window-btn--close" onPointerDown={e => { e.stopPropagation(); closeWindow('window-github'); }}><span className="material-symbols-outlined">close</span></button>
+                </div>
+              </div>
+              <GitHubPanel />
             </WindowFrame>
           )}
 
@@ -505,7 +547,7 @@ function MobileLayout({ windows, openWindow, closeWindow }) {
                 <span className="material-symbols-outlined" style={{ fontSize: 16 }}>person</span>
                 <span className="truncate">ABOUT_ME.sys</span>
               </div>
-              <button className="window-btn" onClick={() => closeWindow('window-about')}>
+              <button className="window-btn window-btn--close" onClick={() => closeWindow('window-about')}>
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
@@ -545,7 +587,7 @@ function MobileLayout({ windows, openWindow, closeWindow }) {
                 <span>aaron@arch:~</span>
               </div>
               <div className="title-controls">
-                <button className="window-btn h-auto py-0" onClick={() => closeWindow('window-terminal')}><span className="material-symbols-outlined">close</span></button>
+                <button className="window-btn window-btn--close h-auto py-0" onClick={() => closeWindow('window-terminal')}><span className="material-symbols-outlined">close</span></button>
               </div>
             </div>
             <LinuxTerminalPanel compact />
@@ -571,7 +613,7 @@ function ProjectWindow({ winId, data, winState, focusedId, focusWindow, closeWin
       key={winId}
       id={winId}
       className="w-[750px] h-[auto] border border-slate-300 pointer-events-auto shadow-[0_20px_50px_rgba(0,0,0,0.5)] font-sans"
-      initLeft="150px" initTop="80px"
+      initLeft="calc(50% - 375px)" initTop="calc(50% - max-h-[85vh])"
       zIndex={winState.zIndex}
       isFocused={focusedId === winId}
       onFocus={() => focusWindow(winId)}
@@ -581,10 +623,9 @@ function ProjectWindow({ winId, data, winState, focusedId, focusWindow, closeWin
     >
       <div className="flex justify-between items-center px-4 py-2 bg-slate-100 border-b border-slate-300 cursor-grab active:cursor-grabbing window-titlebar">
         <span className="text-xs font-bold text-slate-500 tracking-wider">PROJECT_VIEWER</span>
-        <div className="flex gap-2">
-          <button className="w-3 h-3 bg-slate-300 hover:bg-slate-400 transition-colors" onClick={(e) => { e.stopPropagation(); minimizeWindow(winId); }}></button>
-          <button className="w-3 h-3 bg-slate-300 hover:bg-slate-400 transition-colors"></button>
-          <button className="w-3 h-3 bg-slate-300 hover:bg-red-500 transition-colors" onClick={(e) => { e.stopPropagation(); closeWindow(winId); }}></button>
+        <div className="flex gap-2.5">
+          <button className="w-[20px] h-[20px] bg-[#28c840] hover:bg-[#21ad37] transition-colors" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); minimizeWindow(winId); }}></button>
+          <button className="w-[20px] h-[20px] bg-[#ff5f57] hover:bg-[#e14842] transition-colors" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); closeWindow(winId); }}></button>
         </div>
       </div>
 
@@ -723,24 +764,24 @@ function LinuxTerminalPanel({ compact = false }) {
   return (
     <div className="window-content scrollable" style={{ padding: compact ? 12 : 16 }}>
       <div className="font-mono text-[#8bff9f] leading-snug" style={{ fontSize: compact ? 11 : 13 }}>
-        <div className="flex items-center justify-between mb-3 uppercase tracking-wider text-[#7df38f]">
+        <div className="flex items-center justify-between mb-3 uppercase tracking-wider text-[#6bdf7e]">
           <span>profile-shell v4.2</span>
-          <span className="flex items-center gap-2"><span className="inline-block w-2 h-2 bg-[#00ff41] animate-pulse"></span>online</span>
+          <span className="flex items-center gap-2"><span className="inline-block w-2 h-2 bg-[var(--color-primary-container)] animate-pulse"></span>online</span>
         </div>
 
-        <pre className="whitespace-pre overflow-x-auto text-[#97ffaa] mb-3 pb-2 border-b border-[#00ff41]/20" style={{ fontSize: compact ? 9 : 12, lineHeight: compact ? 1.1 : 1.15 }} aria-label="ASCII art logo">
+        <pre className="whitespace-pre overflow-x-auto text-[#97ffaa] mb-3 pb-2 border-b border-[var(--color-primary-container)]/30 opacity-90" style={{ fontSize: compact ? 9 : 12, lineHeight: compact ? 1.1 : 1.15 }} aria-label="ASCII art logo">
 {TERMINAL_ASCII}
         </pre>
 
-        <div className="mb-3 pb-3 border-b border-[#00ff41]/20">
-          <div className="mb-2 text-[#7df38f]">$ skills --summary</div>
+        <div className="mb-3 pb-3 border-b border-[var(--color-primary-container)]/30">
+          <div className="mb-2 text-[#6bdf7e]">$ skills --summary</div>
           <div className="flex flex-col gap-2">
             {SYSTEM_SKILLS.map((skill) => {
               return (
                 <div key={skill.name} className="flex items-center gap-3">
                   <span className="w-24 shrink-0">{skill.name}</span>
-                  <div className="flex-1 h-3 border border-[#00ff41]/35 bg-[#00ff41]/10 relative">
-                    <div className="absolute left-0 top-0 h-full bg-[#9cffb4]" style={{ width: `${skill.val}%` }}></div>
+                  <div className="flex-1 h-3 border border-[var(--color-primary-container)]/40 bg-[var(--color-primary-container)]/10 relative">
+                    <div className="absolute left-0 top-0 h-full bg-[#83ff8f]" style={{ width: `${skill.val}%` }}></div>
                   </div>
                   <span className="w-11 text-right">{skill.val}%</span>
                 </div>
@@ -749,12 +790,162 @@ function LinuxTerminalPanel({ compact = false }) {
           </div>
         </div>
 
-        <div className="space-y-1 text-[#7df38f]">
+        <div className="space-y-1 text-[#6bdf7e]">
           <div>$ whoami</div>
-          <div className="text-[#9effae]">Building polished interfaces, robust APIs, and practical AI features.</div>
+          <div className="text-[#96eca6]">Building polished interfaces, robust APIs, and practical AI features.</div>
           <div>$ _</div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function GitHubPanel() {
+  const [githubData, setGithubData] = useState({ total: 0, weeks: [], username: 'github' });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const levelMap = {
+    NONE: 0,
+    FIRST_QUARTILE: 1,
+    SECOND_QUARTILE: 2,
+    THIRD_QUARTILE: 3,
+    FOURTH_QUARTILE: 4,
+  };
+
+  const levelStyles = [
+    { backgroundColor: 'rgba(107, 223, 126, 0.05)', borderColor: 'rgba(107, 223, 126, 0.2)' },
+    { backgroundColor: 'rgba(107, 223, 126, 0.35)', borderColor: 'rgba(107, 223, 126, 0.35)' },
+    { backgroundColor: 'rgba(107, 223, 126, 0.65)', borderColor: 'rgba(107, 223, 126, 0.65)' },
+    { backgroundColor: '#6bdf7e', borderColor: '#6bdf7e' },
+    { backgroundColor: '#97ffaa', borderColor: '#97ffaa', boxShadow: '0 0 5px rgba(151,255,170,0.5)' },
+  ];
+
+  useEffect(() => {
+    const fetchContributions = async () => {
+      try {
+        // You'll need to create a .env file with VITE_GITHUB_TOKEN=your_github_pat
+        const token = import.meta.env.VITE_GITHUB_TOKEN;
+        if (!token) {
+          throw new Error('VITE_GITHUB_TOKEN is missing');
+        }
+
+        const query = `
+          query {
+            viewer {
+              login
+              contributionsCollection {
+                contributionCalendar {
+                  totalContributions
+                  weeks {
+                    contributionDays {
+                      contributionLevel
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `;
+
+        const response = await fetch('https://api.github.com/graphql', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query }),
+        });
+
+        const json = await response.json();
+        
+        if (!response.ok || json.errors) {
+          throw new Error(json.message || json.errors?.[0]?.message || 'GraphQL Error');
+        }
+
+        const viewer = json.data?.viewer;
+        const calendar = viewer?.contributionsCollection?.contributionCalendar;
+        if (calendar) {
+          const formattedWeeks = calendar.weeks.map((week) =>
+            week.contributionDays.map((day) => levelMap[day.contributionLevel] ?? 0)
+          );
+          // 28 weeks exactly fills the 330px grid width with a gap of ~1.85px 
+          const visibleWeeks = formattedWeeks.slice(-28);
+
+          setGithubData({
+            total: calendar.totalContributions,
+            weeks: visibleWeeks,
+            username: viewer.login || 'github',
+          });
+        }
+      } catch (err) {
+        console.error('Failed to fetch GitHub contributions:', err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContributions();
+  }, []);
+
+  return (
+    <div className="window-content p-4 h-full font-mono text-[#8bff9f] leading-snug">
+      <div className="flex items-center justify-between mb-3 uppercase tracking-wider text-[#6bdf7e] text-[13px]">
+        <span>$ fetch github.com/{loading ? '...' : githubData.username}</span>
+        <span className="flex items-center gap-2">
+          <span className={`inline-block w-2 h-2 ${error ? 'bg-red-500' : 'bg-[var(--color-primary-container)] animate-pulse'}`}></span>
+          {error ? 'OFFLINE' : 'ONLINE'}
+        </span>
+      </div>
+
+      {loading || error ? (
+        <div className="text-[var(--color-primary-container)] text-xs h-[140px] flex items-center justify-center w-full border border-[var(--color-primary-container)]/30 bg-[var(--color-primary-container)]/5 uppercase">
+          {error ? 'ERR: NO_TOKEN_DETECTED' : 'ESTABLISHING_LINK...'}
+        </div>
+      ) : (
+        <>
+          <div className="flex gap-[4px] border border-[var(--color-primary-container)]/30 p-[8px] w-full mb-3 bg-[var(--color-primary-container)]/5">
+            <div className="w-[18px] text-[8px] text-[#6bdf7e]/80 select-none shrink-0 flex flex-col justify-between items-end pr-[2px] uppercase">
+              <div className="h-[10px] leading-[10px]">Sun</div>
+              <div className="h-[10px] leading-[10px]">Mon</div>
+              <div className="h-[10px] leading-[10px]">Tue</div>
+              <div className="h-[10px] leading-[10px]">Wed</div>
+              <div className="h-[10px] leading-[10px]">Thu</div>
+              <div className="h-[10px] leading-[10px]">Fri</div>
+              <div className="h-[10px] leading-[10px]">Sat</div>
+            </div>
+
+            <div className="flex flex-1 justify-between">
+              {githubData.weeks.map((week, weekIdx) => (
+                <div key={weekIdx} className="flex flex-col gap-[2px]">
+                  {week.map((level, dayIdx) => (
+                    <div
+                      key={`${weekIdx}-${dayIdx}`}
+                      className="w-[10px] h-[10px] border"
+                      style={levelStyles[level]}
+                    ></div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between mb-[1.875rem]">
+            <div className="flex items-center gap-[6px] text-[#6bdf7e] uppercase text-[9px] tracking-widest">
+              <span>Min</span>
+              {levelStyles.map((style, idx) => (
+                <span
+                  key={`legend-${idx}`}
+                  className="w-[10px] h-[10px] border"
+                  style={style}
+                ></span>
+              ))}
+              <span>Max</span>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

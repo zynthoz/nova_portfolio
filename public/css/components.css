@@ -71,7 +71,7 @@ body {
   top: 0; left: 0; right: 0; bottom: 0;
   background: radial-gradient(ellipse at center,
     transparent 30%,
-    rgba(0, 0, 0, 0.45) 100%
+    rgba(0, 0, 0, 0.15) 100%
   );
   pointer-events: none;
   z-index: 10;
@@ -195,8 +195,8 @@ body {
 
 /* Window control buttons (the blocky close/minimize) */
 .window-btn {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,9 +212,24 @@ body {
   animation: flicker-press 0.15s ease-out forwards;
 }
 .window-btn .material-symbols-outlined {
-  font-size: 10px;
+  font-size: 18px;
 }
-
+.window-btn.window-btn--minimize {
+  background-color: #28c840;
+  color: #0d3b15;
+}
+.window-btn.window-btn--minimize:hover {
+  background-color: #21ad37;
+  color: #08250e;
+}
+.window-btn.window-btn--close {
+  background-color: #ff5f57;
+  color: #4a0f0c;
+}
+.window-btn.window-btn--close:hover {
+  background-color: #e14842;
+  color: #2e0a08;
+}
 /* Window content area */
 .window-content {
   flex: 1;
@@ -339,9 +354,9 @@ body {
   color: var(--color-on-primary);
 }
 .desk-icon-label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   text-shadow: var(--glow-green);
   background-color: var(--color-surface-container-lowest);
   padding: 0 var(--space-1);
@@ -441,7 +456,7 @@ body {
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
-  color: rgba(0, 255, 65, 0.6);
+  color: var(--color-primary-container);
   transition: color var(--transition-fast), background-color var(--transition-fast);
   border: none;
   background: none;
@@ -454,29 +469,29 @@ body {
   background-color: var(--color-surface-container);
   animation: flicker-press 0.12s ease-out forwards;
 }
-.taskbar-btn.active {
-  background-color: var(--color-primary-container);
-  color: var(--color-on-primary);
-  font-weight: var(--font-weight-black);
-}
-.taskbar-btn.active:hover {
-  filter: brightness(1.15);
-}
-/* Minimized window indicator: dim + small dot */
-.taskbar-btn.taskbar-minimized {
-  opacity: 0.5;
+
+.taskbar-icon-wrap {
   position: relative;
+  width: 24px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
-.taskbar-btn.taskbar-minimized::after {
-  content: '';
+
+.taskbar-indicator {
   position: absolute;
-  bottom: 6px;
+  bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 3px;
+  width: 6px;
   height: 3px;
   background: var(--color-primary-container);
 }
+
+.taskbar-indicator.taskbar-indicator-focused {
+  width: 16px;
+}
+
 .taskbar-btn .material-symbols-outlined {
   font-size: 32px;
 }
