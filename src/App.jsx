@@ -246,6 +246,34 @@ export default function App() {
     <>
       {/* MAIN CANVAS */}
       <main className="fixed inset-0 pb-12 overflow-hidden bg-vignette" id="main-canvas">
+        {/* SUBTLE PHOSPHOR OS WALLPAPER */}
+        <div 
+          className="absolute inset-0 pointer-events-none select-none flex items-center justify-center -z-10"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(40, 200, 64, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(40, 200, 64, 0.03) 1px, transparent 1px)
+            `,
+            backgroundSize: '40px 40px',
+            backgroundPosition: 'center center'
+          }}
+        >
+          {/* Edge fade so grid dissolves naturally */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,var(--color-background)_100%)] opacity-80"></div>
+          
+          {/* Giant ASCII Watermark */}
+          <pre 
+            className="font-mono text-[#28c840] opacity-[0.05] select-none pointer-events-none tracking-tighter -translate-y-[6vh]"
+            style={{ 
+              fontSize: 'min(3vw, 2.5rem)', 
+              lineHeight: '1.1',
+              filter: 'drop-shadow(0 0 20px rgba(40,200,64,0.4))'
+            }}
+          >
+            {TERMINAL_ASCII}
+          </pre>
+        </div>
+
         <DesktopLayout
           windows={windows}
           focusedId={focusedId}
@@ -370,7 +398,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
             <WindowFrame
               key={`window-about-${windows['window-about'].bootNonce || 0}`}
               id="window-about"
-              className="w-[750px] h-auto max-h-[85vh] border border-slate-700 pointer-events-auto shadow-[0_20px_50px_rgba(0,0,0,0.7)] font-sans bg-slate-900 flex flex-col"
+              className="w-[750px] h-auto max-h-[85vh] border border-[#2b1822] pointer-events-auto shadow-[0_0_40px_rgba(0,0,0,0.8)] font-mono bg-[#110C11] flex flex-col"
               initLeft="calc(50% - 375px)" initTop="calc(50% - max-h-[85vh])"
               zIndex={windows['window-about'].zIndex}
               isFocused={focusedId === 'window-about'}
@@ -380,37 +408,37 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               constraintsRef={constraintsRef}
             >
               {/* Clean Title Bar */}
-              <div className="flex justify-between items-center px-4 py-2 bg-slate-800/80 border-b border-slate-700 cursor-grab active:cursor-grabbing w-full shrink-0">
-                <div className="flex items-center gap-2 text-slate-400">
-                  <span className="material-symbols-outlined text-[16px]">account_circle</span>
-                  <span className="text-xs font-bold tracking-wider uppercase">Profile_Overview</span>
+              <div className="flex justify-between items-center px-4 py-2 bg-[#1a1215] border-b border-[#2b1822] cursor-grab active:cursor-grabbing w-full shrink-0">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[12px] text-emerald-500">account_circle</span>
+                  <span className="text-[10px] font-bold text-emerald-500 tracking-widest uppercase">PROFILE_OVERVIEW_NODE</span>
                 </div>
-                <div className="flex gap-2.5">
-                  <button className="flex items-center justify-center w-[20px] h-[20px] bg-[#28c840] hover:bg-[#21ad37] transition-colors group" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); minimizeWindow('window-about'); }}>
-                    <span className="material-symbols-outlined text-[14px] text-black/60 opacity-0 group-hover:opacity-100 transition-opacity">remove</span>
+                <div className="flex gap-1.5">
+                  <button className="flex items-center justify-center w-7 h-6 bg-[#28c840] hover:bg-[#21ad37] border border-[#28c840] hover:shadow-[0_0_10px_rgba(40,200,64,0.6)] transition-all" onPointerDown={(e) => { e.stopPropagation(); minimizeWindow('window-about'); }}>
+                    <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">remove</span>
                   </button>
-                  <button className="flex items-center justify-center w-[20px] h-[20px] bg-[#ff5f57] hover:bg-[#e14842] transition-colors group" style={{ borderRadius: '9999px' }} onClick={(e) => { e.stopPropagation(); closeWindow('window-about'); }}>
-                    <span className="material-symbols-outlined text-[14px] text-black/60 opacity-0 group-hover:opacity-100 transition-opacity">close</span>
+                  <button className="flex items-center justify-center w-7 h-6 bg-[#ff5f57] hover:bg-[#e14842] border border-[#ff5f57] hover:shadow-[0_0_10px_rgba(255,95,87,0.6)] transition-all" onPointerDown={(e) => { e.stopPropagation(); closeWindow('window-about'); }}>
+                    <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">close</span>
                   </button>
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto overflow-x-hidden p-8 sm:p-10 text-slate-300 bg-slate-900">
+              <div className="flex-1 overflow-y-auto overflow-x-hidden p-8 sm:p-10 text-slate-400 bg-[#110C11]">
 
                 {/* Header Section */}
-                <div className="flex items-start gap-6 mb-8 pb-8 border-b border-slate-800">
-                  <div className="w-28 h-28 bg-emerald-900/30 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-800" style={{ borderRadius: '9999px', overflow: 'hidden' }}>
+                <div className="flex items-start gap-6 mb-8 pb-8 border-b border-[#2b1822]">
+                  <div className="w-28 h-28 bg-[#1a1215] flex items-center justify-center shrink-0 border border-[#2b1822] shadow-inner" style={{ borderRadius: '0', overflow: 'hidden' }}>
                     <img src={avatarImage} alt="Avatar" className="w-full h-full object-cover" />
                   </div>
                   <div>
-                    <h1 className="text-4xl font-extrabold text-slate-100 tracking-tight leading-none mb-2" style={{ textShadow: 'none' }}>Aaron Gabriel Lim</h1>
-                    <p className="text-base text-emerald-400 font-bold mb-3 tracking-wide">BS Information Technology, 2nd Year @ UST</p>
+                    <h1 className="text-4xl font-mono font-bold text-emerald-400 tracking-widest uppercase drop-shadow-[0_0_12px_rgba(52,211,153,0.5)] mb-2">Aaron Gabriel Lim</h1>
+                    <p className="text-[13px] text-emerald-600 font-mono font-bold mb-4 tracking-widest uppercase">BS_INFORMATION_TECHNOLOGY // 2ND_YEAR @ UST</p>
                     <div className="flex gap-3">
-                      <span className="inline-flex items-center gap-1 text-xs font-bold tracking-wide bg-slate-800 px-3 py-1.5 text-slate-300 uppercase border border-slate-700 shadow-sm">
-                        <span className="material-symbols-outlined text-[14px]">location_on</span> Metro Manila, PH
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-mono font-bold tracking-widest text-emerald-500 bg-[#1a1215] border border-[#2b1822] uppercase">
+                        <span className="material-symbols-outlined text-[12px]">location_on</span> METRO_MANILA_PH
                       </span>
-                      <span className="inline-flex items-center gap-1 text-xs font-bold tracking-wide bg-emerald-900/30 text-emerald-400 px-3 py-1.5 border border-emerald-800/50 uppercase shadow-sm">
-                        Open to Opportunities
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-mono font-bold tracking-widest text-orange-500 bg-orange-950/40 border border-orange-800/50 uppercase shadow-[0_0_10px_rgba(249,115,22,0.1)]">
+                        STATUS: OPEN_TO_OPPORTUNITIES
                       </span>
                     </div>
                   </div>
@@ -421,55 +449,55 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
 
                   {/* Intro */}
                   <section>
-                    <p className="text-[15px] leading-relaxed text-slate-300 font-medium" style={{ textShadow: 'none' }}>
-                      I have a genuine passion for writing code — not just as a skill, but as something I genuinely can't put down. I <strong className="text-emerald-400 font-bold px-1 rounded bg-emerald-900/30">build, I break things, I learn, and I build again</strong>. That drive is what makes me the kind of developer who shows up not because they have to, but because they <em className="text-emerald-400/90">want to</em>.
+                    <p className="text-[14px] leading-relaxed text-slate-400 font-mono">
+                      I have a genuine passion for writing code — not just as a skill, but as something I genuinely can't put down. I <strong className="text-emerald-400 font-bold px-1 bg-emerald-950/30">build, I break things, I learn, and I build again</strong>. That drive is what makes me the kind of developer who shows up not because they have to, but because they <em className="text-orange-500 not-italic font-bold">want to</em>.
                     </p>
                   </section>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     {/* What I Bring */}
                     <section>
-                      <h2 className="text-xs font-bold text-slate-500 tracking-widest uppercase mb-4" style={{ textShadow: 'none' }}>What I Bring</h2>
+                      <h2 className="text-[11px] font-mono font-bold text-orange-500 tracking-widest uppercase mb-5">PRIMARY_ATTRIBUTES:</h2>
                       <ul className="space-y-4">
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">bolt</span>
-                          <span className="text-sm text-slate-400 leading-relaxed"><strong className="text-slate-200">Fast learner</strong> — actively follow tech trends and continuously upskill outside the classroom.</span>
+                          <span className="material-symbols-outlined text-[18px] text-emerald-600 shrink-0 mt-0.5">bolt</span>
+                          <span className="text-[13px] text-slate-400 leading-relaxed font-mono"><strong className="text-emerald-500 font-normal">FAST_LEARNER</strong> — Actively follow tech trends and continuously upskill outside the classroom.</span>
                         </li>
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">local_fire_department</span>
-                          <span className="text-sm text-slate-400 leading-relaxed"><strong className="text-slate-200">Self-motivated</strong> — coding isn't a chore for me; it's how I spend my free time.</span>
+                          <span className="material-symbols-outlined text-[18px] text-emerald-600 shrink-0 mt-0.5">local_fire_department</span>
+                          <span className="text-[13px] text-slate-400 leading-relaxed font-mono"><strong className="text-emerald-500 font-normal">SELF_MOTIVATED</strong> — Coding isn't a chore for me; it's how I spend my free time.</span>
                         </li>
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">trending_up</span>
-                          <span className="text-sm text-slate-400 leading-relaxed"><strong className="text-slate-200">Growth mindset</strong> — early in my career, but investing heavily in getting better every day.</span>
+                          <span className="material-symbols-outlined text-[18px] text-emerald-600 shrink-0 mt-0.5">trending_up</span>
+                          <span className="text-[13px] text-slate-400 leading-relaxed font-mono"><strong className="text-emerald-500 font-normal">GROWTH_MINDSET</strong> — Early in my career, but investing heavily in getting better every day.</span>
                         </li>
                       </ul>
                     </section>
 
                     {/* Current Focus */}
                     <section>
-                      <h2 className="text-xs font-bold text-slate-500 tracking-widest uppercase mb-4" style={{ textShadow: 'none' }}>Currently Focused On</h2>
+                      <h2 className="text-[11px] font-mono font-bold text-orange-500 tracking-widest uppercase mb-5">CURRENT_DIRECTIVES:</h2>
                       <ul className="space-y-4">
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">code</span>
-                          <span className="text-sm text-slate-400 leading-relaxed">Deepening my knowledge in software development via rigorous practical application.</span>
+                          <span className="material-symbols-outlined text-[18px] text-emerald-600 shrink-0 mt-0.5">code</span>
+                          <span className="text-[13px] text-slate-400 leading-relaxed font-mono">Deepening my knowledge in software development via rigorous practical application.</span>
                         </li>
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">explore</span>
-                          <span className="text-sm text-slate-400 leading-relaxed">Keeping up with the latest in tech — frameworks, tools, and industry shifts.</span>
+                          <span className="material-symbols-outlined text-[18px] text-emerald-600 shrink-0 mt-0.5">explore</span>
+                          <span className="text-[13px] text-slate-400 leading-relaxed font-mono">Keeping up with the latest in tech — frameworks, tools, and industry shifts.</span>
                         </li>
                         <li className="flex gap-3 items-start">
-                          <span className="material-symbols-outlined text-[20px] text-emerald-400 shrink-0 mt-0.5">work</span>
-                          <span className="text-sm text-slate-400 leading-relaxed">Actively looking for internships and entry-level collaborations in a real-world setting.</span>
+                          <span className="material-symbols-outlined text-[18px] text-emerald-600 shrink-0 mt-0.5">work</span>
+                          <span className="text-[13px] text-slate-400 leading-relaxed font-mono">Actively looking for internships and entry-level collaborations in a real-world setting.</span>
                         </li>
                       </ul>
                     </section>
                   </div>
 
                   {/* Closing Banner */}
-                  <section className="bg-slate-800/40 border-2 border-slate-700 px-6 py-10 text-center shadow-sm" style={{ borderRadius: '8px' }}>
-                    <p className="text-[16px] font-bold text-slate-200 tracking-wide" style={{ textShadow: 'none' }}>
-                      "I'm just getting started — and that's exactly what makes this exciting."
+                  <section className="bg-[#1a1215] border border-[#2b1822] px-6 py-7 text-center shadow-inner">
+                    <p className="text-[11px] sm:text-[12px] font-mono font-bold text-emerald-500 tracking-widest uppercase drop-shadow-[0_0_8px_rgba(16,185,129,0.3)]">
+                      "I'M JUST GETTING STARTED — AND THAT'S EXACTLY WHAT MAKES THIS EXCITING."
                     </p>
                   </section>
                 </div>
@@ -854,19 +882,19 @@ const SYSTEM_SKILLS = [
 
 function LinuxTerminalPanel({ compact = false }) {
   return (
-    <div className="w-full font-mono text-emerald-500 leading-snug flex flex-col justify-start" style={{ fontSize: compact ? 10 : 11 }}>
-      <div className="flex items-center justify-between mb-3 uppercase tracking-widest text-[#37e865] font-bold">
+    <div className="w-full font-mono text-emerald-500 leading-snug flex flex-col justify-start" style={{ fontSize: compact ? 10.5 : 12 }}>
+      <div className="flex items-center justify-between mb-4 uppercase tracking-widest text-[#37e865] font-bold">
         <span>PROFILE-SHELL V4.2</span>
         <span className="flex items-center gap-2"><span className="inline-block w-2 h-2 bg-[#37e865] animate-pulse"></span>ONLINE</span>
       </div>
 
-      <pre className="whitespace-pre overflow-hidden text-emerald-400 mb-4 pb-4 border-b border-emerald-900/50 opacity-90 tracking-tighter" style={{ fontSize: compact ? 8 : 9, lineHeight: compact ? 1.0 : 1.1 }} aria-label="ASCII art logo">
+      <pre className="whitespace-pre overflow-hidden text-emerald-400 mb-4 pb-4 border-b border-emerald-900/50 opacity-90 tracking-tighter" style={{ fontSize: compact ? 8.5 : 10, lineHeight: compact ? 1.02 : 1.12 }} aria-label="ASCII art logo">
 {TERMINAL_ASCII}
       </pre>
 
       <div className="mb-4 pb-4 border-b border-emerald-900/50 w-full">
         <div className="mb-2.5 text-[#37e865] font-bold tracking-widest">$ SKILLS --SUMMARY</div>
-        <div className="flex flex-col gap-1.5 w-full pr-2">
+        <div className="flex flex-col gap-2 w-full pr-2">
           {SYSTEM_SKILLS.map((skill) => {
             return (
               <div key={skill.name} className="flex items-center gap-4 text-emerald-50 font-medium">
@@ -980,7 +1008,7 @@ function GitHubPanel() {
 
   return (
     <div className="w-full font-mono text-emerald-500 leading-snug flex flex-col justify-start">
-      <div className="flex items-center justify-between mb-4 font-bold uppercase tracking-widest text-[#37e865] text-[10px]">
+      <div className="flex items-center justify-between pt-4 mb-4 font-bold uppercase tracking-widest text-[#37e865] text-[10px]">
         <span>$ FETCH GITHUB.COM/{loading ? '...' : githubData.username}</span>
         <span className="flex items-center gap-2">
           <span className={`inline-block w-2 h-2 ${error ? 'bg-red-500' : 'bg-[#37e865] animate-pulse'}`}></span>
@@ -989,7 +1017,7 @@ function GitHubPanel() {
       </div>
 
       {loading || error ? (
-        <div className="text-[#37e865] font-bold tracking-widest text-[9px] h-[140px] flex items-center justify-center w-full border border-emerald-900/50 bg-emerald-950/20 uppercase">
+        <div className="text-[#37e865] font-bold tracking-widest text-[9px] h-[92px] flex items-center justify-center w-full border border-emerald-900/50 bg-emerald-950/20 uppercase">
           {error ? 'ERR: NO_TOKEN_DETECTED' : 'ESTABLISHING_LINK...'}
         </div>
       ) : (
