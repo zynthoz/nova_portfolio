@@ -48,7 +48,8 @@ const TERMINAL_ASCII = [
   ' / __ `/ __ `/ ___/ __ \\/ __ \\  / __  / _ \\ | / /',
   '/ /_/ / /_/ / /  / /_/ / / / / / /_/ /  __/ |/ / ',
   '\\__,_/\\__,_/_/   \\____/_/ /_/⬤\\__,_/\\___/|___/  ',
-  '                                                '
+  '                                                ',
+  '          [ CODE SMART, SHIP FAST ]             '
 ].join('\n');
 
 const VIM_LINES = [
@@ -658,14 +659,23 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
   return (
     <div className="flex h-full p-4 sm:p-8 relative" ref={constraintsRef}>   
       {/* Desktop Main Icon Grid */}
-      <nav className="absolute left-4 sm:left-8 top-4 sm:top-8 bottom-24 grid grid-cols-2 sm:flex sm:flex-row gap-6 sm:gap-12 z-10 py-2 w-[calc(100%-2rem)] sm:w-auto" aria-label="Desktop icons">
+      <nav className="absolute left-2 sm:left-8 right-2 sm:right-auto top-4 sm:top-8 bottom-24 flex flex-col sm:flex-row justify-start sm:justify-start gap-6 sm:gap-12 z-10 py-2 w-[calc(100%-1rem)] sm:w-auto px-2 sm:px-0" aria-label="Desktop icons">
         
-        {/* Mobile View: Projects Folder (Hidden on Desktop) */}
-        <div className="flex flex-col gap-6 sm:hidden">
-          <DesktopIcon icon="folder" label="PROJECTS" onClick={() => openWindow('window-projects-folder')} />
+        {/* Mobile-only Header ASCII */}
+        <div className="sm:hidden w-full flex flex-col items-center justify-center mt-8 mb-4 select-none pointer-events-none">
+          <pre className="font-mono text-[#28c840] font-bold tracking-tighter text-[min(2.5vw,14px)] leading-[1.15] drop-shadow-[0_0_12px_rgba(40,200,64,0.7)] text-center">
+            {TERMINAL_ASCII}
+          </pre>
         </div>
 
-        {/* Column 1: Projects Group (Hidden on Mobile) */}
+        {/* Mobile-only Icons (3 columns via flex) */}
+        <div className="sm:hidden flex w-full justify-around items-start px-2">
+          <DesktopIcon icon="folder" label="PROJECTS" onClick={() => openWindow('window-projects-folder')} />
+          <DesktopIcon icon="terminal" label="CONTACT" onClick={() => openWindow('window-contact')} />
+          <DesktopIcon icon="history_edu" label="EXPERIENCE" onClick={() => openExternalApp(cvPdf)} />
+        </div>
+
+        {/* Desktop-only Columns */}
         <div className="hidden sm:flex flex-col gap-10 mt-2 p-2">
           <DesktopIcon icon="local_laundry_service" label="LAUNDRYLINK" onClick={() => openWindow('window-project-1')} isProject />
           <DesktopIcon icon="smart_toy" label="TOOL.AI" onClick={() => openWindow('window-project-2')} isProject />
@@ -674,8 +684,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
           <DesktopIcon icon="swords" label="IMPETO" onClick={() => openWindow('window-project-5')} isProject />
         </div>
 
-        {/* Column 2: Apps Group */}
-        <div className="flex flex-col gap-6">
+        <div className="hidden sm:flex flex-col gap-10 mt-2 p-2">
           <DesktopIcon icon="terminal" label="CONTACT" onClick={() => openWindow('window-contact')} />
           <DesktopIcon icon="history_edu" label="EXPERIENCE" onClick={() => openExternalApp(cvPdf)} />
         </div>
@@ -691,7 +700,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               key={`window-projects-folder-${windows['window-projects-folder'].bootNonce || 0}`}
               id="window-projects-folder"
               className="w-[320px] max-w-[90vw] h-[auto] max-h-[80vh] border border-[#2b1822] pointer-events-auto shadow-[0_0_40px_rgba(0,0,0,0.8)] font-mono bg-[#110C11] flex flex-col"
-              initLeft="50%" initTop="15%"
+              initLeft="50%" initTop="1rem"
               centeredX
               zIndex={windows['window-projects-folder'].zIndex}
               isFocused={focusedId === 'window-projects-folder'}
@@ -1051,16 +1060,16 @@ function WindowFrame({ id, className, initLeft, initTop, zIndex, isFocused, onFo
 
 function DesktopIcon({ icon, label, onClick, isProject = false }) {
   return (
-    <div className="desk-icon relative group" role="button" tabIndex="0" onClick={onClick}>
+    <div className="desk-icon relative group flex flex-col items-center" role="button" tabIndex="0" onClick={onClick}>
       {isProject && (
         <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-black text-[9px] font-bold px-1.5 py-0.5 z-10 whitespace-nowrap shadow-[0_0_8px_rgba(249,115,22,0.6)]">
           [PROJECT]
         </span>
       )}
-      <div className={`desk-icon-box desk-icon-box--lg transition-all duration-200 ${isProject ? '!border-orange-500/30 !text-orange-500 group-hover:!bg-orange-500/10 group-hover:!border-orange-500/60 group-hover:!shadow-[0_0_15px_rgba(249,115,22,0.3)]' : ''}`}>
-        <span className="material-symbols-outlined">{icon}</span>
+      <div className={`desk-icon-box flex justify-center items-center w-[72px] h-[72px] sm:w-[102px] sm:h-[102px] transition-all duration-200 ${isProject ? '!border-orange-500/30 !text-orange-500 group-hover:!bg-orange-500/10 group-hover:!border-orange-500/60 group-hover:!shadow-[0_0_15px_rgba(249,115,22,0.3)]' : ''}`}>
+        <span className="material-symbols-outlined text-[36px] sm:text-[64px]">{icon}</span>
       </div>
-      <span className={`desk-icon-label mt-1 ${isProject ? '!text-orange-400 !bg-transparent drop-shadow-[0_0_2px_rgba(249,115,22,0.8)]' : ''}`}>{label}</span>
+      <span className={`desk-icon-label mt-1 text-[11px] sm:text-[14px] text-center max-w-[80px] sm:max-w-none break-words ${isProject ? '!text-orange-400 !bg-transparent' : ''}`}>{label}</span>
     </div>
   );
 }
@@ -1358,9 +1367,11 @@ function LinuxTerminalPanel({ compact = false }) {
         <span className="flex items-center gap-2"><span className="inline-block w-2 h-2 bg-[#37e865] animate-pulse"></span>ONLINE</span>
       </div>
 
-      <pre className="whitespace-pre overflow-hidden text-emerald-400 mb-4 pb-4 border-b border-emerald-900/50 opacity-90 tracking-tighter" style={{ fontSize: compact ? 8.5 : 10, lineHeight: compact ? 1.02 : 1.12 }} aria-label="ASCII art logo">
+      <div className="w-full flex justify-center mb-4 pb-4 border-b border-emerald-900/50">
+        <pre className="whitespace-pre overflow-hidden text-emerald-400 opacity-90 tracking-tighter" style={{ fontSize: compact ? 8.5 : 10, lineHeight: compact ? 1.02 : 1.12 }} aria-label="ASCII art logo">
 {TERMINAL_ASCII}
-      </pre>
+        </pre>
+      </div>
 
       <div className="mb-4 pb-4 border-b border-emerald-900/50 w-full">
         <div className="w-full p-1">
