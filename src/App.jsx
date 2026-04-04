@@ -461,6 +461,7 @@ export default function App() {
     'window-project-4': { id: 'window-project-4', state: 'closed', zIndex: 20, bootNonce: 0 },
     'window-project-5': { id: 'window-project-5', state: 'closed', zIndex: 20, bootNonce: 0 },
     'window-contact': { id: 'window-contact', state: 'closed', zIndex: 20, bootNonce: 0 },
+    'window-projects-folder': { id: 'window-projects-folder', state: 'closed', zIndex: 20, bootNonce: 0 },
   });
 
   const [focusedId, setFocusedId] = useState(null);
@@ -658,13 +659,19 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
     <div className="flex h-full p-4 sm:p-8 relative" ref={constraintsRef}>   
       {/* Desktop Main Icon Grid */}
       <nav className="absolute left-4 sm:left-8 top-4 sm:top-8 bottom-24 grid grid-cols-2 sm:flex sm:flex-row gap-6 sm:gap-12 z-10 py-2 w-[calc(100%-2rem)] sm:w-auto" aria-label="Desktop icons">
-        {/* Column 1: Projects Group */}
-        <div className="flex flex-col gap-6">
-          <DesktopIcon icon="code" label="LAUNDRYLINK" onClick={() => openWindow('window-project-1')} />
-          <DesktopIcon icon="code" label="TOOL.AI" onClick={() => openWindow('window-project-2')} />
-          <DesktopIcon icon="code" label="QFORM" onClick={() => openWindow('window-project-3')} />
-          <DesktopIcon icon="code" label="ROYALE TRACKER" onClick={() => openWindow('window-project-4')} />
-          <DesktopIcon icon="code" label="IMPETO" onClick={() => openWindow('window-project-5')} />
+        
+        {/* Mobile View: Projects Folder (Hidden on Desktop) */}
+        <div className="flex flex-col gap-6 sm:hidden">
+          <DesktopIcon icon="folder" label="PROJECTS" onClick={() => openWindow('window-projects-folder')} />
+        </div>
+
+        {/* Column 1: Projects Group (Hidden on Mobile) */}
+        <div className="hidden sm:flex flex-col gap-10 mt-2 p-2">
+          <DesktopIcon icon="local_laundry_service" label="LAUNDRYLINK" onClick={() => openWindow('window-project-1')} isProject />
+          <DesktopIcon icon="smart_toy" label="TOOL.AI" onClick={() => openWindow('window-project-2')} isProject />
+          <DesktopIcon icon="dynamic_form" label="QFORM" onClick={() => openWindow('window-project-3')} isProject />
+          <DesktopIcon icon="sports_esports" label="ROYALE TRACKER" onClick={() => openWindow('window-project-4')} isProject />
+          <DesktopIcon icon="swords" label="IMPETO" onClick={() => openWindow('window-project-5')} isProject />
         </div>
 
         {/* Column 2: Apps Group */}
@@ -679,6 +686,48 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
       <div className="w-full h-full relative z-20 pointer-events-none">
 
         <AnimatePresence>
+          {windows['window-projects-folder']?.state === 'open' && (
+            <WindowFrame
+              key={`window-projects-folder-${windows['window-projects-folder'].bootNonce || 0}`}
+              id="window-projects-folder"
+              className="w-[320px] max-w-[90vw] h-[auto] max-h-[80vh] border border-[#2b1822] pointer-events-auto shadow-[0_0_40px_rgba(0,0,0,0.8)] font-mono bg-[#110C11] flex flex-col"
+              initLeft="50%" initTop="15%"
+              centeredX
+              zIndex={windows['window-projects-folder'].zIndex}
+              isFocused={focusedId === 'window-projects-folder'}
+              onFocus={() => focusWindow('window-projects-folder')}
+              onClose={() => closeWindow('window-projects-folder')}
+              onMinimize={() => minimizeWindow('window-projects-folder')}
+              constraintsRef={constraintsRef}
+            >
+              {/* Title Bar */}
+              <div className="window-titlebar flex justify-between items-center px-4 py-2 bg-[#1a1215] border-b border-[#2b1822] cursor-grab active:cursor-grabbing w-full shrink-0">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[12px] text-emerald-500">folder</span>
+                  <span className="text-[10px] font-bold text-emerald-500 tracking-widest uppercase">PROJECTS</span>
+                </div>
+                <div className="flex gap-1.5">
+                  <button className="flex items-center justify-center w-7 h-6 bg-[#28c840] hover:bg-[#21ad37] border border-[#28c840] hover:shadow-[0_0_10px_rgba(40,200,64,0.6)] transition-all" onPointerDown={(e) => { e.stopPropagation(); minimizeWindow('window-projects-folder'); }}>
+                    <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">remove</span>
+                  </button>
+                  <button className="flex items-center justify-center w-7 h-6 bg-[#ff5f57] hover:bg-[#e14842] border border-[#ff5f57] hover:shadow-[0_0_10px_rgba(255,95,87,0.6)] transition-all" onPointerDown={(e) => { e.stopPropagation(); closeWindow('window-projects-folder'); }}>
+                    <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">close</span>
+                  </button>
+                </div>
+              </div>
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto p-6 bg-[#110C11]">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-10 place-items-center mt-2">
+                  <DesktopIcon icon="local_laundry_service" label="LAUNDRYLINK" onClick={() => openWindow('window-project-1')} isProject />
+                  <DesktopIcon icon="smart_toy" label="TOOL.AI" onClick={() => openWindow('window-project-2')} isProject />
+                  <DesktopIcon icon="dynamic_form" label="QFORM" onClick={() => openWindow('window-project-3')} isProject />
+                  <DesktopIcon icon="sports_esports" label="ROYALE TRACKER" onClick={() => openWindow('window-project-4')} isProject />
+                  <DesktopIcon icon="swords" label="IMPETO" onClick={() => openWindow('window-project-5')} isProject />
+                </div>
+              </div>
+            </WindowFrame>
+          )}
+
           {[1, 2, 3, 4, 5].map(num => {
             const pid = `window-project-${num}`;
             const pdata = PROJECTS[pid];
@@ -1000,13 +1049,18 @@ function WindowFrame({ id, className, initLeft, initTop, zIndex, isFocused, onFo
 }
 
 
-function DesktopIcon({ icon, label, onClick }) {
+function DesktopIcon({ icon, label, onClick, isProject = false }) {
   return (
-    <div className="desk-icon" role="button" tabIndex="0" onClick={onClick}>
-      <div className="desk-icon-box desk-icon-box--lg">
+    <div className="desk-icon relative group" role="button" tabIndex="0" onClick={onClick}>
+      {isProject && (
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-black text-[9px] font-bold px-1.5 py-0.5 z-10 whitespace-nowrap shadow-[0_0_8px_rgba(249,115,22,0.6)]">
+          [PROJECT]
+        </span>
+      )}
+      <div className={`desk-icon-box desk-icon-box--lg transition-all duration-200 ${isProject ? '!border-orange-500/30 !text-orange-500 group-hover:!bg-orange-500/10 group-hover:!border-orange-500/60 group-hover:!shadow-[0_0_15px_rgba(249,115,22,0.3)]' : ''}`}>
         <span className="material-symbols-outlined">{icon}</span>
       </div>
-      <span className="desk-icon-label">{label}</span>
+      <span className={`desk-icon-label mt-1 ${isProject ? '!text-orange-400 !bg-transparent drop-shadow-[0_0_2px_rgba(249,115,22,0.8)]' : ''}`}>{label}</span>
     </div>
   );
 }
