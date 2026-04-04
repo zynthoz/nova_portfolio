@@ -555,7 +555,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* MAIN CANVAS */}
-      <main className="fixed inset-0 pb-12 overflow-hidden bg-vignette" id="main-canvas">
+      <main className="fixed inset-0 pt-12 pb-0 sm:pt-0 sm:pb-12 overflow-hidden bg-vignette" id="main-canvas">
         {/* SUBTLE PHOSPHOR OS WALLPAPER */}
         <div 
           className="absolute inset-0 pointer-events-none select-none flex items-center justify-center -z-10"
@@ -962,10 +962,21 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
 
 function WindowFrame({ id, className, initLeft, initTop, zIndex, isFocused, onFocus, onClose, onMinimize, children, constraintsRef, centered = false, centeredX = false }) {
   const translateValue = centered ? '-50% -50%' : centeredX ? '-50% 0' : undefined;
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
+
+  useEffect(() => {
+    const updateViewport = () => setIsMobileViewport(window.innerWidth < 640);
+    updateViewport();
+    window.addEventListener('resize', updateViewport);
+
+    return () => {
+      window.removeEventListener('resize', updateViewport);
+    };
+  }, []);
 
   return (
     <motion.section
-      drag
+      drag={!isMobileViewport}
       dragConstraints={constraintsRef}
       dragHandle=".window-titlebar"
       dragMomentum={false}
@@ -1090,7 +1101,7 @@ function MobileIcon({ icon, label, onClick }) {
   return (
     <div className="desk-icon shrink-0" role="button" tabIndex="0" onClick={onClick}>
       <div className="desk-icon-box desk-icon-box--sm"><span className="material-symbols-outlined">{icon}</span></div>
-      <span className="desk-icon-label" style={{ fontSize: 8 }}>{label}</span>
+      <span className="desk-icon-label" style={{ fontSize: 7 }}>{label}</span>
     </div>
   );
 }

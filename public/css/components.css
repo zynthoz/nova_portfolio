@@ -372,10 +372,10 @@ body {
 
 /* Mobile: smaller icons */
 .desk-icon-box--sm {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
 }
-.desk-icon-box--sm .material-symbols-outlined { font-size: 38px; }
+.desk-icon-box--sm .material-symbols-outlined { font-size: 32px; }
 
 /* ──────────────────────────────────────────
    System Log / Terminal Panel
@@ -496,8 +496,16 @@ body {
   font-size: 32px;
 }
 @media (max-width: 640px) {
+  .taskbar {
+    top: 0;
+    bottom: auto;
+    border-top: none;
+    border-bottom: 2px solid var(--color-surface-container);
+    box-shadow: 0 4px 20px rgba(0, 255, 65, 0.12);
+  }
   .taskbar-btn { padding: 0 var(--space-3); }
-  .taskbar-btn .material-symbols-outlined { font-size: 29px; }
+  .taskbar-btn .material-symbols-outlined { font-size: 24px; }
+  .taskbar-clock { padding: 0 var(--space-2); font-size: 11px; }
 }
 
 /* Taskbar clock */
