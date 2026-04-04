@@ -1,1 +1,77 @@
 /* Cleaned out default Vite styles to prevent conflicts with legacy CSS */
+
+@media (hover: hover) and (pointer: fine) {
+	.custom-cursor-enabled,
+	.custom-cursor-enabled * {
+		cursor: none !important;
+	}
+}
+
+.custom-cursor-layer {
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 9999;
+}
+
+.custom-cursor-dot,
+.custom-cursor-ring {
+	position: fixed;
+	top: 0;
+	left: 0;
+	opacity: 1;
+	transition: opacity 0.18s ease;
+}
+
+.custom-cursor-dot.is-hidden,
+.custom-cursor-ring.is-hidden {
+	opacity: 0;
+}
+
+.custom-cursor-dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 999px;
+	background: #6ee7b7;
+	box-shadow:
+		0 0 10px rgba(110, 231, 183, 0.8),
+		0 0 18px rgba(16, 185, 129, 0.5);
+	transform: translate3d(-100px, -100px, 0);
+}
+
+.custom-cursor-ring {
+	width: 32px;
+	height: 32px;
+	border-radius: 999px;
+	border: 1.5px solid rgba(110, 231, 183, 0.75);
+	background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(0, 0, 0, 0) 65%);
+	box-shadow:
+		0 0 14px rgba(16, 185, 129, 0.4),
+		inset 0 0 6px rgba(110, 231, 183, 0.25);
+	transform: translate3d(-100px, -100px, 0);
+	transition:
+		border-color 0.15s ease,
+		box-shadow 0.15s ease,
+		background 0.15s ease,
+		opacity 0.18s ease;
+}
+
+.custom-cursor-ring::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 12px;
+	height: 12px;
+	transform: translate(-50%, -50%);
+	border: 1px solid rgba(245, 158, 11, 0.55);
+	border-radius: 999px;
+}
+
+.custom-cursor-ring.is-pressed {
+	border-color: rgba(245, 158, 11, 0.9);
+	box-shadow:
+		0 0 14px rgba(245, 158, 11, 0.35),
+		inset 0 0 6px rgba(245, 158, 11, 0.22);
+	background: radial-gradient(circle, rgba(245, 158, 11, 0.14) 0%, rgba(0, 0, 0, 0) 65%);
+}

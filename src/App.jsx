@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './index.css'; // if any
 import avatarImage from './assets/avatar.png';
+import cvPdf from './assets/CV.pdf';
 
 // LaundryLink Images
 import imgLaundry1 from './assets/LAUNDRYLINK/1.jpg';
@@ -87,6 +88,8 @@ const PROJECTS = {
     images: [imgLaundry1, imgLaundry2, imgLaundry3, imgLaundry4, imgLaundry5],
     tags: ['ESP32', 'C++', 'Python', 'Flask', 'Supabase', 'React'],
     lastPush: '2024.11.08',
+    liveUrl: null,
+    githubUrl: 'https://github.com/zynthoz/laundry-esp32-controller',
   },
   'window-project-2': {
     headline: 'TOOL.AI',
@@ -98,6 +101,8 @@ const PROJECTS = {
     images: [imgToolAI1, imgToolAI2, imgToolAI3, imgToolAI4],
     tags: ['OPEN AI', 'NEXT.JS', 'REACT'],
     lastPush: '2023.09.12',
+    liveUrl: 'https://albertson.vercel.app',
+    githubUrl: null,
   },
   'window-project-3': {
     headline: 'QFORM',
@@ -109,6 +114,8 @@ const PROJECTS = {
     images: [imgQForm1, imgQForm2, imgQForm3, imgQForm4, imgQForm5, imgQForm6],
     tags: ['PHP', 'SQL', 'QRPH', 'HTML/CSS', 'JavaScript'],
     lastPush: '2024.01.20',
+    liveUrl: 'https://qform.vercel.app',
+    githubUrl: 'https://github.com/zynthoz/facility-reservation-system',
   },
   'window-project-4': {
     headline: 'ROYALE TRACKER',
@@ -120,6 +127,8 @@ const PROJECTS = {
     images: [imgRoyaleTracker1, imgRoyaleTracker2, imgRoyaleTracker3],
     tags: ['REACT', 'REST_API', 'TAILWIND_CSS'],
     lastPush: '2024.04.03',
+    liveUrl: 'https://royale-tracker.vercel.app',
+    githubUrl: 'https://github.com/zynthoz/clash-app',
   },
   'window-project-5': {
     headline: 'IMPETO',
@@ -131,6 +140,8 @@ const PROJECTS = {
     images: [imgImpeto1, imgImpeto2, imgImpeto3, imgImpeto4, imgImpeto5],
     tags: ['Next.js', 'TypeScript', 'Supabase', 'React', 'OAuth', 'PostgreSQL'],
     lastPush: '2024.05.01',
+    liveUrl: 'https://impeto-impeto.vercel.app',
+    githubUrl: 'https://github.com/zynthoz/taskhero',
   }
 };
 
@@ -158,7 +169,288 @@ function Clock() {
   return <time id="clock" aria-label="Current time">{time}</time>;
 }
 
+function CustomCursor() {
+  const [enabled, setEnabled] = useState(false);
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
+  const frameRef = useRef(0);
+  const targetRef = useRef({ x: 0, y: 0 });
+  const currentRef = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const updateEnabled = () => {
+      setEnabled(mediaQuery.matches && window.innerWidth >= 640);
+    };
+
+    updateEnabled();
+    window.addEventListener('resize', updateEnabled);
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', updateEnabled);
+    } else {
+      mediaQuery.addListener(updateEnabled);
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateEnabled);
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener('change', updateEnabled);
+      } else {
+        mediaQuery.removeListener(updateEnabled);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) {
+      document.body.classList.remove('custom-cursor-enabled');
+      return;
+    }
+
+    document.body.classList.add('custom-cursor-enabled');
+
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
+
+    const move = (event) => {
+      const x = event.clientX;
+      const y = event.clientY;
+      targetRef.current.x = x;
+      targetRef.current.y = y;
+      if (dot) {
+        dot.style.transform = `translate3d(${x - 3}px, ${y - 3}px, 0)`;
+      }
+      dot.classList.remove('is-hidden');
+      ring.classList.remove('is-hidden');
+    };
+
+    const mouseDown = () => ring.classList.add('is-pressed');
+    const mouseUp = () => ring.classList.remove('is-pressed');
+    const mouseLeave = () => {
+      dot.classList.add('is-hidden');
+      ring.classList.add('is-hidden');
+    };
+    const mouseEnter = () => {
+      dot.classList.remove('is-hidden');
+      ring.classList.remove('is-hidden');
+    };
+
+    const animateRing = () => {
+      const current = currentRef.current;
+      const target = targetRef.current;
+      current.x += (target.x - current.x) * 0.2;
+      current.y += (target.y - current.y) * 0.2;
+      ring.style.transform = `translate3d(${current.x - 16}px, ${current.y - 16}px, 0)`;
+      frameRef.current = requestAnimationFrame(animateRing);
+    };
+
+    frameRef.current = requestAnimationFrame(animateRing);
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mousedown', mouseDown);
+    window.addEventListener('mouseup', mouseUp);
+    window.addEventListener('mouseleave', mouseLeave);
+    window.addEventListener('mouseenter', mouseEnter);
+
+    return () => {
+      document.body.classList.remove('custom-cursor-enabled');
+      cancelAnimationFrame(frameRef.current);
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mousedown', mouseDown);
+      window.removeEventListener('mouseup', mouseUp);
+      window.removeEventListener('mouseleave', mouseLeave);
+      window.removeEventListener('mouseenter', mouseEnter);
+    };
+  }, [enabled]);
+
+  if (!enabled) return null;
+
+  return (
+    <div className="custom-cursor-layer" aria-hidden="true">
+      <div ref={ringRef} className="custom-cursor-ring is-hidden"></div>
+      <div ref={dotRef} className="custom-cursor-dot is-hidden"></div>
+    </div>
+  );
+}
+
+const KERNEL_LOGS = [
+  "ACPI: Core revision 20230628",
+  "PM: Registering ACPI NVS region",
+  "PCI: Using host bridge windows from ACPI",
+  "smpboot: Allowing 64 CPUs, 32 hotplug CPUs",
+  "x86/cpu: VMX (outside TXT) disabled by BIOS",
+  "pstore: Registered mce log module",
+  "NET: Registered PF_INET protocol family",
+  "SCSI subsystem initialized",
+  "usbcore: registered new interface driver usbfs",
+  "usbcore: registered new device driver usb",
+  "Advanced Data Error Correction: Enabled",
+  "cryptd: max_cpu_qlen set to 1000",
+  "AppArmor: AppArmor initialized",
+  "Mount-cache hash table entries: 65536",
+  "CPU: Physical Processor ID: 0",
+  "CPU: Processor Core ID: 0",
+  "mce: CPU supports 22 MCE banks",
+  "smmp: SMBIOS 3.0.0 present.",
+  "DMI: AARON.DEV Custom Build/Motherboard, BIOS 2.88",
+  "rtc_cmos 00:00: RTC can wake from S4",
+  "hpet0: at MMIO 0xfed00000, IRQs 2, 8, 0, 3",
+  "VFS: Disk quotas cgqfmt_v2, v1",
+  "pnp: PnP ACPI init",
+  "vgaarb: loaded",
+  "SCSI subsystem initialized",
+  "libata version 3.00 loaded.",
+  "usbcore: registered new interface driver hub",
+  "pci 0000:00:02.0: vgaarb: bridge control possible",
+  "clocksource: Switched to clocksource tsc",
+  "VFS: Mounted root (ext4 filesystem) readonly on device 8:1.",
+  "Freeing unused kernel image (initmem) memory: 2048K",
+  "Write protecting the kernel read-only data: 24576k"
+];
+
+function generateRandomHex() {
+  return `0x${Math.floor(Math.random() * 0xffffffff).toString(16).padStart(8, '0')}`;
+}
+
+function BootSequence({ onComplete }) {
+  const [logs, setLogs] = useState([]);
+  
+  useEffect(() => {
+    let currentLogs = [];
+    let tick = 0;
+    
+    // Limits DOM nodes to keep performance snappy
+    const maxLogs = 60;
+    
+    const pushLogs = (newLogs) => {
+      currentLogs = [...currentLogs, ...newLogs];
+      if (currentLogs.length > maxLogs) {
+        currentLogs = currentLogs.slice(currentLogs.length - maxLogs);
+      }
+      setLogs([...currentLogs]);
+    };
+
+    const interval = setInterval(() => {
+      tick++;
+      
+      // Stage 1: POST
+      if (tick === 1) {
+        pushLogs([
+          "AARON Megatrends BIOS (C) 2026 AARON.DEV INC.",
+          "Verifying system memory................... 65536 MB OK",
+          "Initializing CPU cores.................... [ 16 / 16 ] OK",
+        ]);
+      }
+      
+      // Stage 2: Initial Mounts
+      if (tick === 5) {
+        pushLogs([
+          "Loading bootloader...",
+          "Booting from root filesystem...",
+        ]);
+      }
+
+      // Stage 3: Burst of Kernel Initialization
+      if (tick > 8 && tick < 35) {
+        const burst = [];
+        // Blast multiples of lines per tick to simulate rapid kernel probing
+        const burstAmount = Math.floor(Math.random() * 4) + 2;
+        for (let i = 0; i < burstAmount; i++) {
+          const baseStr = KERNEL_LOGS[Math.floor(Math.random() * KERNEL_LOGS.length)];
+          const memAddr = generateRandomHex();
+          burst.push(`[${(tick * 0.0432).toFixed(6)}] ${baseStr} at ${memAddr}`);
+        }
+        pushLogs(burst);
+      }
+      
+      // Stage 4: Services
+      if (tick === 40) pushLogs(["[ OK ] Reached target Local File Systems."]);
+      if (tick === 43) pushLogs(["[ OK ] Started System Logging Service."]);
+      if (tick === 46) pushLogs(["[ OK ] Started Network Manager."]);
+      if (tick === 49) pushLogs(["[ OK ] Reached target Network."]);
+      if (tick === 52) pushLogs(["[ OK ] Started GUI Manager."]);
+      if (tick === 56) {
+        pushLogs(["", "Starting user session...", "Bypassing security protocols...", "ACCESS GRANTED."]);
+      }
+      
+      if (tick >= 70) {
+        clearInterval(interval);
+        onComplete();
+      }
+    }, 45); // Hyper fast 45ms per tick
+
+    return () => clearInterval(interval);
+  }, [onComplete]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0, transition: { duration: 0.6, ease: "easeOut" } }}
+      className="fixed inset-0 z-[99999] bg-[var(--color-background)] bg-vignette p-4 md:p-8 overflow-hidden pointer-events-none select-none flex flex-col text-[#28c840] font-mono text-[10px] sm:text-xs md:text-sm leading-[1.3] tracking-tight uppercase"
+    >
+      {/* CRT / Theme underlays */}
+      <div 
+        className="absolute inset-0 flex items-center justify-center -z-10 opacity-20"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(40, 200, 64, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(40, 200, 64, 0.05) 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px',
+          backgroundPosition: 'center center'
+        }}
+      ></div>
+      <div 
+        className="absolute inset-0 mix-blend-overlay opacity-30" 
+        style={{ backgroundImage: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%)', backgroundSize: '100% 4px' }}
+      ></div>
+
+      {/* Top Fixed SysInfo */}
+      <div className="flex justify-between w-full border-b border-[#28c840]/30 pb-2 mb-4 shrink-0 drop-shadow-[0_0_5px_rgba(40,200,64,0.5)]">
+        <div>
+          <span className="font-bold">AARON.DEV OS KERNEL V2.88</span><br/>
+          <span className="opacity-70">CPU: QUANTUM NEURAL PROCESSOR @ 6.4GHZ</span><br/>
+          <span className="opacity-70">MEM: 64TB DDDR9 / CLK: 9800MHZ</span>
+        </div>
+        <div className="text-right hidden sm:block">
+          <span className="font-bold">[ SYSTEM DIAGNOSTICS ]</span><br/>
+          <span className="opacity-70">TEMP: 32°C / NOMINAL</span><br/>
+          <span className="opacity-70">VOLT: 1.12V / STABLE</span>
+        </div>
+      </div>
+
+      {/* ASCII Logo */}
+      <div className="shrink-0 mb-3 sm:mb-4 whitespace-pre font-bold text-[var(--color-accent)] drop-shadow-[0_0_8px_rgba(235,188,85,0.6)] leading-none text-[7px] xs:text-[8px] sm:text-[10px] overflow-x-auto">
+        {TERMINAL_ASCII}
+      </div>
+
+      {/* Scrolling Logs */}
+      <div className="flex-1 w-full relative overflow-hidden flex flex-col justify-end">
+        <div className="w-full flex-col justify-end">
+          {logs.map((log, i) => {
+             const isOk = log.includes("[ OK ]");
+             const isWarning = log.includes("Bypassing");
+             const isGranted = log.includes("ACCESS GRANTED");
+             
+             let colorClass = "text-[#28c840] opacity-80";
+             if (isOk) colorClass = "text-[#28c840] font-bold brightness-125";
+             if (isWarning) colorClass = "text-red-400 font-bold drop-shadow-[0_0_5px_rgba(248,113,113,0.5)]";
+             if (isGranted) colorClass = "text-[var(--color-accent)] font-bold text-xl drop-shadow-[0_0_10px_rgba(235,188,85,0.8)] mt-4";
+
+             return (
+               <div key={i} className={`whitespace-nowrap overflow-hidden text-ellipsis ${colorClass}`}>
+                 {log}
+               </div>
+             )
+          })}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function App() {
+  const [isBooting, setIsBooting] = useState(true);
   const [windows, setWindows] = useState({
     'window-about': { id: 'window-about', state: 'open', zIndex: 20, bootNonce: 0 },
     'window-terminal': { id: 'window-terminal', state: 'open', zIndex: 20, bootNonce: 0 },
@@ -168,6 +460,7 @@ export default function App() {
     'window-project-3': { id: 'window-project-3', state: 'closed', zIndex: 20, bootNonce: 0 },
     'window-project-4': { id: 'window-project-4', state: 'closed', zIndex: 20, bootNonce: 0 },
     'window-project-5': { id: 'window-project-5', state: 'closed', zIndex: 20, bootNonce: 0 },
+    'window-contact': { id: 'window-contact', state: 'closed', zIndex: 20, bootNonce: 0 },
   });
 
   const [focusedId, setFocusedId] = useState(null);
@@ -212,6 +505,19 @@ export default function App() {
     if (focusedId === id) setFocusedId(null);
   };
 
+  const minimizeAllWindows = () => {
+    setWindows(prev => {
+      const next = { ...prev };
+      Object.keys(next).forEach(key => {
+        if (next[key].state === 'open') {
+          next[key] = { ...next[key], state: 'minimized' };
+        }
+      });
+      return next;
+    });
+    setFocusedId(null);
+  };
+
   const focusWindow = (id) => {
     if (windows[id]?.state !== 'open') return;
     setZTop(z => z + 1);
@@ -244,6 +550,10 @@ export default function App() {
 
   return (
     <>
+      <AnimatePresence>
+        {isBooting && <BootSequence key="boot-sequence" onComplete={() => setIsBooting(false)} />}
+      </AnimatePresence>
+
       {/* MAIN CANVAS */}
       <main className="fixed inset-0 pb-12 overflow-hidden bg-vignette" id="main-canvas">
         {/* SUBTLE PHOSPHOR OS WALLPAPER */}
@@ -284,11 +594,6 @@ export default function App() {
           openExternalApp={openExternalApp}
           openGallery={(pid) => setActiveGallery(pid)}
         />
-        <MobileLayout
-          windows={windows}
-          openWindow={openWindow}
-          closeWindow={closeWindow}
-        />
       </main>
 
       {/* GALLERY OVERLAY */}
@@ -299,39 +604,39 @@ export default function App() {
       {/* TASKBAR */}
       <nav className="taskbar" aria-label="Taskbar">
         <div className="taskbar-left gap-2 sm:gap-4 flex items-center">
-          <button className="taskbar-btn active" id="btn-start" aria-label="Start menu">
+          <button className="taskbar-btn active" id="btn-start" aria-label="Start menu" onClick={minimizeAllWindows}>
             <span className="material-symbols-outlined">grid_view</span>
           </button>
 
           <TaskBarButton id="window-about" icon="person" label="ABOUT" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-about')} />
-          <TaskBarButton id="window-terminal" icon="terminal" label="TERMINAL" mobileLabel="TERM" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-terminal')} />
-          <TaskBarButton id="window-github" icon="query_stats" label="STATS" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-github')} />
-
-          <div className="hidden sm:block w-px h-6 bg-[var(--color-surface-bright)] mx-1"></div>
-
-          <button className="taskbar-btn hidden sm:flex items-center gap-2 px-3 hover:bg-[var(--color-surface-bright)] transition-colors rounded-none outline-none" onClick={() => openExternalApp('/cv.pdf')}>
-            <span className="material-symbols-outlined text-[18px]">picture_as_pdf</span><span className="text-[14px] font-bold tracking-wide">CV</span>
+          <TaskBarButton id="window-contact" icon="mail" label="CONTACT" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-contact')} className="hidden sm:flex" />
+          <TaskBarButton id="window-terminal" icon="terminal" label="TERMINAL" mobileLabel="TERM" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-terminal')} className="hidden sm:flex" />
+          <TaskBarButton id="window-github" icon="query_stats" label="STATS" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-github')} className="hidden sm:flex" />
+          <button className="taskbar-btn hidden sm:flex items-center gap-2 px-3 hover:bg-[var(--color-surface-bright)] transition-colors rounded-none outline-none" onClick={() => openExternalApp('https://github.com/zynthoz')}>
+            <svg viewBox="0 0 24 24" className="w-[28px] h-[28px]" fill="currentColor" aria-hidden="true">
+              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.24.78-.54 0-.27-.01-.98-.02-1.92-3.2.7-3.88-1.54-3.88-1.54-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.53-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.28 1.19-3.08-.12-.29-.52-1.47.11-3.07 0 0 .97-.31 3.19 1.18a11.1 11.1 0 0 1 5.81 0c2.22-1.49 3.19-1.18 3.19-1.18.63 1.6.24 2.78.12 3.07.74.8 1.19 1.82 1.19 3.08 0 4.43-2.69 5.4-5.26 5.69.41.35.78 1.03.78 2.08 0 1.5-.01 2.71-.01 3.08 0 .3.2.65.79.54A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+            </svg><span className="text-[14px] font-bold tracking-wide">GITHUB</span>
           </button>
-          <button className="taskbar-btn hidden sm:flex items-center gap-2 px-3 hover:bg-[var(--color-surface-bright)] transition-colors rounded-none outline-none" onClick={() => openExternalApp('https://github.com')}>
-            <span className="material-symbols-outlined text-[18px]">link</span><span className="text-[14px] font-bold tracking-wide">GITHUB</span>
-          </button>
-          <button className="taskbar-btn hidden sm:flex items-center gap-2 px-3 hover:bg-[var(--color-surface-bright)] transition-colors rounded-none outline-none" onClick={() => openExternalApp('https://www.linkedin.com')}>
-            <span className="material-symbols-outlined text-[18px]">work</span><span className="text-[14px] font-bold tracking-wide">LINKEDIN</span>
+          <button className="taskbar-btn hidden sm:flex items-center gap-2 px-3 hover:bg-[var(--color-surface-bright)] transition-colors rounded-none outline-none" onClick={() => openExternalApp('https://linkedin.com/in/aarongabriellim')}>
+            <svg viewBox="0 0 24 24" className="w-[30px] h-[30px]" fill="currentColor" aria-hidden="true">
+              <path d="M4.98 3.5A2.49 2.49 0 0 0 2.5 6c0 1.37 1.1 2.48 2.48 2.48A2.49 2.49 0 0 0 7.46 6 2.49 2.49 0 0 0 4.98 3.5ZM2.97 9.5h4.03V21H2.97V9.5Zm6.52 0h3.86v1.57h.06c.54-1.02 1.85-2.1 3.8-2.1 4.06 0 4.8 2.67 4.8 6.14V21h-4.02v-5.23c0-1.25-.02-2.86-1.74-2.86-1.75 0-2.02 1.36-2.02 2.77V21H9.49V9.5Z" />
+            </svg><span className="text-[14px] font-bold tracking-wide">LINKEDIN</span>
           </button>
         </div>
         <div className="taskbar-clock">
           <Clock />
         </div>
       </nav>
+      <CustomCursor />
     </>
   );
 }
 
-function TaskBarButton({ id, icon, label, mobileLabel, windows, focusedId, onClick }) {
+function TaskBarButton({ id, icon, label, mobileLabel, windows, focusedId, onClick, className }) {
   const win = windows[id] || { state: 'closed' };
   const isRunning = win.state === 'open' || win.state === 'minimized';
   const isFocused = win.state === 'open' && focusedId === id;
-  let cls = 'taskbar-btn';
+  let cls = `taskbar-btn ${className || ''}`;
 
   return (
     <button className={cls} onClick={onClick} aria-label={label}>
@@ -350,10 +655,9 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
   const constraintsRef = useRef(null);
 
   return (
-    <div className="hidden sm:flex h-full p-8 relative" ref={constraintsRef}>
+    <div className="flex h-full p-4 sm:p-8 relative" ref={constraintsRef}>   
       {/* Desktop Main Icon Grid */}
-      <nav className="absolute left-8 top-8 bottom-24 flex gap-12 z-10 py-2" aria-label="Desktop icons">
-        
+      <nav className="absolute left-4 sm:left-8 top-4 sm:top-8 bottom-24 grid grid-cols-2 sm:flex sm:flex-row gap-6 sm:gap-12 z-10 py-2 w-[calc(100%-2rem)] sm:w-auto" aria-label="Desktop icons">
         {/* Column 1: Projects Group */}
         <div className="flex flex-col gap-6">
           <DesktopIcon icon="code" label="LAUNDRYLINK" onClick={() => openWindow('window-project-1')} />
@@ -366,7 +670,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
         {/* Column 2: Apps Group */}
         <div className="flex flex-col gap-6">
           <DesktopIcon icon="terminal" label="CONTACT" onClick={() => openWindow('window-contact')} />
-          <DesktopIcon icon="history_edu" label="EXPERIENCE" onClick={() => openWindow('window-experience')} />
+          <DesktopIcon icon="history_edu" label="EXPERIENCE" onClick={() => openExternalApp(cvPdf)} />
         </div>
 
       </nav>
@@ -398,8 +702,8 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
             <WindowFrame
               key={`window-about-${windows['window-about'].bootNonce || 0}`}
               id="window-about"
-              className="w-[750px] h-auto max-h-[85vh] border border-[#2b1822] pointer-events-auto shadow-[0_0_40px_rgba(0,0,0,0.8)] font-mono bg-[#110C11] flex flex-col"
-              initLeft="calc(50% - 375px)" initTop="calc(50% - max-h-[85vh])"
+              className="w-[750px] max-w-[90vw] sm:max-w-[85vw] lg:max-w-[750px] h-auto max-h-[85vh] border border-[#2b1822] pointer-events-auto shadow-[0_0_40px_rgba(0,0,0,0.8)] font-mono bg-[#110C11] flex flex-col"
+              initLeft="calc(50% - min(375px, 45vw))" initTop="8px"
               zIndex={windows['window-about'].zIndex}
               isFocused={focusedId === 'window-about'}
               onFocus={() => focusWindow('window-about')}
@@ -426,14 +730,14 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               <div className="flex-1 overflow-y-auto overflow-x-hidden p-8 sm:p-10 text-slate-400 bg-[#110C11]">
 
                 {/* Header Section */}
-                <div className="flex items-start gap-6 mb-8 pb-8 border-b border-[#2b1822]">
+                <div className="flex flex-col sm:flex-row items-start gap-6 mb-8 pb-8 border-b border-[#2b1822]">
                   <div className="w-28 h-28 bg-[#1a1215] flex items-center justify-center shrink-0 border border-[#2b1822] shadow-inner" style={{ borderRadius: '0', overflow: 'hidden' }}>
                     <img src={avatarImage} alt="Avatar" className="w-full h-full object-cover" />
                   </div>
                   <div>
                     <h1 className="text-4xl font-mono font-bold text-emerald-400 tracking-widest uppercase drop-shadow-[0_0_12px_rgba(52,211,153,0.5)] mb-2">Aaron Gabriel Lim</h1>
                     <p className="text-[13px] text-emerald-600 font-mono font-bold mb-4 tracking-widest uppercase">BS_INFORMATION_TECHNOLOGY // 2ND_YEAR @ UST</p>
-                    <div className="flex gap-3">
+                    <div className="flex flex-wrap gap-3">
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-mono font-bold tracking-widest text-emerald-500 bg-[#1a1215] border border-[#2b1822] uppercase">
                         <span className="material-symbols-outlined text-[12px]">location_on</span> METRO_MANILA_PH
                       </span>
@@ -509,8 +813,8 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
             <WindowFrame
               key={`window-terminal-${windows['window-terminal'].bootNonce || 0}`}
               id="window-terminal"
-              className="w-[400px] h-[460px] pointer-events-auto bg-[var(--color-background)] border border-[var(--color-surface-container-highest)] shadow-[0_0_30px_rgba(0,0,0,0.5)] font-mono"
-              initLeft="calc(100% - 400px)" initTop="0px"
+              className="hidden sm:flex w-[400px] max-w-[90vw] sm:max-w-[400px] h-[460px] max-h-[85vh] pointer-events-auto bg-[var(--color-background)] border border-[var(--color-surface-container-highest)] shadow-[0_0_30px_rgba(0,0,0,0.5)] font-mono"
+              initLeft="calc(100% - min(400px, 90vw))" initTop="10px"
               zIndex={windows['window-terminal'].zIndex}
               isFocused={focusedId === 'window-terminal'}
               onFocus={() => focusWindow('window-terminal')}
@@ -542,8 +846,8 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
             <WindowFrame
               key={`window-github-${windows['window-github'].bootNonce || 0}`}
               id="window-github"
-              className="w-[400px] h-[235px] pointer-events-auto overflow-hidden bg-[var(--color-background)] border border-[var(--color-surface-container-highest)] shadow-[0_0_30px_rgba(0,0,0,0.5)] font-mono"
-              initLeft="calc(100% - 400px)" initTop="480px"
+              className="hidden sm:flex w-[400px] h-[235px] pointer-events-auto overflow-hidden bg-[var(--color-background)] border border-[var(--color-surface-container-highest)] shadow-[0_0_30px_rgba(0,0,0,0.5)] font-mono"
+              initLeft="calc(100% - 400px)" initTop="500px"
               zIndex={windows['window-github'].zIndex}
               isFocused={focusedId === 'window-github'}
               onFocus={() => focusWindow('window-github')}
@@ -571,6 +875,83 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
             </WindowFrame>
           )}
 
+          {windows['window-contact']?.state === 'open' && (
+            <WindowFrame
+              key={`window-contact-${windows['window-contact'].bootNonce || 0}`}
+              id="window-contact"
+              className="w-[94vw] sm:w-[500px] max-w-[500px] h-auto border border-[#2b1822] pointer-events-auto shadow-[0_0_40px_rgba(0,0,0,0.8)] font-mono bg-[#110C11] flex flex-col"
+              initLeft="50%" initTop="50%"
+              centered
+              zIndex={windows['window-contact'].zIndex}
+              isFocused={focusedId === 'window-contact'}
+              onFocus={() => focusWindow('window-contact')}
+              onClose={() => closeWindow('window-contact')}
+              onMinimize={() => minimizeWindow('window-contact')}
+              constraintsRef={constraintsRef}
+            >
+              <div className="flex justify-between items-center px-4 py-2 bg-[#1a1215] border-b border-[#2b1822] cursor-grab active:cursor-grabbing w-full shrink-0">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[12px] text-emerald-500">mail</span>
+                  <span className="text-[10px] font-bold text-emerald-500 tracking-widest uppercase">COMM_LINK.sys</span>
+                </div>
+                <div className="flex gap-1.5">
+                  <button className="flex items-center justify-center w-7 h-6 bg-[#28c840] hover:bg-[#21ad37] border border-[#28c840] hover:shadow-[0_0_10px_rgba(40,200,64,0.6)] transition-all" onPointerDown={(e) => { e.stopPropagation(); minimizeWindow('window-contact'); }}>
+                    <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">remove</span>
+                  </button>
+                  <button className="flex items-center justify-center w-7 h-6 bg-[#ff5f57] hover:bg-[#e14842] border border-[#ff5f57] hover:shadow-[0_0_10px_rgba(255,95,87,0.6)] transition-all" onPointerDown={(e) => { e.stopPropagation(); closeWindow('window-contact'); }}>
+                    <span className="material-symbols-outlined text-[16px] text-black/90 font-extrabold pb-[0.5px]">close</span>
+                  </button>
+                </div>
+              </div>
+              <div className="p-4 sm:p-10 flex flex-col gap-4 sm:gap-6 bg-[#110C11] text-slate-400">
+                <div className="flex flex-col gap-2">
+                  <h1 className="text-2xl sm:text-3xl font-mono font-bold text-emerald-400 tracking-widest uppercase drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]">
+                    INITIALIZE_CONTACT
+                  </h1>
+                  <p className="text-[11px] sm:text-[12px] text-emerald-600 font-mono font-bold tracking-widest uppercase">
+                    SECURE_DIRECT_MESSAGE // INPUT_REQUIRED
+                  </p>
+                </div>
+
+                <form className="flex flex-col gap-3 sm:gap-5 mt-2 sm:mt-4" onSubmit={(e) => e.preventDefault()}>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[10px] font-bold text-orange-500 tracking-widest uppercase">ID_IDENTIFIER</label>
+                    <input type="text" className="bg-[#1a1215] border border-[#2b1822] p-2.5 sm:p-3 text-emerald-400 font-mono text-[12px] sm:text-[13px] outline-none focus:border-emerald-500 hover:border-[#331C24] transition-colors focus:shadow-[0_0_10px_rgba(16,185,129,0.1)] w-full block" placeholder="[YOUR_NAME]" />
+                  </div>
+                  
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[10px] font-bold text-orange-500 tracking-widest uppercase">RETURN_ADDRESS</label>
+                    <input type="email" className="bg-[#1a1215] border border-[#2b1822] p-2.5 sm:p-3 text-emerald-400 font-mono text-[12px] sm:text-[13px] outline-none focus:border-emerald-500 hover:border-[#331C24] transition-colors focus:shadow-[0_0_10px_rgba(16,185,129,0.1)] w-full block" placeholder="[YOUR_EMAIL]" />
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[10px] font-bold text-orange-500 tracking-widest uppercase">PAYLOAD</label>
+                    <textarea rows="3" className="bg-[#1a1215] border border-[#2b1822] p-2.5 sm:p-3 text-emerald-400 font-mono text-[12px] sm:text-[13px] outline-none focus:border-emerald-500 hover:border-[#331C24] transition-colors focus:shadow-[0_0_10px_rgba(16,185,129,0.1)] resize-y min-h-[88px] sm:min-h-[100px] w-full block" placeholder="[ENTER_MESSAGE_HERE]"></textarea>
+                  </div>
+
+                  <button className="mt-3 sm:mt-4 px-6 py-2.5 sm:py-3 font-mono font-bold text-[11px] sm:text-xs bg-emerald-500 text-black hover:bg-emerald-400 hover:shadow-[0_0_15px_rgba(16,185,129,0.6)] transition-all flex items-center justify-center gap-2 uppercase tracking-wide w-full border border-emerald-400">
+                    <span className="material-symbols-outlined text-[16px]">send</span> TRANSMIT_DATA
+                  </button>
+                </form>
+
+                <div className="mt-3 sm:mt-4 pt-4 sm:pt-6 border-t border-[#2b1822] text-center space-y-2">
+                  <div className="text-[9px] sm:text-[10px] font-mono text-emerald-800 tracking-[0.04em] sm:tracking-widest uppercase break-words">
+                    EMAIL: <a href="mailto:aarongplim@gmail.com" className="text-emerald-500 hover:text-emerald-300 underline decoration-emerald-800 underline-offset-4 pointer-events-auto break-all">AARONGPLIM@GMAIL.COM</a>
+                  </div>
+                  <div className="text-[9px] sm:text-[10px] font-mono text-emerald-800 tracking-[0.04em] sm:tracking-widest uppercase break-words">
+                    PHONE: <a href="tel:+639668954561" className="text-emerald-500 hover:text-emerald-300 underline decoration-emerald-800 underline-offset-4 pointer-events-auto">+63 966 895 4561</a>
+                  </div>
+                  <div className="text-[9px] sm:text-[10px] font-mono text-emerald-800 tracking-[0.04em] sm:tracking-widest uppercase break-words">
+                    GITHUB: <a href="https://github.com/zynthoz" target="_blank" rel="noreferrer" className="text-emerald-500 hover:text-emerald-300 underline decoration-emerald-800 underline-offset-4 pointer-events-auto break-all"><span className="sm:hidden">ZYNTHOZ</span><span className="hidden sm:inline">GITHUB.COM/ZYNTHOZ</span></a>
+                  </div>
+                  <div className="text-[9px] sm:text-[10px] font-mono text-emerald-800 tracking-[0.04em] sm:tracking-widest uppercase break-words">
+                    LINKEDIN: <a href="https://linkedin.com/in/aarongabriellim" target="_blank" rel="noreferrer" className="text-emerald-500 hover:text-emerald-300 underline decoration-emerald-800 underline-offset-4 pointer-events-auto break-all"><span className="sm:hidden">AARONGABRIELLIM</span><span className="hidden sm:inline">LINKEDIN.COM/IN/AARONGABRIELLIM</span></a>
+                  </div>
+                </div>
+              </div>
+            </WindowFrame>
+          )}
+
         </AnimatePresence>
       </div>
 
@@ -578,7 +959,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
   );
 }
 
-function WindowFrame({ id, className, initLeft, initTop, zIndex, isFocused, onFocus, onClose, onMinimize, children, constraintsRef }) {
+function WindowFrame({ id, className, initLeft, initTop, zIndex, isFocused, onFocus, onClose, onMinimize, children, constraintsRef, centered = false }) {
   return (
     <motion.section
       drag
@@ -596,7 +977,7 @@ function WindowFrame({ id, className, initLeft, initTop, zIndex, isFocused, onFo
         scale: { duration: 0.15 }
       }}
       className={`window-frame absolute flex flex-col ${className} ${isFocused ? 'focused' : ''}`}
-      style={{ zIndex, top: initTop, left: initLeft, willChange: 'transform' }}
+      style={{ zIndex, top: initTop, left: initLeft, translate: centered ? '-50% -50%' : undefined, willChange: 'transform' }}
       aria-label={id}
     >
       {children}
@@ -716,8 +1097,8 @@ function ProjectWindow({ winId, data, winState, focusedId, focusWindow, closeWin
     <WindowFrame
       key={winId}
       id={winId}
-      className="w-[750px] h-[auto] border border-[#2b1822] pointer-events-auto shadow-[0_0_40px_rgba(0,0,0,0.8)] font-mono bg-[#110C11]"
-      initLeft="calc(50% - 375px)" initTop="calc(50% - max-h-[85vh])"
+      className="w-[750px] max-w-[90vw] sm:max-w-[85vw] lg:max-w-[750px] h-[auto] max-h-[85vh] overflow-y-auto border border-[#2b1822] pointer-events-auto shadow-[0_0_40px_rgba(0,0,0,0.8)] font-mono bg-[#110C11]"
+      initLeft="calc(50% - min(375px, 45vw))" initTop="8px"
       zIndex={winState.zIndex}
       isFocused={focusedId === winId}
       onFocus={() => focusWindow(winId)}
@@ -738,10 +1119,10 @@ function ProjectWindow({ winId, data, winState, focusedId, focusWindow, closeWin
         </div>
       </div>
 
-      <div className="p-10 flex flex-col gap-8 bg-[#110C11] text-slate-400">
+      <div className="p-6 sm:p-10 flex flex-col gap-8 bg-[#110C11] text-slate-400">
 
         <div className="flex flex-col gap-4">
-          <h1 className="text-5xl font-mono font-bold text-emerald-400 tracking-widest uppercase drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]">
+          <h1 className="text-3xl sm:text-5xl font-mono font-bold text-emerald-400 tracking-widest uppercase drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]">
             {data.headline}
           </h1>
           <div>
@@ -751,7 +1132,7 @@ function ProjectWindow({ winId, data, winState, focusedId, focusWindow, closeWin
           </div>
         </div>
 
-        <div className="grid grid-cols-[1.1fr_1fr] gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-6 md:gap-10">
           <div className="flex flex-col gap-6 text-[14px] font-mono text-slate-400 leading-relaxed">
             <p>{data.desc1}</p>
             <p>{data.desc2}</p>
@@ -790,16 +1171,26 @@ function ProjectWindow({ winId, data, winState, focusedId, focusWindow, closeWin
           </div>
         </div>
 
-        <div className="flex justify-between items-end mt-4 pt-8 border-t border-[#2b1822]">
-          <div className="flex gap-4">
-            <button className="px-6 py-3 font-mono font-bold text-xs bg-emerald-500 text-black hover:bg-emerald-400 hover:shadow-[0_0_15px_rgba(16,185,129,0.6)] transition-all flex items-center gap-2 uppercase tracking-wide">
-              <span className="tracking-tighter font-extrabold">&lt;&gt;</span> ACCESS_SOURCE_CODE
-            </button>
-            <button className="px-6 py-3 font-mono font-bold text-xs bg-transparent text-emerald-500 border border-[#331C24] hover:bg-[#1a1215] transition-colors flex items-center gap-2 uppercase tracking-wide">
-              <span className="material-symbols-outlined text-[16px]">public</span> VIEW_LIVE_DEPLOYMENT
-            </button>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mt-4 pt-8 border-t border-[#2b1822]">
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            {data.githubUrl && (
+              <button
+                className="w-full sm:w-auto justify-center px-6 py-3 font-mono font-bold text-xs bg-emerald-500 text-black hover:bg-emerald-400 hover:shadow-[0_0_15px_rgba(16,185,129,0.6)] transition-all flex items-center gap-2 uppercase tracking-wide"
+                onClick={() => window.open(data.githubUrl, '_blank', 'noopener,noreferrer')}
+              >
+                <span className="tracking-tighter font-extrabold">&lt;&gt;</span> ACCESS_SOURCE_CODE
+              </button>
+            )}
+            {data.liveUrl && (
+              <button
+                className="w-full sm:w-auto justify-center px-6 py-3 font-mono font-bold text-xs bg-transparent text-emerald-500 border border-[#331C24] hover:bg-[#1a1215] transition-colors flex items-center gap-2 uppercase tracking-wide"
+                onClick={() => window.open(data.liveUrl, '_blank', 'noopener,noreferrer')}
+              >
+                <span className="material-symbols-outlined text-[16px]">public</span> VIEW_LIVE_DEPLOYMENT
+              </button>
+            )}
           </div>
-          <div className="flex flex-col items-end text-[10px] font-mono text-emerald-700/60 tracking-wider">
+          <div className="flex flex-col items-start sm:items-end text-[10px] font-mono text-emerald-700/60 tracking-wider">
             <span className="uppercase mb-1">LAST_PUSH:</span>
             <span>{data.lastPush}</span>
           </div>
@@ -1022,7 +1413,7 @@ function GitHubPanel() {
         </div>
       ) : (
         <>
-          <div className="flex gap-[4px] border border-emerald-900/50 p-[8px] w-full mb-3 bg-emerald-950/20">
+          <div className="flex gap-[4px] border border-emerald-900/50 p-[8px] w-full mb-3 bg-emerald-950/20 overflow-x-auto">
             <div className="w-[18px] text-[7px] font-bold tracking-widest text-emerald-700 select-none shrink-0 flex flex-col justify-between items-end pr-[2px] uppercase">
               <div className="h-[10px] leading-[10px]">Sun</div>
               <div className="h-[10px] leading-[10px]">Mon</div>
