@@ -814,7 +814,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
             <WindowFrame
               key={`window-terminal-${windows['window-terminal'].bootNonce || 0}`}
               id="window-terminal"
-              className="hidden sm:flex w-[400px] max-w-[90vw] sm:max-w-[400px] h-[460px] max-h-[85vh] pointer-events-auto bg-[var(--color-background)] border border-[var(--color-surface-container-highest)] shadow-[0_0_30px_rgba(0,0,0,0.5)] font-mono"
+              className="hidden sm:flex w-[400px] max-w-[90vw] sm:max-w-[400px] h-[570px] max-h-[84vh] pointer-events-auto bg-[var(--color-background)] border border-[var(--color-surface-container-highest)] shadow-[0_0_30px_rgba(0,0,0,0.5)] font-mono"
               initLeft="calc(100% - min(400px, 90vw))" initTop="10px"
               zIndex={windows['window-terminal'].zIndex}
               isFocused={focusedId === 'window-terminal'}
@@ -837,7 +837,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
                   </button>
                 </div>
               </div>
-              <div className="px-6 pb-2 pt-2 h-[calc(100%-40px)] overflow-hidden flex flex-col justify-start items-start">
+              <div className="px-6 pb-8 pt-2 h-[calc(100%-40px)] overflow-y-auto overflow-x-hidden flex flex-col justify-start items-start">
                 <LinuxTerminalPanel />
               </div>
             </WindowFrame>
@@ -848,7 +848,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               key={`window-github-${windows['window-github'].bootNonce || 0}`}
               id="window-github"
               className="hidden sm:flex w-[400px] h-[235px] pointer-events-auto overflow-hidden bg-[var(--color-background)] border border-[var(--color-surface-container-highest)] shadow-[0_0_30px_rgba(0,0,0,0.5)] font-mono"
-              initLeft="calc(100% - 400px)" initTop="500px"
+              initLeft="calc(100% - 400px)" initTop="640px"
               zIndex={windows['window-github'].zIndex}
               isFocused={focusedId === 'window-github'}
               onFocus={() => focusWindow('window-github')}
@@ -1266,17 +1266,28 @@ function GalleryLightbox({ pid, onClose }) {
   );
 }
 
-const SYSTEM_SKILLS = [
-  { name: 'JavaScript', val: 90 },
-  { name: 'React', val: 85 },
-  { name: 'Python', val: 70 },
-  { name: 'UI/UX', val: 80 },
-  { name: 'Node.js', val: 75 }
+const SKILL_ICONS = [
+  { label: 'C++', src: 'https://cdn.simpleicons.org/cplusplus/37e865' },
+  { label: 'Python', src: 'https://cdn.simpleicons.org/python/37e865' },
+  { label: 'PHP', src: 'https://cdn.simpleicons.org/php/37e865' },
+  { label: 'JavaScript', src: 'https://cdn.simpleicons.org/javascript/37e865' },
+  { label: 'TypeScript', src: 'https://cdn.simpleicons.org/typescript/37e865' },
+  { label: 'SQL', src: 'https://cdn.simpleicons.org/mysql/37e865' },
+  { label: 'PLpgSQL', src: 'https://cdn.simpleicons.org/postgresql/37e865' },
+  { label: 'Next.js', src: 'https://cdn.simpleicons.org/nextdotjs/37e865' },
+  { label: 'React', src: 'https://cdn.simpleicons.org/react/37e865' },
+  { label: 'TailwindCSS', src: 'https://cdn.simpleicons.org/tailwindcss/37e865' },
+  { label: 'Supabase', src: 'https://cdn.simpleicons.org/supabase/37e865' },
+  { label: 'PostgreSQL', src: 'https://cdn.simpleicons.org/postgresql/37e865' },
+  { label: 'SQLite', src: 'https://cdn.simpleicons.org/sqlite/37e865' },
+  { label: 'Git', src: 'https://cdn.simpleicons.org/git/37e865' },
+  { label: 'GitHub', src: 'https://cdn.simpleicons.org/github/37e865' },
+  { label: 'Vercel', src: 'https://cdn.simpleicons.org/vercel/37e865' },
 ];
 
 function LinuxTerminalPanel({ compact = false }) {
   return (
-    <div className="w-full font-mono text-emerald-500 leading-snug flex flex-col justify-start" style={{ fontSize: compact ? 10.5 : 12 }}>
+    <div className="w-full pb-3 font-mono text-emerald-500 leading-snug flex flex-col justify-start" style={{ fontSize: compact ? 10.5 : 12 }}>
       <div className="flex items-center justify-between mb-4 uppercase tracking-widest text-[#37e865] font-bold">
         <span>PROFILE-SHELL V4.2</span>
         <span className="flex items-center gap-2"><span className="inline-block w-2 h-2 bg-[#37e865] animate-pulse"></span>ONLINE</span>
@@ -1287,19 +1298,24 @@ function LinuxTerminalPanel({ compact = false }) {
       </pre>
 
       <div className="mb-4 pb-4 border-b border-emerald-900/50 w-full">
-        <div className="mb-2.5 text-[#37e865] font-bold tracking-widest">$ SKILLS --SUMMARY</div>
-        <div className="flex flex-col gap-2 w-full pr-2">
-          {SYSTEM_SKILLS.map((skill) => {
-            return (
-              <div key={skill.name} className="flex items-center gap-4 text-emerald-50 font-medium">
-                <span className="w-24 shrink-0">{skill.name}</span>
-                <div className="flex-1 h-2.5 border border-emerald-900/50 bg-emerald-950/30 relative">
-                  <div className="absolute left-0 top-0 h-full bg-[#83ff8f]" style={{ width: `${skill.val}%` }}></div>
-                </div>
-                <span className="w-10 text-right">{skill.val}%</span>
+        <div className="w-full p-1">
+          <div className="grid grid-cols-4 gap-3 w-full">
+            {SKILL_ICONS.map((item) => (
+              <div
+                key={item.label}
+                className="h-12 flex items-center justify-center"
+                title={item.label}
+                aria-label={item.label}
+              >
+                <img
+                  src={item.src}
+                  alt={item.label}
+                  className={compact ? 'w-7 h-7' : 'w-8 h-8'}
+                  loading="lazy"
+                />
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
 
