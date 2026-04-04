@@ -44,7 +44,7 @@ import imgImpetoPreview from './assets/IMPETO/preview.png';
 
 const TERMINAL_ASCII = [
   '                                      __         ',
-  '  ____ _____ __________  ____    ____/ /__ _   __',
+  '  ____  ____  _________  ____    ____/ /__ _   __',
   ' / __ `/ __ `/ ___/ __ \\/ __ \\  / __  / _ \\ | / /',
   '/ /_/ / /_/ / /  / /_/ / / / / / /_/ /  __/ |/ / ',
   '\\__,_/\\__,_/_/   \\____/_/ /_/⬤\\__,_/\\___/|___/  ',
@@ -387,7 +387,7 @@ function BootSequence({ onComplete }) {
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.6, ease: "easeOut" } }}
-      className="fixed inset-0 z-[99999] bg-[var(--color-background)] bg-vignette p-4 md:p-8 overflow-hidden pointer-events-none select-none flex flex-col text-[#28c840] font-mono text-[10px] sm:text-xs md:text-sm leading-[1.3] tracking-tight uppercase"
+      className="fixed inset-0 z-[99999] bg-[var(--color-background)] bg-vignette p-4 pb-24 sm:p-8 sm:pb-8 overflow-hidden pointer-events-none select-none flex flex-col text-[#28c840] font-mono text-[10px] sm:text-xs md:text-sm leading-[1.3] tracking-tight uppercase"
     >
       {/* CRT / Theme underlays */}
       <div 
