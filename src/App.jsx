@@ -837,7 +837,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
                   </button>
                 </div>
               </div>
-              <div className="px-6 pb-8 pt-2 h-[calc(100%-40px)] overflow-y-auto overflow-x-hidden flex flex-col justify-start items-start">
+              <div className="px-6 pb-8 pt-2 h-[calc(100%-40px)] overflow-hidden flex flex-col justify-start items-start">
                 <LinuxTerminalPanel />
               </div>
             </WindowFrame>
@@ -848,7 +848,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               key={`window-github-${windows['window-github'].bootNonce || 0}`}
               id="window-github"
               className="hidden sm:flex w-[400px] h-[235px] pointer-events-auto overflow-hidden bg-[var(--color-background)] border border-[var(--color-surface-container-highest)] shadow-[0_0_30px_rgba(0,0,0,0.5)] font-mono"
-              initLeft="calc(100% - 400px)" initTop="560px"
+              initLeft="calc(100% - 400px)" initTop="600px"
               zIndex={windows['window-github'].zIndex}
               isFocused={focusedId === 'window-github'}
               onFocus={() => focusWindow('window-github')}
