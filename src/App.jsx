@@ -848,7 +848,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               key={`window-github-${windows['window-github'].bootNonce || 0}`}
               id="window-github"
               className="hidden sm:flex w-[400px] h-[235px] pointer-events-auto overflow-hidden bg-[var(--color-background)] border border-[var(--color-surface-container-highest)] shadow-[0_0_30px_rgba(0,0,0,0.5)] font-mono"
-              initLeft="calc(100% - 400px)" initTop="640px"
+              initLeft="calc(100% - 400px)" initTop="560px"
               zIndex={windows['window-github'].zIndex}
               isFocused={focusedId === 'window-github'}
               onFocus={() => focusWindow('window-github')}
