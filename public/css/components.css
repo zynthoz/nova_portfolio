@@ -350,17 +350,17 @@ body {
 
 /* Desktop: large icons */
 .desk-icon-box--lg {
-  width: 64px;
-  height: 64px;
+  width: 102px;
+  height: 102px;
 }
-.desk-icon-box--lg .material-symbols-outlined { font-size: 40px; }
+.desk-icon-box--lg .material-symbols-outlined { font-size: 64px; }
 
 /* Mobile: smaller icons */
 .desk-icon-box--sm {
-  width: 40px;
-  height: 40px;
+  width: 64px;
+  height: 64px;
 }
-.desk-icon-box--sm .material-symbols-outlined { font-size: 24px; }
+.desk-icon-box--sm .material-symbols-outlined { font-size: 38px; }
 
 /* ──────────────────────────────────────────
    System Log / Terminal Panel
@@ -478,11 +478,11 @@ body {
   background: var(--color-primary-container);
 }
 .taskbar-btn .material-symbols-outlined {
-  font-size: 20px;
+  font-size: 32px;
 }
 @media (max-width: 640px) {
   .taskbar-btn { padding: 0 var(--space-3); }
-  .taskbar-btn .material-symbols-outlined { font-size: 18px; }
+  .taskbar-btn .material-symbols-outlined { font-size: 29px; }
 }
 
 /* Taskbar clock */
@@ -555,60 +555,6 @@ body {
   background-color: var(--color-surface-bright);
 }
 .topbar-btn .material-symbols-outlined { font-size: 12px; }
-
-/* ──────────────────────────────────────────
-   File Explorer Grid
-────────────────────────────────────────── */
-.file-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast);
-}
-.file-item:hover {
-  background-color: var(--color-surface-container);
-  border-color: rgba(132, 150, 126, 0.2);
-}
-.file-item .material-symbols-outlined {
-  font-size: 48px;
-}
-.file-item-name {
-  font-size: 10px;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-wide);
-  line-height: 1.3;
-  color: var(--color-primary);
-}
-.file-item-meta {
-  font-size: 8px;
-  opacity: 0.4;
-}
-
-/* File item icon colors */
-.file-icon-pdf  { color: var(--color-secondary); }
-.file-icon-url  { color: var(--color-primary-fixed-dim); }
-.file-icon-dir  { color: var(--color-secondary); }
-.file-icon-mail { color: var(--color-primary-fixed-dim); }
-
-/* Explorer statusbar row */
-.explorer-status {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.explorer-status-text {
-  font-size: 8px;
-  opacity: 0.6;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  display: flex;
-  gap: var(--space-4);
-}
 
 /* ──────────────────────────────────────────
    Buttons

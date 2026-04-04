@@ -2,16 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './index.css'; // if any
 
-const BOOT_LINES = [
-  { text: 'PHOSPHOR_OS_V.1.0.4 — BOOTING...', cls: 'log-line--focus' },
-  { text: '> Initializing neural link...', cls: 'log-line--focus' },
-  { text: '> Loading kernel_modules         [OK]', cls: 'log-line' },
-  { text: '> Establishing secure_proxy      [ENCRYPTED]', cls: 'log-line' },
-  { text: '> Mounting /dev/sda1 → /root/portfolio', cls: 'log-line' },
-  { text: '> Checking dependency graph      [MATCHED]', cls: 'log-line' },
-  { text: '> Rendering Phosphor display...', cls: 'log-line--focus' },
-  { text: 'System ready. Waiting for input', cls: 'log-line--focus', blink: true },
-];
+const TERMINAL_ASCII = [
+  '                                     __         ',
+  '  ____ _____ __________  ____   ____/ /__ _   __',
+  ' / __ `/ __ `/ ___/ __ \\/ __ \\ / __  / _ \\ | / /',
+  '/ /_/ / /_/ / /  / /_/ / / / // /_/ /  __/ |/ / ',
+  '\\__,_/\\__,_/_/   \\____/_/ /_(_)__,_/\\___/|___/  ',
+  '                                                '
+].join('\n');
 
 const VIM_LINES = [
   <span className="vim-comment"># INIT_PROFILE: {`{`}</span>,
@@ -102,41 +100,9 @@ function Clock() {
   return <time id="clock" aria-label="Current time">{time}</time>;
 }
 
-function BootSequence({ containerId }) {
-  const [lines, setLines] = useState([]);
-
-  useEffect(() => {
-    let unmounted = false;
-    BOOT_LINES.forEach((line, i) => {
-      setTimeout(() => {
-        if (!unmounted) {
-          setLines(prev => [...prev, line]);
-        }
-      }, 900 + i * 280);
-    });
-    return () => { unmounted = true; };
-  }, []);
-
-  return (
-    <div className="sys-log-body" id={containerId} aria-live="polite">
-      {lines.map((line, idx) => (
-        <motion.p
-          key={idx}
-          className={line.cls}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.15 }}
-          dangerouslySetInnerHTML={{ __html: line.blink ? line.text + '<span class="cursor-block"></span>' : line.text }}
-        />
-      ))}
-    </div>
-  );
-}
-
 export default function App() {
   const [windows, setWindows] = useState({
     'window-about': { id: 'window-about', state: 'open', zIndex: 20 },
-    'window-files': { id: 'window-files', state: 'open', zIndex: 20 },
     'window-terminal': { id: 'window-terminal', state: 'open', zIndex: 20 },
     'window-project-1': { id: 'window-project-1', state: 'closed', zIndex: 20 },
     'window-project-2': { id: 'window-project-2', state: 'closed', zIndex: 20 },
@@ -199,6 +165,10 @@ export default function App() {
     }
   };
 
+  const openExternalApp = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <>
       {/* TOP BAR */}
@@ -222,6 +192,7 @@ export default function App() {
           closeWindow={closeWindow}
           minimizeWindow={minimizeWindow}
           focusWindow={focusWindow}
+          openExternalApp={openExternalApp}
           openGallery={(pid) => setActiveGallery(pid)}
         />
         <MobileLayout
@@ -245,7 +216,6 @@ export default function App() {
 
           <TaskBarButton id="window-about" icon="person" label="ABOUT" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-about')} />
           <TaskBarButton id="window-terminal" icon="terminal" label="TERMINAL" mobileLabel="TERM" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-terminal')} />
-          <TaskBarButton id="window-files" icon="folder" label="FILES" windows={windows} focusedId={focusedId} onClick={() => toggleTaskbar('window-files')} />
         </div>
         <div className="taskbar-clock">
           <Clock />
@@ -271,7 +241,7 @@ function TaskBarButton({ id, icon, label, mobileLabel, windows, focusedId, onCli
   );
 }
 
-function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWindow, focusWindow, openGallery }) {
+function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWindow, focusWindow, openGallery, openExternalApp }) {
   const constraintsRef = useRef(null);
 
   return (
@@ -284,14 +254,18 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
         <DesktopIcon icon="code" label="PROJECT 4" onClick={() => openWindow('window-project-4')} />
       </nav>
 
+      {/* Quick Apps Row (Below Projects) */}
+      <nav className="absolute left-8 top-44 flex flex-row flex-wrap gap-8 z-10" aria-label="Quick apps">
+        <DesktopIcon icon="picture_as_pdf" label="CV" onClick={() => openExternalApp('/cv.pdf')} />
+        <DesktopIcon icon="link" label="GITHUB" onClick={() => openExternalApp('https://github.com')} />
+        <DesktopIcon icon="work" label="LINKEDIN" onClick={() => openExternalApp('https://www.linkedin.com')} />
+      </nav>
+
       {/* Info Row (Bottom) */}
       <nav className="absolute left-8 bottom-24 flex flex-row flex-wrap gap-8 z-10" aria-label="About">
         <DesktopIcon icon="history_edu" label="EXPERIENCE" onClick={() => openWindow('window-experience')} />
         <DesktopIcon icon="terminal" label="CONTACT" onClick={() => openWindow('window-contact')} />
       </nav>
-
-      {/* Cyber HUD Panel */}
-      <HudPanel />
 
       {/* Floating windows */}
       <div className="w-full h-full relative z-20 pointer-events-none">
@@ -321,7 +295,7 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               key="window-about"
               id="window-about"
               className="w-[700px] h-auto max-h-[85vh] border border-slate-300 pointer-events-auto shadow-[0_20px_50px_rgba(0,0,0,0.5)] font-sans bg-white flex flex-col"
-              initLeft="150px" initTop="80px"
+              initLeft="calc(50% - 350px)" initTop="calc(50% - max-h-[85vh])"
               zIndex={windows['window-about'].zIndex}
               isFocused={focusedId === 'window-about'}
               onFocus={() => focusWindow('window-about')}
@@ -424,55 +398,12 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
             </WindowFrame>
           )}
 
-          {windows['window-files']?.state === 'open' && (
-            <WindowFrame
-              key="window-files"
-              id="window-files"
-              className="w-[500px] h-[350px] pointer-events-auto border border-slate-300 shadow-[0_20px_50px_rgba(0,0,0,0.5)] font-sans bg-white overflow-hidden"
-              initLeft="680px" initTop="200px"
-              zIndex={windows['window-files'].zIndex}
-              isFocused={focusedId === 'window-files'}
-              onFocus={() => focusWindow('window-files')}
-              onClose={() => closeWindow('window-files')}
-              onMinimize={() => minimizeWindow('window-files')}
-              constraintsRef={constraintsRef}
-            >
-              <div className="flex justify-between items-center px-4 py-2 bg-slate-100 border-b border-slate-300 cursor-grab active:cursor-grabbing w-full">
-                <div className="flex items-center gap-2 text-slate-500">
-                  <span className="material-symbols-outlined text-[16px]">folder_open</span>
-                  <span className="text-xs font-bold tracking-wider">/USERS/OPERATOR/DOCUMENTS</span>
-                </div>
-                <div className="flex gap-2">
-                  <button className="w-3 h-3 bg-slate-300 hover:bg-slate-400 transition-colors" onClick={(e) => { e.stopPropagation(); minimizeWindow('window-files'); }}></button>
-                  <button className="w-3 h-3 bg-slate-300 hover:bg-slate-400 transition-colors"></button>
-                  <button className="w-3 h-3 bg-slate-300 hover:bg-red-500 transition-colors" onClick={(e) => { e.stopPropagation(); closeWindow('window-files'); }}></button>
-                </div>
-              </div>
-              <div className="p-6 bg-slate-50 flex-1 overflow-y-auto">
-                <div className="grid grid-cols-3 gap-6 h-full">
-                  <div className="flex flex-col items-center gap-2 p-4 cursor-pointer hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-200 transition-all text-slate-600 group">
-                    <span className="material-symbols-outlined text-[48px] text-red-500 opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all">picture_as_pdf</span>
-                    <span className="text-xs font-bold text-center mt-1">CV.pdf<br /><span className="text-[10px] text-slate-400 font-medium">245 KB</span></span>
-                  </div>
-                  <div className="flex flex-col items-center gap-2 p-4 cursor-pointer hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-200 transition-all text-slate-600 group">
-                    <span className="material-symbols-outlined text-[48px] text-blue-500 opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all">link</span>
-                    <span className="text-xs font-bold text-center mt-1">GITHUB.url<br /><span className="text-[10px] text-slate-400 font-medium">WEB LINK</span></span>
-                  </div>
-                  <div className="flex flex-col items-center gap-2 p-4 cursor-pointer hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-200 transition-all text-slate-600 group">
-                    <span className="material-symbols-outlined text-[48px] text-sky-400 opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all">folder</span>
-                    <span className="text-xs font-bold text-center mt-1">PORTFOLIO<br /><span className="text-[10px] text-slate-400 font-medium">4 ITEMS</span></span>
-                  </div>
-                </div>
-              </div>
-            </WindowFrame>
-          )}
-
           {windows['window-terminal']?.state === 'open' && (
             <WindowFrame
               key="window-terminal"
               id="window-terminal"
-              className="sys-log w-96 h-48 pointer-events-auto"
-              initLeft="calc(100vw - 420px)" initTop="calc(100vh - 300px)"
+              className="sys-log w-[400px] h-[460px] pointer-events-auto"
+              initLeft="calc(100% - 400px)" initTop="0px"
               zIndex={windows['window-terminal'].zIndex}
               isFocused={focusedId === 'window-terminal'}
               onFocus={() => focusWindow('window-terminal')}
@@ -483,14 +414,14 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               <div className="window-titlebar" style={{ cursor: 'grab' }}>
                 <div className="title-left text-primary-container">
                   <span className="material-symbols-outlined" style={{ fontSize: 14 }}>terminal</span>
-                  <span>TTY1 : SYSTEM_LOG</span>
+                  <span>aaron@arch:~</span>
                 </div>
                 <div className="title-controls">
                   <button className="window-btn" onPointerDown={e => { e.stopPropagation(); minimizeWindow('window-terminal'); }}><span className="material-symbols-outlined">remove</span></button>
                   <button className="window-btn" onPointerDown={e => { e.stopPropagation(); closeWindow('window-terminal'); }}><span className="material-symbols-outlined">close</span></button>
                 </div>
               </div>
-              <BootSequence containerId="log-desktop" />
+              <LinuxTerminalPanel />
             </WindowFrame>
           )}
 
@@ -600,48 +531,24 @@ function MobileLayout({ windows, openWindow, closeWindow }) {
           </motion.section>
         )}
 
-        {windows['window-files']?.state === 'open' && (
-          <motion.section
-            key="mobile-files"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="window-frame w-full max-w-[450px] flex-1 min-h-0"
-          >
-            <div className="window-titlebar">
-              <div className="title-left">
-                <span className="material-symbols-outlined" style={{ fontSize: 14 }}>folder_open</span>
-                <span className="truncate">/USERS/OP/DOCS</span>
-              </div>
-              <div className="title-controls">
-                <button className="window-btn" onClick={() => closeWindow('window-files')}><span className="material-symbols-outlined">close</span></button>
-              </div>
-            </div>
-            <div className="window-content scrollable" style={{ padding: 16 }}>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="file-item"><span className="material-symbols-outlined file-icon-pdf" style={{ fontSize: 40 }}>picture_as_pdf</span><span className="file-item-name" style={{ fontSize: 9 }}>CV.pdf<br /><span className="file-item-meta">245 KB</span></span></div>
-                <div className="file-item"><span className="material-symbols-outlined file-icon-dir" style={{ fontSize: 40 }}>folder</span><span className="file-item-name" style={{ fontSize: 9 }}>WORKS<br /><span className="file-item-meta">DIR [4]</span></span></div>
-              </div>
-            </div>
-          </motion.section>
-        )}
-
         {windows['window-terminal']?.state === 'open' && (
           <motion.aside
             key="mobile-terminal"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="sys-log w-full max-w-[450px] h-24 shrink-0 transition-opacity"
+            className="sys-log w-full max-w-[450px] h-[320px] shrink-0 transition-opacity"
           >
-            <div className="sys-log-header">
-              <div className="sys-log-title"><span className="material-symbols-outlined" style={{ fontSize: 10 }}>terminal</span> SYS_LOG</div>
-              <div className="flex gap-2">
-                <span className="sys-log-id">TTY1</span>
+            <div className="window-titlebar">
+              <div className="title-left text-primary-container">
+                <span className="material-symbols-outlined" style={{ fontSize: 12 }}>terminal</span>
+                <span>aaron@arch:~</span>
+              </div>
+              <div className="title-controls">
                 <button className="window-btn h-auto py-0" onClick={() => closeWindow('window-terminal')}><span className="material-symbols-outlined">close</span></button>
               </div>
             </div>
-            <BootSequence containerId="log-mobile" />
+            <LinuxTerminalPanel compact />
           </motion.aside>
         )}
       </AnimatePresence>
@@ -812,139 +719,42 @@ const SYSTEM_SKILLS = [
   { name: 'Node.js', val: 75 }
 ];
 
-function HudPanel() {
-  const [view, setView] = useState(0);
-
-  const renderCmd = () => (
-    <div className="flex flex-col gap-1 mt-2 text-[#00ff41]/80 shadow-none">
-      <div className="font-bold opacity-80 mb-1">&gt; skills --scan</div>
-      {SYSTEM_SKILLS.map(s => {
-        const bars = '█'.repeat(Math.round(s.val / 10));
-        const blanks = '░'.repeat(10 - Math.round(s.val / 10));
-        return (
-          <div key={s.name} className="flex whitespace-pre">
-            <span className="w-20 inline-block">{s.name}</span>
-            <span>{bars}{blanks} {s.val}%</span>
-          </div>
-        );
-      })}
-    </div>
-  );
-
-  const renderBars = () => (
-    <div className="flex flex-col gap-2.5 mt-3 shadow-none">
-      {SYSTEM_SKILLS.map(s => (
-        <div key={s.name} className="flex flex-col gap-1 text-[#00ff41]/90">
-          <div className="flex justify-between text-[9px] font-bold">
-            <span className="uppercase tracking-widest">{s.name}</span>
-            <span>{s.val}%</span>
-          </div>
-          <div className="h-1.5 w-full bg-[#00ff41]/10 overflow-hidden relative">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${s.val}%` }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="absolute top-0 left-0 h-full bg-[#00ff41] shadow-[0_0_5px_#00ff41]"
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-
-  const renderRadar = () => {
-    const num = SYSTEM_SKILLS.length;
-    const radius = 35;
-    const center = 50;
-
-    const getPoint = (val, i) => {
-      const angle = (Math.PI / 2) - (2 * Math.PI * i / num);
-      const r = radius * (val / 100);
-      return `${center + r * Math.cos(angle)},${center - r * Math.sin(angle)}`;
-    };
-
-    const points = SYSTEM_SKILLS.map((s, i) => getPoint(s.val, i)).join(' ');
-    const bgPoints = SYSTEM_SKILLS.map((s, i) => getPoint(100, i)).join(' ');
-    const midPoints = SYSTEM_SKILLS.map((s, i) => getPoint(50, i)).join(' ');
-
-    return (
-      <div className="flex justify-center items-center h-[120px] relative mt-2 shadow-none">
-        <svg viewBox="0 0 100 100" className="w-[110px] h-[110px] overflow-visible">
-          <polygon points={bgPoints} fill="rgba(0,255,65,0.03)" stroke="rgba(0,255,65,0.15)" strokeWidth="0.5" />
-          <polygon points={midPoints} fill="none" stroke="rgba(0,255,65,0.15)" strokeWidth="0.5" strokeDasharray="1 1" />
-          {SYSTEM_SKILLS.map((s, i) => {
-            const p = getPoint(100, i).split(',');
-            return <line key={i} x1="50" y1="50" x2={p[0]} y2={p[1]} stroke="rgba(0,255,65,0.15)" strokeWidth="0.5" />
-          })}
-          <motion.polygon
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 100 }}
-            style={{ transformOrigin: '50px 50px' }}
-            points={points}
-            fill="rgba(0,255,65,0.2)"
-            stroke="#00ff41"
-            strokeWidth="1"
-            className="drop-shadow-[0_0_8px_rgba(0,255,65,0.5)]"
-          />
-          {SYSTEM_SKILLS.map((s, i) => {
-            const labelPoint = getPoint(125, i).split(',');
-            return (
-              <text key={'l' + i} x={labelPoint[0]} y={labelPoint[1]} fontSize="5" fill="#00ff41" textAnchor="middle" dominantBaseline="middle" className="font-mono font-bold tracking-widest opacity-80" style={{ textShadow: '0 0 4px rgba(0,255,65,0.5)' }}>
-                {s.name}
-              </text>
-            );
-          })}
-        </svg>
-      </div>
-    );
-  };
-
+function LinuxTerminalPanel({ compact = false }) {
   return (
-    <div className="absolute right-0 sm:right-8 top-16 sm:top-8 w-full sm:w-[320px] bg-[#050204]/80 backdrop-blur-md border border-[#00ff41]/20 p-5 shadow-[0_0_30px_rgba(0,255,65,0.05)] text-[#00ff41] z-10 font-mono text-[10px] flex flex-col gap-4 mx-auto sm:mx-0 font-sans pointer-events-auto">
+    <div className="window-content scrollable" style={{ padding: compact ? 12 : 16 }}>
+      <div className="font-mono text-[#8bff9f] leading-snug" style={{ fontSize: compact ? 11 : 13 }}>
+        <div className="flex items-center justify-between mb-3 uppercase tracking-wider text-[#7df38f]">
+          <span>profile-shell v4.2</span>
+          <span className="flex items-center gap-2"><span className="inline-block w-2 h-2 bg-[#00ff41] animate-pulse"></span>online</span>
+        </div>
 
-      {/* Top Section */}
-      <div className="flex flex-col gap-2 border-b border-[#00ff41]/20 pb-4 shadow-none">
-        <div className="flex items-center justify-between font-bold text-xs tracking-widest uppercase">
-          <span style={{ textShadow: 'var(--glow-green)' }}>AARON_LIM</span>
-          <div className="flex items-center gap-1.5 text-emerald-400">
-            <div className="w-2 h-2 rounded-full bg-[#00ff41] shadow-[0_0_8px_#00ff41] animate-pulse"></div>
-            FOR HIRE
+        <pre className="whitespace-pre overflow-x-auto text-[#97ffaa] mb-3 pb-2 border-b border-[#00ff41]/20" style={{ fontSize: compact ? 9 : 12, lineHeight: compact ? 1.1 : 1.15 }} aria-label="ASCII art logo">
+{TERMINAL_ASCII}
+        </pre>
+
+        <div className="mb-3 pb-3 border-b border-[#00ff41]/20">
+          <div className="mb-2 text-[#7df38f]">$ skills --summary</div>
+          <div className="flex flex-col gap-2">
+            {SYSTEM_SKILLS.map((skill) => {
+              return (
+                <div key={skill.name} className="flex items-center gap-3">
+                  <span className="w-24 shrink-0">{skill.name}</span>
+                  <div className="flex-1 h-3 border border-[#00ff41]/35 bg-[#00ff41]/10 relative">
+                    <div className="absolute left-0 top-0 h-full bg-[#9cffb4]" style={{ width: `${skill.val}%` }}></div>
+                  </div>
+                  <span className="w-11 text-right">{skill.val}%</span>
+                </div>
+              );
+            })}
           </div>
         </div>
-        <div className="mt-2 text-[#00ff41]/70 flex flex-col gap-1 tracking-wider uppercase">
-          <div className="flex justify-between"><span>ROLE:</span>  <strong className="text-[#00ff41] opacity-90 font-bold">FULL-STACK DEV</strong></div>
-          <div className="flex justify-between"><span>FOCUS:</span> <strong className="text-[#00ff41] opacity-90 font-bold">FRONTEND / BACKEND / AI</strong></div>
-          <div className="flex justify-between"><span>UPTIME:</span><strong className="text-[#00ff41] opacity-90 font-bold">a long time...</strong></div>
-          <div className="flex justify-between"><span>LOC:</span>   <strong className="text-[#00ff41] opacity-90 font-bold">QUEZON CITY, PH</strong></div>
+
+        <div className="space-y-1 text-[#7df38f]">
+          <div>$ whoami</div>
+          <div className="text-[#9effae]">Building polished interfaces, robust APIs, and practical AI features.</div>
+          <div>$ _</div>
         </div>
       </div>
-
-      {/* Skills Section */}
-      <div className="flex flex-col shadow-none">
-        <div className="flex justify-between items-center mb-1">
-          <span className="font-bold opacity-80 tracking-widest uppercase text-[#00ff41]/70">SYS_SKILLS</span>
-          <button onClick={() => setView((v) => (v + 1) % 3)} className="text-[8px] bg-[#00ff41]/10 px-2 py-0.5 border border-[#00ff41]/20 hover:bg-[#00ff41]/30 hover:border-[#00ff41]/50 transition-colors uppercase tracking-widest outline-none cursor-pointer">
-            SWAP_VIEW
-          </button>
-        </div>
-        <div className="min-h-[120px]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={view}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              transition={{ duration: 0.15 }}
-            >
-              {view === 0 && renderCmd()}
-              {view === 1 && renderBars()}
-              {view === 2 && renderRadar()}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-
     </div>
   );
 }
