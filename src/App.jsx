@@ -703,7 +703,8 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
               key={`window-about-${windows['window-about'].bootNonce || 0}`}
               id="window-about"
               className="w-[750px] max-w-[90vw] sm:max-w-[85vw] lg:max-w-[750px] h-auto max-h-[85vh] border border-[#2b1822] pointer-events-auto shadow-[0_0_40px_rgba(0,0,0,0.8)] font-mono bg-[#110C11] flex flex-col"
-              initLeft="calc(50% - min(375px, 45vw))" initTop="8px"
+              initLeft="50%" initTop="8px"
+              centeredX
               zIndex={windows['window-about'].zIndex}
               isFocused={focusedId === 'window-about'}
               onFocus={() => focusWindow('window-about')}
@@ -959,7 +960,9 @@ function DesktopLayout({ windows, focusedId, openWindow, closeWindow, minimizeWi
   );
 }
 
-function WindowFrame({ id, className, initLeft, initTop, zIndex, isFocused, onFocus, onClose, onMinimize, children, constraintsRef, centered = false }) {
+function WindowFrame({ id, className, initLeft, initTop, zIndex, isFocused, onFocus, onClose, onMinimize, children, constraintsRef, centered = false, centeredX = false }) {
+  const translateValue = centered ? '-50% -50%' : centeredX ? '-50% 0' : undefined;
+
   return (
     <motion.section
       drag
@@ -977,7 +980,7 @@ function WindowFrame({ id, className, initLeft, initTop, zIndex, isFocused, onFo
         scale: { duration: 0.15 }
       }}
       className={`window-frame absolute flex flex-col ${className} ${isFocused ? 'focused' : ''}`}
-      style={{ zIndex, top: initTop, left: initLeft, translate: centered ? '-50% -50%' : undefined, willChange: 'transform' }}
+      style={{ zIndex, top: initTop, left: initLeft, translate: translateValue, willChange: 'transform' }}
       aria-label={id}
     >
       {children}
